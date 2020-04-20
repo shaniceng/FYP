@@ -1,11 +1,14 @@
 package com.example.fyp;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 
 /**
@@ -21,7 +24,22 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        CircularProgressBar circularProgressBar = view.findViewById(R.id.circularProgressBar);
+
+        circularProgressBar.setProgressWithAnimation(7000); // =1s
+        circularProgressBar.setProgressMax(7500);
+
+        circularProgressBar.setProgressBarColor(Color.BLUE);
+
+        circularProgressBar.setBackgroundProgressBarColor(Color.GRAY);
+
+        circularProgressBar.setProgressBarWidth(7f); // in DP
+        circularProgressBar.setBackgroundProgressBarWidth(3f); // in DP
+
+        circularProgressBar.setRoundBorder(true);
+        circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
+
+        return view;
     }
 }
