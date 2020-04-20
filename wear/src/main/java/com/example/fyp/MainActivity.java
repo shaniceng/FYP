@@ -93,7 +93,7 @@ public class MainActivity extends WearableActivity {
         int setSec = 00;
 
 
-        while ((currentTime.get(Calendar.HOUR_OF_DAY) == setHour)) { //&& (currentTime.get(Calendar.MINUTE) == setMin) && (currentTime.get(Calendar.SECOND) == setSec)) {
+        //while ((currentTime.get(Calendar.HOUR_OF_DAY) == setHour)) { //&& (currentTime.get(Calendar.MINUTE) == setMin) && (currentTime.get(Calendar.SECOND) == setSec)) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("TEsting alert dialog").setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -107,7 +107,7 @@ public class MainActivity extends WearableActivity {
                 alertDialog.show();
 
 
-        }
+        //}
 
         // Enables Always-on
         setAmbientEnabled();
