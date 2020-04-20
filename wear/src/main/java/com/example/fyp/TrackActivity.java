@@ -1,5 +1,6 @@
 package com.example.fyp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
@@ -31,12 +32,13 @@ public class TrackActivity extends WearableActivity {
         // Enables Always-on
         setAmbientEnabled();
 
-         /*walk.setOnClickListener(new View.OnClickListener() {
+         walk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               startActivity(new Intent(TrackActivity.this, WalkingActivity.class));
 
             }
-        });*/
+        });
 
     }
 }

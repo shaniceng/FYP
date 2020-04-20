@@ -8,4 +8,5 @@
     <string name="title_activity_track">TrackActivity</string>
     <string name="title_activity_heart_rate">HeartRateActivity</string>
     <string name="title_activity_steps_count">StepsCountActivity</string>
+    <string name="title_activity_walking">WalkingActivity</string>
 </resources>

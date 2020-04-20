@@ -3,10 +3,12 @@
     package="com.example.fyp">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
-    <uses-permission android:name="android.permission.BODY_SENSORS" />
+
     <uses-feature android:name="android.hardware.type.watch" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
 
     <application
         android:allowBackup="true"
@@ -27,8 +29,11 @@
             android:value="true" />
 
         <activity
+            android:name=".WalkingActivity"
+            android:label="@string/title_activity_walking"></activity>
+        <activity
             android:name=".StepsCountActivity"
-            android:label="@string/title_activity_steps_count"></activity>
+            android:label="@string/title_activity_steps_count" />
         <activity
             android:name=".HeartRateActivity"
             android:label="@string/title_activity_heart_rate" />
