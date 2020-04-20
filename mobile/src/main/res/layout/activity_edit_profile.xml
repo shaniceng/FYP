@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfile">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginLeft="317dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/rounded_blue"
+                android:text="Save" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:orientation="vertical"
+                android:padding="40dp"
+                android:background="@drawable/rounded_blue">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <EditText
+                    android:id="@+id/editText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Name"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/tvEditBattery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Battery"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="690dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_blue"
+                android:padding="40dp">
+
+                <TextView
+                    android:id="@+id/tvEditGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvEditWeight"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="32dp"
+                    android:text="Gender:"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/tvEditWeight"
+                    app:layout_constraintEnd_toStartOf="@+id/etEditGender"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvEditWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvEditSetPrompt"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="32dp"
+                    android:text="Weight:"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/tvEditHeight"
+                    app:layout_constraintEnd_toStartOf="@+id/etEditWeight"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEditGender" />
+
+                <TextView
+                    android:id="@+id/tvEditEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvEditGender"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="24dp"
+                    android:text="Email:"
+                    android:textColor="#050505"
+                    app:layout_constraintBottom_toTopOf="@+id/tvEditPassword"
+                    app:layout_constraintEnd_toStartOf="@+id/etEditEmail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEditSetPrompt" />
+
+                <TextView
+                    android:id="@+id/tvEditSetPrompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvEditDailyGoal"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="32dp"
+                    android:text="Set Prompt Every:"
+                    android:textColor="#050505"
+                    app:layout_constraintBottom_toTopOf="@+id/tvEditEmail"
+                    app:layout_constraintEnd_toStartOf="@+id/etEditPrompt"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEditDailyGoal" />
+
+                <TextView
+                    android:id="@+id/tvEditDailyGoal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="32dp"
+                    android:text="Daily Goals:"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/tvEditSetPrompt"
+                    app:layout_constraintEnd_toStartOf="@+id/etEditDailyGoals"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEditBirthday" />
+
+                <EditText
+                    android:id="@+id/etEditGender"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Male / Female"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@+id/etEditWeight"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvEditGender"
+                    app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+                <TextView
+                    android:id="@+id/tvEditBirthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvEditHeight"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="32dp"
+                    android:text="Birthday:"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/tvEditDailyGoal"
+                    app:layout_constraintEnd_toStartOf="@+id/etEditBirthday"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEditHeight" />
+
+                <TextView
+                    android:id="@+id/tvEditHeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvEditEmail"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="32dp"
+                    android:text="Height:"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/tvEditBirthday"
+                    app:layout_constraintEnd_toStartOf="@+id/etEditHeight"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEditWeight" />
+
+                <EditText
+                    android:id="@+id/etEditWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:ems="10"
+                    android:hint="kg"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@+id/etEditHeight"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/tvEditWeight"
+                    app:layout_constraintTop_toBottomOf="@+id/etEditGender" />
+
+                <EditText
+                    android:id="@+id/etEditHeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="16dp"
+                    android:ems="10"
+                    android:hint="cm"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@+id/etEditBirthday"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvEditHeight"
+                    app:layout_constraintTop_toBottomOf="@+id/etEditWeight" />
+
+                <EditText
+                    android:id="@+id/etEditBirthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:ems="10"
+                    android:hint="dd/mm/yyyy"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@+id/etEditDailyGoals"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvEditBirthday"
+                    app:layout_constraintTop_toBottomOf="@+id/etEditHeight" />
+
+                <EditText
+                    android:id="@+id/etEditDailyGoals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:ems="10"
+                    android:hint="no. of steps"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@+id/etEditPrompt"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvEditDailyGoal"
+                    app:layout_constraintTop_toBottomOf="@+id/etEditBirthday" />
+
+                <EditText
+                    android:id="@+id/etEditPrompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:ems="10"
+                    android:hint="hours"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@+id/etEditEmail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.709"
+                    app:layout_constraintStart_toEndOf="@+id/tvEditSetPrompt"
+                    app:layout_constraintTop_toBottomOf="@+id/etEditDailyGoals" />
+
+                <EditText
+                    android:id="@+id/etEditEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:ems="10"
+                    android:hint="Email:"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@+id/etEditPassword"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.714"
+                    app:layout_constraintStart_toEndOf="@+id/tvEditEmail"
+                    app:layout_constraintTop_toBottomOf="@+id/etEditPrompt" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="About:iew"
+                    app:layout_constraintBottom_toTopOf="@+id/tvEditGender"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/tvEditPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="13dp"
+                    android:text="Password:"
+                    android:textColor="#050505"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/etEditPassword"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEditEmail" />
+
+                <EditText
+                    android:id="@+id/etEditPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="164dp"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvEditPassword"
+                    app:layout_constraintTop_toBottomOf="@+id/etEditEmail" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
