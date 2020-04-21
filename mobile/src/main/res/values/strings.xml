@@ -4,7 +4,11 @@
     <string name="title_home">Home</string>
     <string name="title_map">Map</string>
     <string name="title_settings">Settings</string>
-    <string name="steps_counter">STEPS COUNTER</string>
+
+    //used in fragment home
+    <string name="steps_count">STEPS COUNT</string>
+    <string name="steps">steps</string>
+    <string name="heart_rate">HEART RATE</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

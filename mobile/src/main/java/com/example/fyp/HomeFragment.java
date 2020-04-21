@@ -30,15 +30,17 @@ public class HomeFragment extends Fragment {
         circularProgressBar.setProgressWithAnimation(7000); // =1s
         circularProgressBar.setProgressMax(7500);
 
-        circularProgressBar.setProgressBarColor(Color.BLUE);
+       // circularProgressBar.setProgressBarColor(Color.BLUE);
 
-        circularProgressBar.setBackgroundProgressBarColor(Color.GRAY);
 
-        circularProgressBar.setProgressBarWidth(7f); // in DP
-        circularProgressBar.setBackgroundProgressBarWidth(3f); // in DP
+
+       // circularProgressBar.setBackgroundProgressBarColor(Color.GRAY);
+
+       //circularProgressBar.setProgressBarWidth(10f); // in DP
+        //circularProgressBar.setBackgroundProgressBarWidth(8f); // in DP
 
         circularProgressBar.setRoundBorder(true);
-        circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
+        //circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
 
         return view;
     }
