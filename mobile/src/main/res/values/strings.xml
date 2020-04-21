@@ -8,7 +8,20 @@
     //used in fragment home
     <string name="steps_count">STEPS COUNT</string>
     <string name="steps">steps</string>
+    <string name="column1">Resting</string>
+    <string name="column2">Avg. resting</string>
+    <string name="column3">MAX</string>
     <string name="heart_rate">HEART RATE</string>
+    <string name="intensity_workout_details">Being able to see an increase in breathing and heart rate.”
+        “As a general rule of thumb, you should be able to talk but not sing.”
+        \n\n Intensity refers to the rate at which the activity is being performed or the
+        magnitude of the effort required to perform an activity or exercise.\n\n The intensity
+         of different forms of physical activity varies between people.
+         The intensity of physical activity depends on an individuals
+         previous exercise experience and their relative level of fitness.
+          Consequently, the examples given below are provided as a guide only
+          and will vary between individuals.</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

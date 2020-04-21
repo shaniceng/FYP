@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'com.google.firebase:firebase-database:19.2.1'
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
+    implementation 'com.ms-square:expandableTextView:0.1.4'
     wearApp project(':wear')
 }
 apply plugin: 'com.google.gms.google-services'
