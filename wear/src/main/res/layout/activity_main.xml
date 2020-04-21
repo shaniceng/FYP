@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey"
+    android:background="@color/black"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
     tools:deviceIds="wear">
@@ -12,9 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all"
-        >
+        android:padding="@dimen/inner_frame_layout_padding">
 
         <ScrollView
             android:id="@+id/myview"
@@ -24,41 +22,45 @@
             android:scrollbarStyle="insideOverlay"
             android:verticalScrollbarPosition="defaultPosition"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <TextView
                     android:id="@+id/textView_"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:layout_marginLeft="32dp"/>
 
                 <Button
                     android:id="@+id/btnWTrackActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="6dp"
                     android:text="Track Activity" />
 
                 <Button
                     android:id="@+id/btnWHeartRate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="6dp"
                     android:text="Heart Rate" />
 
                 <Button
                     android:id="@+id/btnWStepsCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="6dp"
                     android:text="Steps Count" />
+
             </LinearLayout>
         </ScrollView>
-
     </RelativeLayout>
 </androidx.wear.widget.BoxInsetLayout>
