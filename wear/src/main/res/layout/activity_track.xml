@@ -12,12 +12,13 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
+        android:padding="@dimen/inner_frame_layout_padding">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,7 +29,8 @@
                     android:id="@+id/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_activity_track" />
+                    android:text="@string/title_activity_track"
+                    android:layout_marginLeft="32dp"/>
 
                 <Button
                     android:id="@+id/btnWBriskWalking"
