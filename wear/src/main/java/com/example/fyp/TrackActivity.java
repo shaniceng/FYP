@@ -11,6 +11,7 @@ public class TrackActivity extends WearableActivity {
 
     private TextView mTextView;
     private Button walk, jog, run, swim, taichi, yoga,zumba,sports,strength_training,others;
+    public static final String EXTRA_TEXT = "com.example.application.fyp.EXTRA_TEXT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +30,104 @@ public class TrackActivity extends WearableActivity {
         strength_training=findViewById(R.id.btnWStrength);
         others=findViewById(R.id.btnWOthers);
 
+
+
         // Enables Always-on
         setAmbientEnabled();
 
          walk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(new Intent(TrackActivity.this, WalkingActivity.class));
+                String walking = walk.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,walking);
+                startActivity(intent);
 
+            }
+        });
+        jog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String jogging = jog.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,jogging);
+                startActivity(intent);
+
+            }
+        });
+        run.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String running = run.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,running);
+                startActivity(intent);
+
+            }
+        });
+        swim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String swimming = swim.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,swimming);
+                startActivity(intent);
+
+            }
+        });
+        taichi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String taiching = taichi.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,taiching);
+                startActivity(intent);
+
+            }
+        });
+        yoga.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String yogaing = yoga.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,yogaing);
+                startActivity(intent);
+            }
+        });
+        zumba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String zumbaing = zumba.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,zumbaing);
+                startActivity(intent);
+            }
+        });
+        sports.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sporting = sports.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,sporting);
+                startActivity(intent);
+            }
+        });
+        strength_training.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String training = strength_training.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,training);
+                startActivity(intent);
+            }
+        });
+        others.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String others_ = others.getText().toString();
+                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+                intent.putExtra(EXTRA_TEXT,others_);
+                startActivity(intent);
             }
         });
 

@@ -15,6 +15,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.wear.widget.WearableLinearLayoutManager;
+import androidx.wear.widget.WearableRecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,6 +26,7 @@ public class MainActivity extends WearableActivity {
 
     private TextView mTextView;
     private Button trackActivity, heartRate, stepsCount;
+
 
     // private ScrollView myView;
 

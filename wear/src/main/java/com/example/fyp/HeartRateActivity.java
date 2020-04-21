@@ -15,14 +15,16 @@ import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.result.DataReadResult;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class HeartRateActivity extends WearableActivity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
-    private TextView mTextViewHeart;
+    private TextView mTextViewHeart, textViewDate, textViewTime;
     private static final String TAG = "FitActivity";
+    Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         setContentView(R.layout.activity_heart_rate);
 
         mTextViewHeart = (TextView) findViewById(R.id.tvHR);
+        textViewDate=findViewById(R.id.text_view_dateH);
 
 
         // Enables Always-on
@@ -37,11 +40,31 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
 
         sensorManager = ((SensorManager)
                 getSystemService(SENSOR_SERVICE));
-        sensor =
-                sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        sensor =
-                sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         getStepCount();
+
+        calendar=Calendar.getInstance();
+        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
+        textViewDate.setText(currentDate);
+
+        Thread thread = new Thread(){
+            @Override
+            public void run(){
+                while (!isInterrupted()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            textViewTime=findViewById(R.id.text_view_timeH);
+                            long date = System.currentTimeMillis();
+                            SimpleDateFormat sdf = new SimpleDateFormat("hh-mm-ss a");
+                            String dateString = sdf.format(date);
+                            textViewTime.setText(dateString);
+                        }
+                    });
+                }
+            }
+        };
+        thread.start();
 
     }
     private void getStepCount() {
@@ -56,7 +79,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
             String msg = "" + (int)event.values[0];
-            mTextViewHeart.setText(msg);
+            mTextViewHeart.setText(msg + "BPM");
             Log.d(TAG, msg);
         }
 
@@ -81,7 +104,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     @Override
     protected void onPause() {
         super.onPause();
-        finish();
-        //sensorManager.registerListener(this, this.sensor, 3);
+        //finish();
+        sensorManager.registerListener(this, this.sensor, 3);
     }
 }
