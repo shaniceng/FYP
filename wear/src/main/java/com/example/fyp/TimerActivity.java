@@ -13,6 +13,10 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Locale;
 
 public class TimerActivity extends WearableActivity {
@@ -20,11 +24,14 @@ public class TimerActivity extends WearableActivity {
     private TextView trackName;
     private  Chronometer chronometer;
     private ImageButton startTimer, stopTimer, pauseTimer;
+    private FirebaseAuth firebaseAuth;
 
     private boolean isResume;
     Handler handler;
     long tMilliSec, tStart, tBuff, tUpdate = 0L;
     int sec,min,milliSec;
+    private String chronometertext;
+    private String TrackText;
 
 
     @Override
@@ -32,8 +39,10 @@ public class TimerActivity extends WearableActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
 
+        firebaseAuth=FirebaseAuth.getInstance();
+
         Intent intent = getIntent();
-        final String TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
+        TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
 
         // Enables Always-on
         setAmbientEnabled();
@@ -80,9 +89,9 @@ public class TimerActivity extends WearableActivity {
                     sec=0;
                     min = 0;
                     milliSec=0;
-                    String chronometertext;
                     chronometertext = chronometer.getText().toString();
                     chronometer.setText("00:00:00");
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
                     builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -94,6 +103,7 @@ public class TimerActivity extends WearableActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.setTitle("Good Job!");
                     alertDialog.show();
+                    //sendUserData();
                 }
             }
         });
@@ -112,6 +122,13 @@ public class TimerActivity extends WearableActivity {
             handler.postDelayed(this, 60);
         }
     };
+
+    private void sendUserData(){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
+        myRef.setValue(TrackText);
+        myRef.setValue(chronometertext);
+    }
 
 }
 
