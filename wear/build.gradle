@@ -32,5 +32,6 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.5.0'
     implementation 'com.google.android.gms:play-services-fitness:18.0.0'
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
+    implementation 'androidx.core:core:1.2.0'
 
 }

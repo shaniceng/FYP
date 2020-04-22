@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,37 +7,26 @@
     android:background="@color/black"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
-    tools:deviceIds="wear">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding">
-
-        <ScrollView
-            android:id="@+id/myview"
-            style="@android:style/Widget.DeviceDefault.ScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbarStyle="insideOverlay"
-            android:verticalScrollbarPosition="defaultPosition"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp">
+    tools:deviceIds="wear"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/myview"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp"
+    android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView_"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:layout_marginLeft="32dp"/>
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="40dp"/>
 
                 <TextView
                     android:id="@+id/tvCurrentTime"
@@ -50,24 +39,23 @@
                     android:id="@+id/btnWTrackActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="6dp"
+                    android:layout_marginTop="6dp"
                     android:text="Track Activity" />
 
                 <Button
                     android:id="@+id/btnWHeartRate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="6dp"
+                    android:layout_marginTop="6dp"
                     android:text="Heart Rate" />
 
                 <Button
                     android:id="@+id/btnWStepsCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="50dp"
                     android:text="Steps Count" />
 
             </LinearLayout>
         </ScrollView>
-    </RelativeLayout>
-</androidx.wear.widget.BoxInsetLayout>
