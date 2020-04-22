@@ -39,6 +39,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String walking = walk.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,walking);
                 startActivity(intent);
@@ -49,6 +50,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String jogging = jog.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,jogging);
                 startActivity(intent);
@@ -59,6 +61,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String running = run.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,running);
                 startActivity(intent);
@@ -69,6 +72,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String swimming = swim.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,swimming);
                 startActivity(intent);
@@ -79,6 +83,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String taiching = taichi.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,taiching);
                 startActivity(intent);
@@ -89,6 +94,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String yogaing = yoga.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,yogaing);
                 startActivity(intent);
@@ -98,6 +104,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String zumbaing = zumba.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,zumbaing);
                 startActivity(intent);
@@ -107,6 +114,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String sporting = sports.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,sporting);
                 startActivity(intent);
@@ -116,6 +124,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String training = strength_training.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,training);
                 startActivity(intent);
@@ -125,6 +134,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String others_ = others.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,others_);
                 startActivity(intent);

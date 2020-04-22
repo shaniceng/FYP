@@ -31,7 +31,6 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps_count);
 
-        textViewDate=findViewById(R.id.text_view_date);
         mTextViewSteps = findViewById(R.id.tvStepsCount);
         // Enables Always-on
         setAmbientEnabled();
@@ -49,30 +48,6 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         circularProgressBar.setBackgroundProgressBarWidth(3f); // in DP
         circularProgressBar.setRoundBorder(true);
         circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
-
-
-        calendar=Calendar.getInstance();
-        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-        textViewDate.setText(currentDate);
-
-        Thread thread = new Thread(){
-            @Override
-            public void run(){
-                while (!isInterrupted()) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            TextView tdate = findViewById(R.id.text_view_time);
-                            long date = System.currentTimeMillis();
-                            SimpleDateFormat sdf = new SimpleDateFormat("hh-mm-ss a");
-                            String dateString = sdf.format(date);
-                            tdate.setText(dateString);
-                        }
-                    });
-                }
-            }
-        };
-        thread.start();
 
     }
     private void getStepCount() {

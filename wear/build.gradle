@@ -32,7 +32,5 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.5.0'
     implementation 'com.google.android.gms:play-services-fitness:18.0.0'
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
-    implementation 'com.google.firebase:firebase-database:19.2.1'
+
 }
-apply plugin: 'com.google.gms.google-services'

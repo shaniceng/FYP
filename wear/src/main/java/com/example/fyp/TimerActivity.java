@@ -8,14 +8,10 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
 
@@ -24,7 +20,6 @@ public class TimerActivity extends WearableActivity {
     private TextView trackName;
     private  Chronometer chronometer;
     private ImageButton startTimer, stopTimer, pauseTimer;
-    private FirebaseAuth firebaseAuth;
 
     private boolean isResume;
     Handler handler;
@@ -38,8 +33,6 @@ public class TimerActivity extends WearableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
-
-        firebaseAuth=FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
@@ -97,13 +90,13 @@ public class TimerActivity extends WearableActivity {
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            finish();
+                            startActivity(new Intent(TimerActivity.this, TrackActivity.class));
                         }
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.setTitle("Good Job!");
                     alertDialog.show();
-                    //sendUserData();
                 }
             }
         });
@@ -122,13 +115,6 @@ public class TimerActivity extends WearableActivity {
             handler.postDelayed(this, 60);
         }
     };
-
-    private void sendUserData(){
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        myRef.setValue(TrackText);
-        myRef.setValue(chronometertext);
-    }
 
 }
 
