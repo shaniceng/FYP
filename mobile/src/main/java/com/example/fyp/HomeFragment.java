@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
@@ -31,22 +33,18 @@ public class HomeFragment extends Fragment {
         circularProgressBar.setProgressWithAnimation(7000); // =1s
         circularProgressBar.setProgressMax(7500);
 
-
-       // circularProgressBar.setProgressBarColor(Color.BLUE);
-
-
-
-       // circularProgressBar.setBackgroundProgressBarColor(Color.GRAY);
-
-       //circularProgressBar.setProgressBarWidth(10f); // in DP
-        //circularProgressBar.setBackgroundProgressBarWidth(8f); // in DP
         ExpandableTextView expTv1 = view.findViewById(R.id.expand_text_view)
                 .findViewById(R.id.expand_text_view);
         circularProgressBar.setRoundBorder(true);
-        //circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
         expTv1.setText(getString(R.string.intensity_workout_details));
+
+
 
 
         return view;
     }
+
+
+
+
 }

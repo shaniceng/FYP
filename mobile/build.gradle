@@ -45,6 +45,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.2.1'
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     implementation 'com.ms-square:expandableTextView:0.1.4'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+
+
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    // For control over item selection of both touch and mouse driven selection
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
+
+
     wearApp project(':wear')
 }
 apply plugin: 'com.google.gms.google-services'

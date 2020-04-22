@@ -9,4 +9,9 @@
 
     </style>
 
+    <style name="custom_plus">
+        <item name="android:background">@drawable/plus_label_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>
