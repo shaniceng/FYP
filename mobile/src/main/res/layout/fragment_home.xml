@@ -389,9 +389,7 @@
                 android:textSize="30sp"/>
 
 
-
-
-    </LinearLayout>
+        </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

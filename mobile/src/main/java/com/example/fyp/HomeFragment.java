@@ -1,7 +1,12 @@
 package com.example.fyp;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +16,15 @@ import androidx.fragment.app.Fragment;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -46,7 +55,7 @@ public class HomeFragment extends Fragment {
         //circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
         expTv1.setText(getString(R.string.intensity_workout_details));
 
-
         return view;
     }
+
 }
