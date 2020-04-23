@@ -46,7 +46,8 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
-        mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mHeartRateSensor, 5000000);
+        //suggesting android to take data in every 5s, if nth to do, android will auto collect data.
     }
 
 
@@ -72,14 +73,14 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     protected void onResume() {
         super.onResume();
 
-        sensorManager.registerListener(this, this.sensor, 3);
+        sensorManager.registerListener(this, this.sensor, 5000000);
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //finish();
-        sensorManager.registerListener(this, this.sensor, 3);
+        finish();
+        //sensorManager.registerListener(this, this.sensor, 5000000);
     }
 }

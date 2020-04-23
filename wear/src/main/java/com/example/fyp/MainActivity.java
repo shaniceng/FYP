@@ -71,7 +71,6 @@ public class MainActivity extends WearableActivity {
         });
 
         Refresh();
-        createNoti();
     }
 
 
@@ -115,34 +114,6 @@ public class MainActivity extends WearableActivity {
         };
         handler.postDelayed(runnable, milliseconds);
     }
-
-    public void createNoti(){
-        int notificationId = 001;
-        // The channel ID of the notification.
-        String id = "my_channel_01";
-        // Build intent for notification content
-        Intent viewIntent = new Intent(this, MainActivity.class);
-        viewIntent.putExtra(EXTRA_EVENT_ID, 002);
-        PendingIntent viewPendingIntent =
-                PendingIntent.getActivity(this, 0, viewIntent, 0);
-
-        // Notification channel ID is ignored for Android 7.1.1
-        // (API level 25) and lower.
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, id)
-                        .setSmallIcon(R.drawable.ic_message)
-                        .setContentTitle("Alert!!!")
-                        .setContentText("You have not reached the specific target!")
-                        .setContentIntent(viewPendingIntent);
-
-        // Get an instance of the NotificationManager service
-        NotificationManagerCompat notificationManager =
-                NotificationManagerCompat.from(this);
-
-        // Issue the notification with notification manager.
-        notificationManager.notify(notificationId, notificationBuilder.build());
-    }
-
 
 }
 
