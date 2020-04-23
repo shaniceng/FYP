@@ -73,7 +73,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     protected void onResume() {
         super.onResume();
 
-        sensorManager.registerListener(this, this.sensor, 5000000);
+        sensorManager.registerListener(this, this.sensor, 1000);
 
     }
 
