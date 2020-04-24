@@ -8,10 +8,10 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 
 import java.util.Locale;
 
@@ -25,6 +25,8 @@ public class TimerActivity extends WearableActivity {
     Handler handler;
     long tMilliSec, tStart, tBuff, tUpdate = 0L;
     int sec,min,milliSec;
+    private String chronometertext;
+    private String TrackText;
 
 
     @Override
@@ -33,7 +35,7 @@ public class TimerActivity extends WearableActivity {
         setContentView(R.layout.activity_walking);
 
         Intent intent = getIntent();
-        final String TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
+        TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
 
         // Enables Always-on
         setAmbientEnabled();
@@ -80,15 +82,16 @@ public class TimerActivity extends WearableActivity {
                     sec=0;
                     min = 0;
                     milliSec=0;
-                    String chronometertext;
                     chronometertext = chronometer.getText().toString();
                     chronometer.setText("00:00:00");
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
                     builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            finish();
+                            startActivity(new Intent(TimerActivity.this, TrackActivity.class));
                         }
                     });
                     AlertDialog alertDialog = builder.create();

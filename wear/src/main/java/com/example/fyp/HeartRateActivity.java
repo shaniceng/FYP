@@ -32,7 +32,6 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         setContentView(R.layout.activity_heart_rate);
 
         mTextViewHeart = (TextView) findViewById(R.id.tvHR);
-        textViewDate=findViewById(R.id.text_view_dateH);
 
 
         // Enables Always-on
@@ -42,36 +41,13 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
                 getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         getStepCount();
-
-        calendar=Calendar.getInstance();
-        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-        textViewDate.setText(currentDate);
-
-        Thread thread = new Thread(){
-            @Override
-            public void run(){
-                while (!isInterrupted()) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            textViewTime=findViewById(R.id.text_view_timeH);
-                            long date = System.currentTimeMillis();
-                            SimpleDateFormat sdf = new SimpleDateFormat("hh-mm-ss a");
-                            String dateString = sdf.format(date);
-                            textViewTime.setText(dateString);
-                        }
-                    });
-                }
-            }
-        };
-        thread.start();
-
     }
     private void getStepCount() {
         SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
-        mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mHeartRateSensor, 5000000);
+        //suggesting android to take data in every 5s, if nth to do, android will auto collect data.
     }
 
 
@@ -97,14 +73,14 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     protected void onResume() {
         super.onResume();
 
-        sensorManager.registerListener(this, this.sensor, 3);
+        sensorManager.registerListener(this, this.sensor, 1000);
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //finish();
-        sensorManager.registerListener(this, this.sensor, 3);
+        finish();
+        //sensorManager.registerListener(this, this.sensor, 5000000);
     }
 }

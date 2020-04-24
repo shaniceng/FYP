@@ -1,11 +1,14 @@
 package com.example.fyp;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -25,13 +28,15 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     private static final String TAG = "FitActivity";
     private CircularProgressBar circularProgressBar;
     Calendar calendar;
+   // private int steps;
+    private String msg;
+    private static final String Initial_Count_Key = "FootStepInitialCount";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps_count);
 
-        textViewDate=findViewById(R.id.text_view_date);
         mTextViewSteps = findViewById(R.id.tvStepsCount);
         // Enables Always-on
         setAmbientEnabled();
@@ -50,30 +55,6 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         circularProgressBar.setRoundBorder(true);
         circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
 
-
-        calendar=Calendar.getInstance();
-        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-        textViewDate.setText(currentDate);
-
-        Thread thread = new Thread(){
-            @Override
-            public void run(){
-                while (!isInterrupted()) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            TextView tdate = findViewById(R.id.text_view_time);
-                            long date = System.currentTimeMillis();
-                            SimpleDateFormat sdf = new SimpleDateFormat("hh-mm-ss a");
-                            String dateString = sdf.format(date);
-                            tdate.setText(dateString);
-                        }
-                    });
-                }
-            }
-        };
-        thread.start();
-
     }
     private void getStepCount() {
         SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
@@ -86,13 +67,34 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-      if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-            String msg = "Steps count:\n " + (int)event.values[0] + " steps";
+
+        Calendar currentTime = Calendar.getInstance();
+        if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            // Initialize if it is the first time use
+            if(!prefs.contains(Initial_Count_Key)){
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt(Initial_Count_Key, (int) event.values[0]);
+                editor.commit();
+            }
+
+            if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 00)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt(Initial_Count_Key, (int) event.values[0]);
+                editor.commit();
+            }
+
+            int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
+            int stepCount = (int) event.values[0] - startingStepCount;
+
+            msg = "Steps count:\n " + stepCount + " steps";
             mTextViewSteps.setText(msg);
-           circularProgressBar.setProgressWithAnimation((int)event.values[0]); // =1s
+            circularProgressBar.setProgressWithAnimation(stepCount); // =1s
             Log.d(TAG, msg);
-        }
-        else
+
+            //display starting steps count to phone app database
+        } else
             Log.d(TAG, "Unknown sensor type");
     }
 
@@ -116,4 +118,6 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
 
         sensorManager.registerListener(this, this.sensor, 3);
     }
+
+
 }

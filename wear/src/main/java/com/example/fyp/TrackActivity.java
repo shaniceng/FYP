@@ -2,10 +2,13 @@ package com.example.fyp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class TrackActivity extends WearableActivity {
 
@@ -39,6 +42,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String walking = walk.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,walking);
                 startActivity(intent);
@@ -49,6 +53,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String jogging = jog.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,jogging);
                 startActivity(intent);
@@ -59,6 +64,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String running = run.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,running);
                 startActivity(intent);
@@ -69,6 +75,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String swimming = swim.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,swimming);
                 startActivity(intent);
@@ -79,6 +86,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String taiching = taichi.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,taiching);
                 startActivity(intent);
@@ -89,6 +97,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String yogaing = yoga.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,yogaing);
                 startActivity(intent);
@@ -98,6 +107,7 @@ public class TrackActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 String zumbaing = zumba.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,zumbaing);
                 startActivity(intent);
@@ -106,16 +116,21 @@ public class TrackActivity extends WearableActivity {
         sports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sporting = sports.getText().toString();
+                displaySpeechRecognizer();
+
+
+                /*String sporting = sports.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,sporting);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
         strength_training.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String training = strength_training.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,training);
                 startActivity(intent);
@@ -124,12 +139,41 @@ public class TrackActivity extends WearableActivity {
         others.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String others_ = others.getText().toString();
+                displaySpeechRecognizer();
+
+                /*String others_ = others.getText().toString();
+                finish();
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,others_);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 
+    }
+    // Create an intent that can start the Speech Recognizer activity
+    private void displaySpeechRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+// Start the activity, the intent will be populated with the speech text
+        startActivityForResult(intent, 1002);
+    }
+
+    // This callback is invoked when the Speech Recognizer returns.
+// This is where you process the intent and extract the speech text from the intent.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == 1002 && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(
+                    RecognizerIntent.EXTRA_RESULTS);
+            String spokenText = results.get(0);
+            // Do something with spokenText
+
+            Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
+            intent.putExtra(EXTRA_TEXT,spokenText);
+            startActivity(intent);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

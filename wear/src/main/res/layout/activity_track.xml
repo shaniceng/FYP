@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,92 +7,83 @@
     android:background="@color/black"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".TrackActivity"
-    tools:deviceIds="wear">
+    tools:deviceIds="wear"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp"
+    android:fillViewport="true">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp">
+            android:text="@string/title_activity_track" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+        <Button
+            android:id="@+id/btnWBriskWalking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Brisk Walking" />
 
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_activity_track"
-                    android:layout_marginLeft="32dp"/>
+        <Button
+            android:id="@+id/btnWJogging"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jogging" />
 
-                <Button
-                    android:id="@+id/btnWBriskWalking"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Brisk Walking" />
+        <Button
+            android:id="@+id/btnWRunning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Running" />
 
-                <Button
-                    android:id="@+id/btnWJogging"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Jogging" />
+        <Button
+            android:id="@+id/btnWTaichi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tai Chi" />
 
-                <Button
-                    android:id="@+id/btnWRunning"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Running" />
+        <Button
+            android:id="@+id/btnWYoga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yoga" />
 
-                <Button
-                    android:id="@+id/btnWTaichi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tai Chi" />
+        <Button
+            android:id="@+id/btnWZumba"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zumba" />
 
-                <Button
-                    android:id="@+id/btnWYoga"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Yoga" />
+        <Button
+            android:id="@+id/btnWSwimming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Swimming" />
 
-                <Button
-                    android:id="@+id/btnWZumba"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Zumba" />
+        <Button
+            android:id="@+id/btnWSports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sports (Please Specify)" />
 
-                <Button
-                    android:id="@+id/btnWSwimming"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Swimming" />
+        <Button
+            android:id="@+id/btnWStrength"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Strength Training" />
 
-                <Button
-                    android:id="@+id/btnWSports"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sports (Please Specify)" />
-
-                <Button
-                    android:id="@+id/btnWStrength"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Strength Training" />
-
-                <Button
-                    android:id="@+id/btnWOthers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Others (Please Specify)" />
-            </LinearLayout>
+        <Button
+            android:id="@+id/btnWOthers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:text="Others (Please Specify)" />
+    </LinearLayout>
         </ScrollView>
-
-    </FrameLayout>
-</androidx.wear.widget.BoxInsetLayout>
