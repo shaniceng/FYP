@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
+    //implementation fileTree(include: ['*.jar'], dir: 'libs')
 
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"
