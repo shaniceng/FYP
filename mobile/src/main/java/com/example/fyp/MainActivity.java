@@ -1,8 +1,10 @@
 package com.example.fyp;
 
+import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,12 +13,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import static com.example.fyp.App.CHANNEL_1_ID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog; //use newer version ltr
     private TextView forgotPassword;
+    private NotificationManagerCompat notificationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        notificationManager = NotificationManagerCompat.from(this);
 
         if(user!=null){
             finish();
@@ -68,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             }
         });
+
+        Refresh();
     }
 
     private void validate(String userEmail, String userPassword){
@@ -107,5 +121,47 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"Verifify your email", Toast.LENGTH_SHORT).show();
             firebaseAuth.signOut();
         }
+    }
+
+    public void sendOnChannel1(View v) {
+        String title = "Alert!!!";
+        String message = "You have not reached the sufficient steps for today!";
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_message)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManager.notify(1, notification);
+    }
+
+    public void Refresh(){
+        Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        String time = "Current Time:" + format.format(currentTime.getTime());
+
+        //set fixed time : eg 7pm=19:00:00
+        int setHour = 13; //testing times only
+        int setMin = 31;
+        int setSec = 00;
+
+        if ((currentTime.get(Calendar.HOUR_OF_DAY) == setHour) && (currentTime.get(Calendar.MINUTE) == setMin)  && (currentTime.get(Calendar.SECOND) == setSec)) {
+            sendOnChannel1(null);
+        }
+        runnable(1000);
+    }
+
+    public void runnable(int milliseconds){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Refresh();
+            }
+        };
+        handler.postDelayed(runnable, milliseconds);
     }
 }
