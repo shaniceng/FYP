@@ -69,8 +69,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                name.setText("Name: " + userProfile.getUserName());
-                email.setText("Email: " + userProfile.getUserEmail());
+                name.setText(userProfile.getUserName());
+                email.setText(userProfile.getUserEmail());
             }
 
             @Override

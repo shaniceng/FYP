@@ -29,6 +29,7 @@
             android:value="@string/map_key" />
 
         <activity android:name=".EditProfile" />
+        <activity android:name=".ExerciseFragment"/>
         <activity android:name=".MenuActivity" />
         <activity android:name=".CreateAccActivity" />
         <activity android:name=".MainActivity">
