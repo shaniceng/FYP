@@ -419,9 +419,12 @@
 
                 <!-- Heart rate section -->
                 <LinearLayout
+                    android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -443,27 +446,34 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <!--<androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/activity_RV"/>-->
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/activity_constraint_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="114dp"
                         android:layout_gravity="center"
                         android:layout_margin="20dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.6"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
 
                         <ImageView
                             android:id="@+id/ActivityImageView"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:background="@drawable/ic_icon_awesome_running"
-                            android:padding="50dp"
                             android:backgroundTint="#1E2947"
+                            android:padding="50dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvActivityName"
@@ -471,12 +481,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_marginTop="20dp"
-                            android:text="Running"
-                            android:textSize="20sp"
                             android:background="@drawable/round"
                             android:backgroundTint="#b6bbd8"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
+                            android:text="Running"
+                            android:textSize="20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
@@ -487,9 +497,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
+                            android:layout_marginTop="2dp"
                             android:text="Duration:"
                             android:textSize="15sp"
-                            android:layout_marginTop="2dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
                             app:layout_constraintTop_toBottomOf="@+id/tvActivityName"
@@ -509,12 +519,12 @@
                             android:id="@+id/BackgroundStartTime"
                             android:layout_width="70dp"
                             android:layout_height="19dp"
-                            android:layout_marginEnd="20dp"
                             android:layout_marginTop="5dp"
-                            android:paddingRight="5dp"
-                            android:paddingLeft="5dp"
+                            android:layout_marginEnd="20dp"
                             android:background="@drawable/round"
                             android:backgroundTint="#979797"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvStartTimeLabel" />
 
@@ -544,10 +554,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </LinearLayout>
 
 </ScrollView>
