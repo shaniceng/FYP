@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="map_key" translatable="false">
-       AIzaSyAXrgX_3uoTzEl8pNQWtcVJStDCgg0Pipc
+       AIzaSyB2KXKt504gFZsYk0tqSgl5Iu4-m17aVdM
     </string>
+    <string name="browser_key">AIzaSyCfVWBYqTRev4meCo1E8ATxWl4MtjG--7w</string>
 
 </resources>

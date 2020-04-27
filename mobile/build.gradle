@@ -47,7 +47,11 @@ dependencies {
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     //implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    //implementation 'com.google.android.gms:play-services:11.8.0'
 
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     // For control over item selection of both touch and mouse driven selection

@@ -1,5 +1,6 @@
 package com.example.fyp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -41,7 +42,7 @@ public class MenuActivity extends AppCompatActivity {
                         fragment=new HomeFragment();
                         break;
                     case R.id.nav_map:
-                        fragment=new MapFragment();
+                        startActivity(new Intent(MenuActivity.this, MapsActivity.class));
                         break;
                     case R.id.nav_settings:
                         fragment=new SettingsFragment();
