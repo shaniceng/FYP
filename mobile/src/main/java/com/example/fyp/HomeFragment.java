@@ -39,6 +39,9 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
     private ArrayList<String> mDataSet;
+    private ArrayList<String> mTimeSet;
+    private String time;
+    private String message;
 
     FloatingActionButton fab;
     public HomeFragment() {
@@ -51,11 +54,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //mrecyclerView = v.findViewById(R.id.activity_RV);
-
-
-        logger=v.findViewById(R.id.tvActivityName);
-        timing=v.findViewById(R.id.tvInsertDuration);
+        mrecyclerView = v.findViewById(R.id.activity_RV);
 
         CircularProgressBar circularProgressBar = v.findViewById(R.id.circularProgressBar);
 
@@ -90,6 +89,13 @@ public class HomeFragment extends Fragment {
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
+        mDataSet = new ArrayList<>();
+        mTimeSet=new ArrayList<>();
+
+
+
+
+
         return v;
     }
 
@@ -104,26 +110,26 @@ public class HomeFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(intent.getStringExtra("message")==null) {
-                String time = intent.getStringExtra("timing");
-                timing.setText(time);
-                //mDataSet.add(time);
-            }
-            else if(intent.getStringExtra("timing")==null){
-                String message = intent.getStringExtra("message");
+            if(intent.getStringExtra("timing")==null){
+                message = intent.getStringExtra("message");
                 Log.v(TAG, "Main activity received message: " + message);
-                logger.setText(message);
 
-                /*//FOR RECYCLER VIEW
-                mDataSet = new ArrayList<>();
+            }
+            else if(intent.getStringExtra("message")==null) {
+               time  = intent.getStringExtra("timing");
+
+                mTimeSet.add(time);
                 mDataSet.add(message);
                 mlayoutManager=new LinearLayoutManager(getContext());
                 mrecyclerView.setHasFixedSize(true);
-                mAdapter = new CustomAdapter(mDataSet);
+                mAdapter = new CustomAdapter(mDataSet,mTimeSet);
                 mrecyclerView.setLayoutManager(mlayoutManager);
                 mrecyclerView.setAdapter(mAdapter);
-                */
+
+
             }
+
+
 
         }
     }

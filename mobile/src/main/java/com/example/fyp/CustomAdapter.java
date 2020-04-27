@@ -14,9 +14,11 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> { //for recycler view
 
     private ArrayList<String> mDataSet;
+    private ArrayList<String> mTimeSet;
 
-    public CustomAdapter(ArrayList<String> dataset){
+    public CustomAdapter(ArrayList<String> dataset, ArrayList<String> timeSet){
         mDataSet=dataset;
+        mTimeSet=timeSet;
     }
 
     @NonNull
@@ -29,6 +31,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.ViewHolder holder, int position) {
         holder.title.setText(mDataSet.get(position));
+        holder.time.setText(mTimeSet.get(position));
     }
 
     @Override
@@ -36,11 +39,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         return mDataSet.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView title;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, time;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            time = itemView.findViewById(R.id.tvInsertDuration);
             title=itemView.findViewById(R.id.tvActivityName);
         }
     }
