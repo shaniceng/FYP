@@ -13,12 +13,19 @@ import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.Wearable;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class StepsCountActivity extends WearableActivity implements SensorEventListener {
 
@@ -31,6 +38,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
    // private int steps;
     private String msg;
     private static final String Initial_Count_Key = "FootStepInitialCount";
+    String stepsPath = "/steps-count-path";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +96,12 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
             int stepCount = (int) event.values[0] - startingStepCount;
 
+            String step = String.valueOf(stepCount);
             msg = "Steps count:\n " + stepCount + " steps";
             mTextViewSteps.setText(msg);
             circularProgressBar.setProgressWithAnimation(stepCount); // =1s
             Log.d(TAG, msg);
+            new StepsCountActivity.SendThread(stepsPath, step).start();
 
             //display starting steps count to phone app database
         } else
@@ -117,6 +127,56 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         super.onPause();
 
         sensorManager.registerListener(this, this.sensor, 3);
+    }
+
+    class SendThread extends Thread {
+        String path;
+        String message;
+
+        //constructor
+        SendThread(String p, String msg) {
+            path = p;
+            message = msg;
+        }
+
+        //sends the message via the thread.  this will send to all wearables connected, but
+        //since there is (should only?) be one, so no problem.
+        public void run() {
+            //first get all the nodes, ie connected wearable devices.
+            Task<List<Node>> nodeListTask =
+                    Wearable.getNodeClient(getApplicationContext()).getConnectedNodes();
+            try {
+                // Block on a task and get the result synchronously (because this is on a background
+                // thread).
+                List<Node> nodes = Tasks.await(nodeListTask);
+
+                //Now send the message to each device.
+                for (Node node : nodes) {
+                    Task<Integer> sendMessageTask =
+                            Wearable.getMessageClient(StepsCountActivity.this).sendMessage(node.getId(), path, message.getBytes());
+
+                    try {
+                        // Block on a task and get the result synchronously (because this is on a background
+                        // thread).
+                        Integer result = Tasks.await(sendMessageTask);
+                        Log.v(TAG, "SendThread: message send to " + node.getDisplayName());
+
+                    } catch (ExecutionException exception) {
+                        Log.e(TAG, "Task failed: " + exception);
+
+                    } catch (InterruptedException exception) {
+                        Log.e(TAG, "Interrupt occurred: " + exception);
+                    }
+
+                }
+
+            } catch (ExecutionException exception) {
+                Log.e(TAG, "Task failed: " + exception);
+
+            } catch (InterruptedException exception) {
+                Log.e(TAG, "Interrupt occurred: " + exception);
+            }
+        }
     }
 
 

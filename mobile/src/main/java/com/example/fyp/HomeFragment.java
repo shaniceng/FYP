@@ -33,7 +33,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    private TextView logger,timing;
+    private TextView stepsCount, HeartRate;
     protected Handler handler;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
@@ -41,7 +41,8 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
     private String time;
-    private String message;
+    private String message, steps, heart;
+    private CircularProgressBar circularProgressBar;
 
     FloatingActionButton fab;
     public HomeFragment() {
@@ -55,11 +56,11 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         mrecyclerView = v.findViewById(R.id.activity_RV);
+        stepsCount=v.findViewById(R.id.tvStepsCount);
+        HeartRate=v.findViewById(R.id.tvResting_value);
 
-        CircularProgressBar circularProgressBar = v.findViewById(R.id.circularProgressBar);
 
-        circularProgressBar.setProgressWithAnimation(7000); // =1s
-        circularProgressBar.setProgressMax(7500);
+      circularProgressBar = v.findViewById(R.id.circularProgressBar);
 
         ExpandableTextView expTv1 = v.findViewById(R.id.expand_text_view)
                 .findViewById(R.id.expand_text_view);
@@ -79,7 +80,7 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean handleMessage(Message msg) {
                 Bundle stuff = msg.getData();
-                logthis(stuff.getString("logthis"));
+                //logthis(stuff.getString("logthis"));
                 return true;
             }
         });
@@ -93,17 +94,13 @@ public class HomeFragment extends Fragment {
         mTimeSet=new ArrayList<>();
 
 
+        circularProgressBar.setProgressMax(7500);
 
 
 
         return v;
     }
 
-    public void logthis(String newinfo) {
-        if (newinfo.compareTo("") != 0) {
-            logger.append("\n" + newinfo);
-        }
-    }
 
     //setup a broadcast receiver to receive the messages from the wear device via the listenerService.
     public class MessageReceiver extends BroadcastReceiver {
@@ -126,6 +123,19 @@ public class HomeFragment extends Fragment {
                 mrecyclerView.setLayoutManager(mlayoutManager);
                 mrecyclerView.setAdapter(mAdapter);
 
+
+            }
+            if(intent.getStringExtra("countSteps")==null){
+                heart = intent.getStringExtra("heartRate");
+                Log.v(TAG, "Main activity received message: " + message);
+                HeartRate.setText(heart);
+
+            }
+            else if(intent.getStringExtra("heartRate")==null){
+                steps = intent.getStringExtra("countSteps");
+                Log.v(TAG, "Main activity received message: " + message);
+                stepsCount.setText(steps);
+                circularProgressBar.setProgressWithAnimation(Float.parseFloat(steps)); // =1s
 
             }
 
