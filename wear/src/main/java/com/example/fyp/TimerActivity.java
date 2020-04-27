@@ -7,19 +7,30 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.wearable.activity.WearableActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.Wearable;
+
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class TimerActivity extends WearableActivity {
 
+    private final static String TAG = "Wear MainActivity";
     private TextView trackName;
     private  Chronometer chronometer;
     private ImageButton startTimer, stopTimer, pauseTimer;
+    String datapath = "/message_path";
+    String chromoPath = "/chromo-path";
 
     private boolean isResume;
     Handler handler;
@@ -85,6 +96,10 @@ public class TimerActivity extends WearableActivity {
                     chronometertext = chronometer.getText().toString();
                     chronometer.setText("00:00:00");
 
+                    //Requires a new thread to avoid blocking the UI
+                    new TimerActivity.SendThread(datapath, TrackText).start();
+                    new TimerActivity.SendThread(chromoPath, chronometertext).start();
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
                     builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -115,6 +130,58 @@ public class TimerActivity extends WearableActivity {
             handler.postDelayed(this, 60);
         }
     };
+
+    //This actually sends the message to the wearable device.
+    class SendThread extends Thread {
+        String path;
+        String message;
+
+        //constructor
+        SendThread(String p, String msg) {
+            path = p;
+            message = msg;
+        }
+
+        //sends the message via the thread.  this will send to all wearables connected, but
+        //since there is (should only?) be one, so no problem.
+        public void run() {
+            //first get all the nodes, ie connected wearable devices.
+            Task<List<Node>> nodeListTask =
+                    Wearable.getNodeClient(getApplicationContext()).getConnectedNodes();
+            try {
+                // Block on a task and get the result synchronously (because this is on a background
+                // thread).
+                List<Node> nodes = Tasks.await(nodeListTask);
+
+                //Now send the message to each device.
+                for (Node node : nodes) {
+                    Task<Integer> sendMessageTask =
+                            Wearable.getMessageClient(TimerActivity.this).sendMessage(node.getId(), path, message.getBytes());
+
+                    try {
+                        // Block on a task and get the result synchronously (because this is on a background
+                        // thread).
+                        Integer result = Tasks.await(sendMessageTask);
+                        Log.v(TAG, "SendThread: message send to " + node.getDisplayName());
+
+                    } catch (ExecutionException exception) {
+                        Log.e(TAG, "Task failed: " + exception);
+
+                    } catch (InterruptedException exception) {
+                        Log.e(TAG, "Interrupt occurred: " + exception);
+                    }
+
+                }
+
+            } catch (ExecutionException exception) {
+                Log.e(TAG, "Task failed: " + exception);
+
+            } catch (InterruptedException exception) {
+                Log.e(TAG, "Interrupt occurred: " + exception);
+            }
+        }
+    }
+
 
 }
 
