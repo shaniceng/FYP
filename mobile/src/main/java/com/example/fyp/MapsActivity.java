@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Intent;
@@ -42,6 +44,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.core.Tag;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,6 +69,10 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
     private Marker mMarker;
     private LocationRequest mLocationRequest;
 
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     private MapView mapView;
     private GoogleMap googleMap;
 
@@ -85,12 +93,19 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         //Init Service
         mService = Common.getGoogleAPIServices();
 
+
+        mRecyclerView=v.findViewById(R.id.recyclerView);
+
+
+
         //Request Runtime permission
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
 
         Button park = v.findViewById(R.id.parkbutton);
+        Button gym = v.findViewById(R.id.gymbutton);
+        Button stadium =v.findViewById(R.id.stadiumbutton);
         park.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,12 +115,33 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
             }
         });
 
+        gym.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //code later
+                nearByPlace("gym");
+
+            }
+        });
+
+        stadium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //code later
+                nearByPlace("stadium");
+
+            }
+        });
+
+
+
         return v;
 
     }
 
 
     private void nearByPlace(final String placeType) {
+
         mMap.clear();
         String url =getUrl(latitude,longitude,placeType);
         mService.getNearByPlaces(url)
@@ -121,18 +157,36 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
                                 double lng = Double.parseDouble(googlePlace.getGeometry().getLocation().getLng());
                                 String placeName= googlePlace.getName();
                                 String vicinity = googlePlace.getVicinity();
+
+                                ArrayList<ParkName> parkName = new ArrayList<>();
+                                parkName.add(new ParkName(R.drawable.ic_battery_charging_full_black_24dp,placeName,"Test2"));
+
+
+
+                                mRecyclerView.setHasFixedSize(true);
+                                mLayoutManager = new LinearLayoutManager(getActivity());
+                                mAdapter=new ParkAdapter(parkName);
+                                mRecyclerView.setLayoutManager(mLayoutManager);
+                                mRecyclerView.setAdapter(mAdapter);
+
+
+
+
                                 LatLng latLng = new LatLng(lat,lng);
                                 markerOptions.position(latLng);
                                 markerOptions.title(placeName);
                                 if(placeType.equals("park"))
                                 //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40));
                                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                    else if(placeType.equals("gym"))
+                                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                                else if(placeType.equals("stadium"))
+                                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
                                 else
                                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
 
-                                //else if(placeType.equals("hospital"))
-                                //    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40));
 
                                 //Add to map
                                 mMap.addMarker(markerOptions);

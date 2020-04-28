@@ -7,94 +7,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MapFragment"
+    android:layout_marginBottom="60dp"
     android:background="#fff"
     android:backgroundTint="@color/lightBlue"
     android:id="@+id/fragment_map">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="60dp"
-        tools:context=".MapFragment"
-        android:background="#fff"
-        android:backgroundTint="@color/lightBlue">
+        android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
         <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="400dp">
+
             <com.google.android.gms.maps.MapView
                 android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </FrameLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="400dp">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/parkbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Park Button" />
+        <Button
+            android:id="@+id/gymbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="gym Button" />
+        <Button
+            android:id="@+id/stadiumbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="stadium Button" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:scrollbars="vertical">
 
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"/>
 
-            <Button
-                android:id="@+id/parkbutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Park Button" />
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-            <EditText
-                android:id="@+id/editText4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-            <EditText
-                android:id="@+id/editText5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-        </LinearLayout>
-    </ScrollView>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </LinearLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
