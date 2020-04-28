@@ -158,7 +158,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
                                 String placeName= googlePlace.getName();
                                 String vicinity = googlePlace.getVicinity();
 
-                                ArrayList<ParkName> parkName = new ArrayList<>();
+                               /* ArrayList<ParkName> parkName = new ArrayList<>();
                                 parkName.add(new ParkName(R.drawable.ic_battery_charging_full_black_24dp,placeName,"Test2"));
 
 
@@ -170,7 +170,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
                                 mRecyclerView.setAdapter(mAdapter);
 
 
-
+*/
 
                                 LatLng latLng = new LatLng(lat,lng);
                                 markerOptions.position(latLng);

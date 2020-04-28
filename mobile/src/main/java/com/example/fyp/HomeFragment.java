@@ -36,6 +36,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -49,6 +50,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,6 +59,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,11 +91,20 @@ public class HomeFragment extends Fragment{
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
     private int currentHeartRate, MaxHeartRate;
-    UserProfile userProfile;
+
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private LineChart lineChart;
+    private LineDataSet lineDataSet = new LineDataSet(null, null);
+   private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
+    private LineData lineData ;
+
+
     private YAxis leftAxis;
     private String timeDisplay;
+
+
 
 
 
@@ -116,13 +128,15 @@ public class HomeFragment extends Fragment{
         ratedMaxHR=v.findViewById(R.id.tvAvgResting_value);
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
 
-        mChart=v.findViewById(R.id.lineChart);
+        lineChart=v.findViewById(R.id.lineChart);
+        firebaseDatabase= FirebaseDatabase.getInstance();
+        firebaseAuth= FirebaseAuth.getInstance();
+        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser);
 
         //get Max heart rate for each individual age
-        firebaseAuth= FirebaseAuth.getInstance();
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference mydatabaseRef = firebaseDatabase.getReference(firebaseAuth.getUid());
+        mydatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
@@ -147,16 +161,6 @@ public class HomeFragment extends Fragment{
             }
         });
 
-        /*//message handler for the send thread.
-        handler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                Bundle stuff = msg.getData();
-                //logthis(stuff.getString("logthis"));
-                return true;
-            }
-        });*/
-
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         MessageReceiver messageReceiver = new MessageReceiver();
@@ -168,8 +172,97 @@ public class HomeFragment extends Fragment{
 
         notificationManager = NotificationManagerCompat.from(getActivity());
         Refresh();
-        DisplayChart();
+
         return v;
+    }
+
+    private void insertData() {
+        String id = databaseReference.push().getKey();
+        Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+        int x = Integer.parseInt(format.format(currentTime.getTime()).replaceAll("[\\D]",""));
+        int y = currentHeartRate;
+        PointValue pointValue = new PointValue(x,y);
+        databaseReference.child(id).setValue(pointValue);
+
+        retrieveData();
+    }
+
+    private void retrieveData() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                if(dataSnapshot.hasChildren()){
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
+                        dataVals.add(new Entry(pointValue.getxValue(), pointValue.getyValue()));
+                    }
+                    showChart(dataVals);
+                }else{
+                    lineChart.clear();
+                    lineChart.invalidate();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showChart(ArrayList<Entry> dataVals) {
+
+        /*//display line
+        lineDataSet.setFillAlpha(110);
+        lineDataSet.setColor(Color.BLACK);
+        lineDataSet.setCircleColor(Color.BLACK);
+        lineDataSet.setFormLineWidth(1f);
+        lineDataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        lineDataSet.setFormSize(15.f);
+        lineDataSet.setValueTextSize(20f);
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setFillFormatter(new IFillFormatter() {
+            @Override
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return mChart.getAxisLeft().getAxisMinimum();
+            }
+        });
+        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+        lineDataSet.setFillDrawable(drawable);
+
+
+        //display x-axis
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.enableGridDashedLine(0.1f,100f,0);
+        xAxis.setAvoidFirstLastClipping(true);
+        //xAxis.setValueFormatter(new XAxisValueFormatter());
+
+        //display y-axis
+        //y-left-axis
+        leftAxis = mChart.getAxisLeft();
+        leftAxis.removeAllLimitLines();
+        leftAxis.setAxisMaximum(130f);
+        leftAxis.setAxisMinimum(40f);
+        leftAxis.enableGridDashedLine(10f,10f, 0);
+        leftAxis.setDrawLimitLinesBehindData(true);
+
+        //y-rightaxis
+        mChart.getAxisRight().setEnabled(false);*/
+
+        lineDataSet.setValues(dataVals);
+        lineDataSet.setLabel("Heart rate");
+        iLineDataSets.clear();
+        iLineDataSets.add(lineDataSet);
+        lineData = new LineData(iLineDataSets);
+        lineChart.clear();
+        lineChart.setData(lineData);
+        lineChart.invalidate();
+
     }
 
 
@@ -202,9 +295,7 @@ public class HomeFragment extends Fragment{
                 HeartRate.setText(heart);
                 currentHeartRate=Integer.parseInt(heart.replaceAll("[\\D]",""));
                 ratedMaxHR.setText(String.valueOf(currentHeartRate));
-
-                yValues.add(new Entry(0,currentHeartRate));
-
+                insertData();
 
             }
             else if(intent.getStringExtra("countSteps")!=null){
@@ -218,6 +309,7 @@ public class HomeFragment extends Fragment{
                 max_HeartRate = intent.getStringExtra("maxHeartRate");
                 maxHeartrate.setText(max_HeartRate);
             }
+
         }
     }
 
@@ -257,75 +349,6 @@ public class HomeFragment extends Fragment{
     }
 
 
-    public void DisplayChart(){
-        //Display chart
-        mChart.setDragEnabled(false);
-        mChart.setScaleEnabled(false);
-
-        //limit line
-        LimitLine upper_limit = new LimitLine((float)MaxHeartRate, "Danger");
-        upper_limit.setLineWidth(4f);
-        upper_limit.enableDashedLine(10f,10f,0f);
-        upper_limit.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        upper_limit.setTextSize(15f);
-
-        //add fake data
-        yValues.add(new Entry(1,90f));
-        yValues.add(new Entry(2,70f));
-        yValues.add(new Entry(3,80f));
-        yValues.add(new Entry(4,100f));
-        yValues.add(new Entry(5,60f));
-        yValues.add(new Entry(6,65f));
-
-        //display fake data
-        LineDataSet set1 = new LineDataSet(yValues,"Heart Rate");
-        set1.setFillAlpha(110);
-        set1.setColor(Color.BLACK);
-        set1.setCircleColor(Color.BLACK);
-        set1.setFormLineWidth(1f);
-        set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-        set1.setFormSize(15.f);
-        set1.setValueTextSize(20f);
-        set1.setDrawFilled(true);
-        set1.setFillFormatter(new IFillFormatter() {
-            @Override
-            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                return mChart.getAxisLeft().getAxisMinimum();
-            }
-        });
-        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
-        set1.setFillDrawable(drawable);
-
-        //display x-axis
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.enableGridDashedLine(0.1f,100f,0);
-        xAxis.setAvoidFirstLastClipping(true);
-        //xAxis.setValueFormatter(new XAxisValueFormatter());
-
-        //display y-axis
-            //y-left-axis
-        leftAxis = mChart.getAxisLeft();
-        leftAxis.removeAllLimitLines();
-        leftAxis.addLimitLine(upper_limit);
-        leftAxis.setAxisMaximum(130f);
-        leftAxis.setAxisMinimum(40f);
-        leftAxis.enableGridDashedLine(10f,10f, 0);
-        leftAxis.setDrawLimitLinesBehindData(true);
-
-            //y-rightaxis
-        mChart.getAxisRight().setEnabled(false);
 
 
-        //display chart
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
-        LineData data = new LineData(dataSets);
-        mChart.setData(data);
-
-        //getLegend
-        Legend l =mChart.getLegend();
-        l.setForm(Legend.LegendForm.LINE);
-    }
-    
 }

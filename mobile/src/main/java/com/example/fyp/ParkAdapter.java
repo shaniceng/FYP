@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder> {
+/*public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder> {
 
     private ArrayList<ParkName> mparkName;
 
@@ -54,4 +54,4 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
     public int getItemCount() {
         return mparkName.size();
     }
-}
+}*/
