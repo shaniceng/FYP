@@ -132,7 +132,10 @@ public class HomeFragment extends Fragment{
         firebaseDatabase= FirebaseDatabase.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser);
+        Calendar currentDate = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
+        databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/" + date);
 
         //get Max heart rate for each individual age
         DatabaseReference mydatabaseRef = firebaseDatabase.getReference(firebaseAuth.getUid());
