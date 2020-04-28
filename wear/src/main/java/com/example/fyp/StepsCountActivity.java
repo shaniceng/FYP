@@ -185,5 +185,9 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         }
     }
 
-
+    @Override
+    public void onEnterAmbient(Bundle ambientDetails) {
+        super.onEnterAmbient(ambientDetails);
+        sensorManager.registerListener(this, this.sensor, 3);
+    }
 }

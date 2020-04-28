@@ -62,6 +62,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
             String msg = "" + (int)event.values[0];
             mTextViewHeart.setText(msg + "BPM");
@@ -70,7 +71,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
             new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
 
             if(userMaxHeartRate<(int)event.values[0]){
-                userMaxHeartRate=(int)event.values[0];
+                userMaxHeartRate = (int)event.values[0];
                 new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
             }
         }
@@ -153,5 +154,11 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
                 Log.e(TAG, "Interrupt occurred: " + exception);
             }
         }
+    }
+    @Override
+    public void onEnterAmbient(Bundle ambientDetails) {
+        super.onEnterAmbient(ambientDetails);
+        sensorManager.registerListener(this, this.sensor, 5000000);
+
     }
 }

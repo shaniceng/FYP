@@ -52,6 +52,9 @@ public class MainActivity extends WearableActivity {
         calendar=Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
         currentTime.setText(currentDate);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        String time = "Current Time:" + format.format(calendar.getTime());
+        mTextView.setText(time);
 
         // Enables Always-on
         setAmbientEnabled();
@@ -76,12 +79,10 @@ public class MainActivity extends WearableActivity {
             }
         });
 
-        Refresh();
-
     }
 
 
-    public void showAlertDialog(){
+    /*public void showAlertDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("You have not reached the minimum steps!\nWalk more!").setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -120,6 +121,13 @@ public class MainActivity extends WearableActivity {
             }
         };
         handler.postDelayed(runnable, milliseconds);
+    }*/
+
+    @Override
+    public void onEnterAmbient(Bundle ambientDetails) {
+        super.onEnterAmbient(ambientDetails);
+
+
     }
 
 

@@ -89,8 +89,6 @@ public class SettingsFragment extends Fragment {
                 Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
         return v;
     }
 }
