@@ -216,7 +216,7 @@ public class HomeFragment extends Fragment{
 
     private void showChart(ArrayList<Entry> dataVals) {
 
-        /*//display line
+        //display line
         lineDataSet.setFillAlpha(110);
         lineDataSet.setColor(Color.BLACK);
         lineDataSet.setCircleColor(Color.BLACK);
@@ -228,7 +228,7 @@ public class HomeFragment extends Fragment{
         lineDataSet.setFillFormatter(new IFillFormatter() {
             @Override
             public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                return mChart.getAxisLeft().getAxisMinimum();
+                return lineChart.getAxisLeft().getAxisMinimum();
             }
         });
         Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
@@ -236,7 +236,7 @@ public class HomeFragment extends Fragment{
 
 
         //display x-axis
-        XAxis xAxis = mChart.getXAxis();
+        XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.enableGridDashedLine(0.1f,100f,0);
         xAxis.setAvoidFirstLastClipping(true);
@@ -244,7 +244,7 @@ public class HomeFragment extends Fragment{
 
         //display y-axis
         //y-left-axis
-        leftAxis = mChart.getAxisLeft();
+        leftAxis = lineChart.getAxisLeft();
         leftAxis.removeAllLimitLines();
         leftAxis.setAxisMaximum(130f);
         leftAxis.setAxisMinimum(40f);
@@ -252,7 +252,7 @@ public class HomeFragment extends Fragment{
         leftAxis.setDrawLimitLinesBehindData(true);
 
         //y-rightaxis
-        mChart.getAxisRight().setEnabled(false);*/
+        lineChart.getAxisRight().setEnabled(false);
 
         lineDataSet.setValues(dataVals);
         lineDataSet.setLabel("Heart rate");
