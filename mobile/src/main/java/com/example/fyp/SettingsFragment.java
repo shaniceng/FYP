@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class SettingsFragment extends Fragment {
     private Button editProfile, logout;
-    private TextView name, email;
+    private TextView name, email, age, gender, height, weight, birthday;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     public SettingsFragment() {
@@ -40,6 +40,12 @@ public class SettingsFragment extends Fragment {
         View v= inflater.inflate(R.layout.fragment_settings, container, false);
         name=v.findViewById(R.id.tvName);
         email=v.findViewById(R.id.tvEmail);
+        age=v.findViewById(R.id.tvAge);
+        gender=v.findViewById(R.id.tvGender);
+        height=v.findViewById(R.id.tvHeight);
+        weight=v.findViewById(R.id.tvWeight);
+        birthday=v.findViewById(R.id.tvBirthday);
+
         logout=v.findViewById(R.id.btnLogout);
         firebaseAuth=FirebaseAuth.getInstance();
         editProfile = v.findViewById(R.id.btnEditProfile);
@@ -71,6 +77,11 @@ public class SettingsFragment extends Fragment {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                 name.setText(userProfile.getUserName());
                 email.setText(userProfile.getUserEmail());
+                age.setText(userProfile.getUserAge());
+                gender.setText(userProfile.getUserGender());
+                height.setText(userProfile.getUserHeight());
+                weight.setText(userProfile.getUserWeight());
+                birthday.setText(userProfile.getUserBirthday());
             }
 
             @Override

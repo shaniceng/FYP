@@ -33,7 +33,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    private TextView stepsCount, HeartRate;
+    private TextView stepsCount, HeartRate, maxHeartrate;
     protected Handler handler;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
     private String time;
-    private String message, steps, heart;
+    private String message, steps, heart, max_HeartRate;
     private CircularProgressBar circularProgressBar;
 
     FloatingActionButton fab;
@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
         mrecyclerView = v.findViewById(R.id.activity_RV);
         stepsCount=v.findViewById(R.id.tvStepsCount);
         HeartRate=v.findViewById(R.id.tvResting_value);
+        maxHeartrate=v.findViewById(R.id.tvMAX_value);
 
 
       circularProgressBar = v.findViewById(R.id.circularProgressBar);
@@ -94,6 +95,8 @@ public class HomeFragment extends Fragment {
         mTimeSet=new ArrayList<>();
 
 
+
+
         circularProgressBar.setProgressMax(7500);
 
 
@@ -125,18 +128,22 @@ public class HomeFragment extends Fragment {
 
 
             }
-            if(intent.getStringExtra("countSteps")==null){
+            if(intent.getStringExtra("heartRate")!=null){
                 heart = intent.getStringExtra("heartRate");
                 Log.v(TAG, "Main activity received message: " + message);
                 HeartRate.setText(heart);
 
             }
-            else if(intent.getStringExtra("heartRate")==null){
+            else if(intent.getStringExtra("countSteps")!=null){
                 steps = intent.getStringExtra("countSteps");
                 Log.v(TAG, "Main activity received message: " + message);
                 stepsCount.setText(steps);
                 circularProgressBar.setProgressWithAnimation(Float.parseFloat(steps)); // =1s
 
+            }
+            else if(intent.getStringExtra("maxHeartRate") !=null){
+                max_HeartRate = intent.getStringExtra("maxHeartRate");
+                maxHeartrate.setText(max_HeartRate);
             }
 
 

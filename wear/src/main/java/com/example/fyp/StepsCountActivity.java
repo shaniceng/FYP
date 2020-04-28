@@ -81,7 +81,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             // Initialize if it is the first time use
-            if(!prefs.contains(Initial_Count_Key)){
+            if(!prefs.contains(Initial_Count_Key) || ((int) event.values[0] == 0)){
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt(Initial_Count_Key, (int) event.values[0]);
                 editor.commit();
@@ -126,6 +126,12 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     protected void onPause() {
         super.onPause();
 
+        sensorManager.registerListener(this, this.sensor, 3);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         sensorManager.registerListener(this, this.sensor, 3);
     }
 

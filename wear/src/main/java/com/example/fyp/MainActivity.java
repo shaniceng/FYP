@@ -2,8 +2,11 @@ package com.example.fyp;
 
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.wearable.activity.WearableActivity;
@@ -24,10 +27,11 @@ import static android.provider.CalendarContract.EXTRA_EVENT_ID;
 
 public class MainActivity extends WearableActivity {
 
-    private TextView mTextView, currentTime;
+    private TextView mTextView, currentTime, Batt;
     private Button trackActivity, heartRate, stepsCount;
     private Calendar calendar;
     private ScrollView myView;
+
 
 
     @Override
@@ -42,6 +46,8 @@ public class MainActivity extends WearableActivity {
         stepsCount = findViewById(R.id.btnWStepsCount);
         currentTime=findViewById(R.id.tvCurrentTime);
         myView= (ScrollView) findViewById(R.id.myview);
+
+        Batt=findViewById(R.id.tvBatt);
 
         calendar=Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
@@ -71,6 +77,7 @@ public class MainActivity extends WearableActivity {
         });
 
         Refresh();
+
     }
 
 
@@ -114,6 +121,8 @@ public class MainActivity extends WearableActivity {
         };
         handler.postDelayed(runnable, milliseconds);
     }
+
+
 
 }
 
