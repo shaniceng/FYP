@@ -42,7 +42,7 @@ public class MenuActivity extends AppCompatActivity {
                         fragment=new HomeFragment();
                         break;
                     case R.id.nav_map:
-                        startActivity(new Intent(MenuActivity.this, MapsActivity.class));
+                        fragment=new MapsActivity();
                         break;
                     case R.id.nav_settings:
                         fragment=new SettingsFragment();
