@@ -130,23 +130,47 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/tvAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/title_age"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Age:"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_margin="8dp">
 
             <TextView
                 android:id="@+id/tvGender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gender"
                 android:textColor="#000000"
                 android:textSize="20sp"
-                android:layout_marginRight="5dp"
                 app:layout_constraintStart_toEndOf="@+id/titleGender"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteY="0dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/titleGender"
@@ -162,40 +186,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_gravity="center">
-
-            <TextView
-                android:id="@+id/tvWeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Weight"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:layout_marginRight="5dp"
-                app:layout_constraintStart_toEndOf="@+id/titleWeight"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteY="0dp" />
-
-            <TextView
-                android:id="@+id/titleWeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Weight:"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteY="0dp" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -204,19 +194,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_margin="8dp">
 
             <TextView
                 android:id="@+id/tvHeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Height"
                 android:textColor="#000000"
                 android:textSize="20sp"
-                android:layout_marginRight="5dp"
                 app:layout_constraintStart_toEndOf="@+id/titleHeight"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteY="0dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/titleHeight"
@@ -231,6 +219,38 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="center"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/tvWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/titleWeight"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/titleWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weight:"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -239,31 +259,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_margin="8dp">
 
             <TextView
                 android:id="@+id/tvBirthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Birthday"
                 android:textColor="#000000"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/titleBirthday"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteY="0dp" />
+                app:layout_constraintStart_toEndOf="@+id/title_birthday"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/titleBirthday"
+                android:id="@+id/title_birthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Birthday:"
+                android:text="Birthday: "
                 android:textColor="#000000"
                 android:textSize="20sp"
-                android:layout_marginRight="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteY="0dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </LinearLayout>
 

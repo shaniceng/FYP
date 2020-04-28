@@ -22,11 +22,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private EditText userName, userPassword, userEmail;
+    private EditText userName, userPassword, userEmail,userAge, userGender, userHeight, userWeight, userBirthday;
     private Button regButtton;
     private ImageButton closeButton;
     private FirebaseAuth firebaseAuth;
-    private String email, name, password;
+    private String email, name, password, age, gender, height, weight, birthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
                     //register to firebase
                     String user_email=userEmail.getText().toString().trim();
                     String user_password = userPassword.getText().toString().trim();
+                    String user_age = userAge.getText().toString().trim();
 
                     firebaseAuth.createUserWithEmailAndPassword(user_email,user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -82,6 +83,11 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
         userPassword=findViewById(R.id.editTextCreatePassword);
         regButtton=findViewById(R.id.btnCreateAcc);
         closeButton =findViewById(R.id.btnClose);
+        userAge=findViewById(R.id.etCreateAge);
+        userGender=findViewById(R.id.etCreateGender);
+        userHeight=findViewById(R.id.etCreateHeight);
+        userWeight=findViewById(R.id.etCreateWeight);
+        userBirthday=findViewById(R.id.etCreateBirthday);
     }
 
     private Boolean validate(){
@@ -90,8 +96,13 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
         name= userName.getText().toString();
         password = userPassword.getText().toString();
         email= userEmail.getText().toString();
+        age = userAge.getText().toString();
+        gender = userGender.getText().toString();
+        height = userHeight.getText().toString();
+        weight = userWeight.getText().toString();
+        birthday = userBirthday.getText().toString();
 
-        if(name.isEmpty() || password.isEmpty() || email.isEmpty()){
+        if(name.isEmpty() || password.isEmpty() || email.isEmpty() || age.isEmpty() || gender.isEmpty() || height.isEmpty() || weight.isEmpty() || birthday.isEmpty()){
             Toast.makeText(this, "Please enter all the details", Toast.LENGTH_SHORT).show();
         }else{
             result=true;
@@ -124,7 +135,7 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
     private void sendUserData(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        UserProfile userProfile=new UserProfile(name,email);
+        UserProfile userProfile=new UserProfile(name,email,age, gender, height, weight, birthday);
         myRef.setValue(userProfile);
     }
 

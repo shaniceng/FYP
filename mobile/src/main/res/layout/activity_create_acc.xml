@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".CreateAccActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -90,6 +93,66 @@
             android:paddingLeft="16dp" />
 
         <EditText
+            android:id="@+id/etCreateAge"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#DFDBDB"
+            android:drawablePadding="8dp"
+            android:drawableTint="#FF615F5F"
+            android:ems="10"
+            android:hint="Age: e.g 53"
+            android:inputType="text"
+            android:paddingLeft="16dp" />
+        <EditText
+            android:id="@+id/etCreateGender"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#DFDBDB"
+            android:drawablePadding="8dp"
+            android:drawableTint="#FF615F5F"
+            android:ems="10"
+            android:hint="Gender: F/M"
+            android:inputType="text"
+            android:paddingLeft="16dp" />
+        <EditText
+            android:id="@+id/etCreateHeight"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#DFDBDB"
+            android:drawablePadding="8dp"
+            android:drawableTint="#FF615F5F"
+            android:ems="10"
+            android:hint="Height in cm"
+            android:inputType="text"
+            android:paddingLeft="16dp" />
+        <EditText
+            android:id="@+id/etCreateWeight"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#DFDBDB"
+            android:drawablePadding="8dp"
+            android:drawableTint="#FF615F5F"
+            android:ems="10"
+            android:hint="Weight in kg"
+            android:inputType="text"
+            android:paddingLeft="16dp" />
+        <EditText
             android:id="@+id/etCreateBirthday"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -101,7 +164,7 @@
             android:drawablePadding="8dp"
             android:drawableTint="#FF615F5F"
             android:ems="10"
-            android:hint="Age"
+            android:hint="Birthday: dd/mm/yyyy"
             android:inputType="text"
             android:paddingLeft="16dp" />
 
@@ -123,7 +186,7 @@
             android:textColor="#FFFFFF" />
 
     </LinearLayout>
-
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

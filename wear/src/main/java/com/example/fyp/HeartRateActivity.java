@@ -32,6 +32,8 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     private static final String TAG = "FitActivity";
     Calendar calendar;
     String heartPath = "/heart-rate-path";
+    String maxheartpath = "/max-heart-path";
+    private int userMaxHeartRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +49,9 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         sensorManager = ((SensorManager)
                 getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        getStepCount();
+        getHartRate();
     }
-    private void getStepCount() {
+    private void getHartRate() {
         SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
@@ -64,8 +66,13 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
             String msg = "" + (int)event.values[0];
             mTextViewHeart.setText(msg + "BPM");
             Log.d(TAG, msg);
+
             new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
 
+            if(userMaxHeartRate<(int)event.values[0]){
+                userMaxHeartRate=(int)event.values[0];
+                new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+            }
         }
 
         else
@@ -81,7 +88,6 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
 
     protected void onResume() {
         super.onResume();
-
         sensorManager.registerListener(this, this.sensor, 1000);
 
     }
@@ -89,8 +95,14 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     @Override
     protected void onPause() {
         super.onPause();
-        finish();
-        //sensorManager.registerListener(this, this.sensor, 5000000);
+        //finish();
+        sensorManager.registerListener(this, this.sensor, 5000000);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        sensorManager.registerListener(this, this.sensor, 5000000);
     }
 
     class SendThread extends Thread {
