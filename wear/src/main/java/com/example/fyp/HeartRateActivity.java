@@ -187,7 +187,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     }
 
 
-    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(60000);
+    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(300000);
     private void refreshDisplayAndSetNextUpdate() {
         if (isAmbient()) {
             // Implement data retrieval and update the screen for ambient mode
