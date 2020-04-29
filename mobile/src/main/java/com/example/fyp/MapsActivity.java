@@ -187,6 +187,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
                                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
 
+                                LatLng marker_2 = new LatLng(1.4297, 103.7961);
+                                mMap.addMarker(new MarkerOptions().position(marker_2).title("Vista Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
 
                                 //Add to map
                                 mMap.addMarker(markerOptions);

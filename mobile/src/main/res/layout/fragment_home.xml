@@ -6,6 +6,7 @@
     android:layout_marginBottom="60dp"
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
+    android:id="@+id/home_layout"
     android:background="#E8E8E8">
 
     <!-- Floating Button -->

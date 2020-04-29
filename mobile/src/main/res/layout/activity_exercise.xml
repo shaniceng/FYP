@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#E8E8E8"
-    android:layout_marginBottom="60dp"
+
+    android:id="@+id/exercise_layout"
     tools:context=".ExerciseFragment">
 
 
@@ -38,8 +39,8 @@
 
         <Button
             android:id="@+id/btnWalking"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
             android:drawableTop="@drawable/ic_icon_awesome_walking"
@@ -50,8 +51,8 @@
 
         <Button
             android:id="@+id/btnJogging"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="40dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
@@ -63,8 +64,8 @@
 
         <Button
             android:id="@+id/btnRunning"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
@@ -76,8 +77,8 @@
 
         <Button
             android:id="@+id/btnTaiChi"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
@@ -90,8 +91,8 @@
 
         <Button
             android:id="@+id/btnYoga"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
@@ -103,8 +104,8 @@
 
         <Button
             android:id="@+id/btnZumba"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
@@ -117,8 +118,8 @@
 
         <Button
             android:id="@+id/btnStrength"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
@@ -130,8 +131,8 @@
 
         <Button
             android:id="@+id/btnOthers"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
@@ -144,6 +145,16 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/backbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
