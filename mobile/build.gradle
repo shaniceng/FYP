@@ -23,6 +23,10 @@ android {
 
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -58,6 +62,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
 
     implementation 'com.google.android.gms:play-services-wearable:17.0.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 
     wearApp project(':wear')
