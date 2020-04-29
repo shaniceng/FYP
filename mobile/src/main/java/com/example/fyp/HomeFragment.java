@@ -77,10 +77,7 @@ import static com.example.fyp.App.CHANNEL_1_ID;
 public class HomeFragment extends Fragment{
 
     private static final String TAG = "LineChartActivity";
-    private LineChart mChart;
-
     private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR;
-    protected Handler handler;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -100,15 +97,7 @@ public class HomeFragment extends Fragment{
     private LineDataSet lineDataSet = new LineDataSet(null, null);
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
     private LineData lineData ;
-
-
     private YAxis leftAxis;
-    private String timeDisplay;
-
-
-
-
-
 
     FloatingActionButton fab;
     public HomeFragment() {
