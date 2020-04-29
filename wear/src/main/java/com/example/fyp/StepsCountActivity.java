@@ -1,5 +1,11 @@
 package com.example.fyp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -26,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class StepsCountActivity extends WearableActivity implements SensorEventListener {
 
@@ -35,10 +42,16 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     private static final String TAG = "FitActivity";
     private CircularProgressBar circularProgressBar;
     Calendar calendar;
-   // private int steps;
+    private String step;
     private String msg;
     private static final String Initial_Count_Key = "FootStepInitialCount";
     String stepsPath = "/steps-count-path";
+
+    private static final String AMBIENT_UPDATE_ACTION = "com.your.package.action.AMBIENT_STEPS_UPDATE";
+
+    private AlarmManager ambientUpdateAlarmManager;
+    private PendingIntent ambientUpdatePendingIntent;
+    private BroadcastReceiver ambientUpdateBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +75,14 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         circularProgressBar.setBackgroundProgressBarWidth(3f); // in DP
         circularProgressBar.setRoundBorder(true);
         circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
+
+        ambientUpdateAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent ambientUpdateIntent = new Intent(AMBIENT_UPDATE_ACTION);
+        ambientUpdatePendingIntent = PendingIntent.getBroadcast(this, 0, ambientUpdateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        ambientUpdateBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) { refreshDisplayAndSetNextUpdate(); }
+        };
 
     }
     private void getStepCount() {
@@ -96,12 +117,12 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
             int stepCount = (int) event.values[0] - startingStepCount;
 
-            String step = String.valueOf(stepCount);
+            step = String.valueOf(stepCount);
             msg = "Steps count:\n " + step + " steps";
             mTextViewSteps.setText(msg);
             circularProgressBar.setProgressWithAnimation(stepCount); // =1s
             Log.d(TAG, msg);
-            new StepsCountActivity.SendThread(stepsPath, step).start();
+            //new StepsCountActivity.SendThread(stepsPath, step).start();
 
             //display starting steps count to phone app database
         } else
@@ -116,7 +137,9 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     protected void onResume() {
         super.onResume();
 
-        sensorManager.registerListener(this, this.sensor, 3);
+        IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
+        registerReceiver(ambientUpdateBroadcastReceiver, filter);
+        refreshDisplayAndSetNextUpdate();
 
     }
 
@@ -124,13 +147,16 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     protected void onPause() {
         super.onPause();
 
-        sensorManager.registerListener(this, this.sensor, 3);
+        unregisterReceiver(ambientUpdateBroadcastReceiver);
+        ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+        refreshDisplayAndSetNextUpdate();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         sensorManager.registerListener(this, this.sensor, 3);
+        //refreshDisplayAndSetNextUpdate();
     }
 
     class SendThread extends Thread {
@@ -183,9 +209,45 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         }
     }
 
+    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(300000);
+    private void refreshDisplayAndSetNextUpdate() {
+        if (isAmbient()) {
+            // Implement data retrieval and update the screen for ambient mode
+            sensorManager.registerListener(this, this.sensor, 3);
+            if(msg != null) {
+                new StepsCountActivity.SendThread(stepsPath, step).start();
+            }
+        } else {
+            // Implement data retrieval and update the screen for interactive mode
+            sensorManager.registerListener(this, this.sensor, 3);
+            if(msg != null) {
+                new StepsCountActivity.SendThread(stepsPath, step).start();
+            }
+        }
+        long timeMs = System.currentTimeMillis();
+        // Schedule a new alarm
+        if (isAmbient()) {
+            // Calculate the next trigger time
+            long delayMs = AMBIENT_INTERVAL_MS - (timeMs % AMBIENT_INTERVAL_MS);
+            long triggerTimeMs = timeMs + delayMs;
+            ambientUpdateAlarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    triggerTimeMs,
+                    ambientUpdatePendingIntent);
+        } else {
+            // Calculate the next trigger time for interactive mode
+        }
+    }
+
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
-        sensorManager.registerListener(this, this.sensor, 3);
+        refreshDisplayAndSetNextUpdate();
+    }
+
+    @Override
+    public void onUpdateAmbient() {
+        super.onUpdateAmbient();
+        refreshDisplayAndSetNextUpdate();
     }
 }

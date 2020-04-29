@@ -90,11 +90,11 @@ public class HomeFragment extends Fragment{
     private String message, steps, heart, max_HeartRate;
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
-    private int currentHeartRate, MaxHeartRate;
+    private int currentHeartRate, MaxHeartRate, currentStepsCount;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference, stepsDataBaseRef;
     private LineChart lineChart;
     private LineDataSet lineDataSet = new LineDataSet(null, null);
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
@@ -136,6 +136,8 @@ public class HomeFragment extends Fragment{
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
         databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/" + date);
+        stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
+
 
         //get Max heart rate for each individual age
         DatabaseReference mydatabaseRef = firebaseDatabase.getReference(firebaseAuth.getUid());
@@ -208,6 +210,40 @@ public class HomeFragment extends Fragment{
                 }else{
                     lineChart.clear();
                     lineChart.invalidate();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void insertStepsData() {
+        String id = databaseReference.push().getKey();
+        StepsPointValue pointSteps = new StepsPointValue(currentStepsCount);
+        stepsDataBaseRef.child(id).setValue(pointSteps);
+
+        retrieveStepsData();
+    }
+
+    private void retrieveStepsData() {
+        stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Entry> dataSteps = new ArrayList<Entry>();
+
+                if(dataSnapshot.hasChildren()){
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        StepsPointValue stepsPointValue = myDataSnapshot.getValue(StepsPointValue.class);
+                        stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
+                        circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
+
+                    }
+
+                }else{
+                    Toast.makeText(getActivity(),"Error in retrieving steps", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -304,8 +340,9 @@ public class HomeFragment extends Fragment{
             else if(intent.getStringExtra("countSteps")!=null){
                 steps = intent.getStringExtra("countSteps");
                 Log.v(TAG, "Main activity received message: " + message);
-                stepsCount.setText(steps);
-                circularProgressBar.setProgressWithAnimation(Float.parseFloat(steps)); // =1s
+
+                currentStepsCount = Integer.parseInt(steps);
+                insertStepsData();
 
             }
             else if(intent.getStringExtra("maxHeartRate") !=null){
@@ -315,6 +352,8 @@ public class HomeFragment extends Fragment{
             }
         }
     }
+
+
 
 
         //notification

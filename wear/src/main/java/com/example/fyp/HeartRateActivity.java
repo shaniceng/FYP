@@ -133,7 +133,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     @Override
     protected void onStop() {
         super.onStop();
-        refreshDisplayAndSetNextUpdate();
+        //refreshDisplayAndSetNextUpdate();
     }
 
     class SendThread extends Thread {

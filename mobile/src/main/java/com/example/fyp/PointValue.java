@@ -3,6 +3,7 @@ package com.example.fyp;
 public class PointValue {
     int xValue, yValue;
 
+
     public PointValue() {
     }
 
@@ -26,4 +27,6 @@ public class PointValue {
     public void setyValue(int yValue) {
         this.yValue = yValue;
     }
+
+
 }
