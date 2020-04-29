@@ -178,6 +178,8 @@ public class HomeFragment extends Fragment{
         notificationManager = NotificationManagerCompat.from(getActivity());
         Refresh();
 
+        retrieveStepsData();
+        retrieveData();
         return v;
     }
 
@@ -232,16 +234,12 @@ public class HomeFragment extends Fragment{
         stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<Entry> dataSteps = new ArrayList<Entry>();
-
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         StepsPointValue stepsPointValue = myDataSnapshot.getValue(StepsPointValue.class);
                         stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
                         circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
-
                     }
-
                 }else{
                     Toast.makeText(getActivity(),"Error in retrieving steps", Toast.LENGTH_SHORT).show();
                 }
@@ -260,7 +258,7 @@ public class HomeFragment extends Fragment{
         lineDataSet.setFillAlpha(110);
         lineDataSet.setColor(Color.BLACK);
         lineDataSet.setCircleColor(Color.BLACK);
-        lineDataSet.setFormLineWidth(1f);
+        lineDataSet.setFormLineWidth(10f);
         lineDataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
         lineDataSet.setFormSize(15.f);
         lineDataSet.setValueTextSize(20f);
@@ -277,10 +275,10 @@ public class HomeFragment extends Fragment{
 
         //display x-axis
         XAxis xAxis = lineChart.getXAxis();
+        xAxis.setLabelCount(5);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.enableGridDashedLine(0.1f,100f,0);
         xAxis.setAvoidFirstLastClipping(true);
-        //xAxis.setValueFormatter(new XAxisValueFormatter());
 
         //display y-axis
         //y-left-axis
@@ -293,6 +291,14 @@ public class HomeFragment extends Fragment{
 
         //y-rightaxis
         lineChart.getAxisRight().setEnabled(false);
+        lineChart.setVisibleXRangeMaximum(6f);
+        lineChart.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                lineChart.moveViewTo(lineData.getXMax(), lineData.getYMax(),
+                        YAxis.AxisDependency.RIGHT);
+            }
+        }, 6000);
 
         lineDataSet.setValues(dataVals);
         lineDataSet.setLabel("Heart rate");
@@ -311,14 +317,13 @@ public class HomeFragment extends Fragment{
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(intent.getStringExtra("timing")==null){
+            if(intent.getStringExtra("message")!=null){
                 message = intent.getStringExtra("message");
                 Log.v(TAG, "Main activity received message: " + message);
 
             }
-            else if(intent.getStringExtra("message")==null) {
+            else if(intent.getStringExtra("timing")!=null) {
                time  = intent.getStringExtra("timing");
-
                 mTimeSet.add(time);
                 mDataSet.add(message);
                 mlayoutManager=new LinearLayoutManager(getContext());
@@ -327,9 +332,8 @@ public class HomeFragment extends Fragment{
                 mrecyclerView.setLayoutManager(mlayoutManager);
                 mrecyclerView.setAdapter(mAdapter);
 
-
             }
-            if(intent.getStringExtra("heartRate")!=null){
+            else if(intent.getStringExtra("heartRate")!=null){
                 heart = intent.getStringExtra("heartRate");
                 Log.v(TAG, "Main activity received message: " + message);
                 HeartRate.setText(heart);

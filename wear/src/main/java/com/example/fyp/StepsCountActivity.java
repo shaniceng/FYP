@@ -209,7 +209,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         }
     }
 
-    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(300000);
+    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(3600000);
     private void refreshDisplayAndSetNextUpdate() {
         if (isAmbient()) {
             // Implement data retrieval and update the screen for ambient mode
