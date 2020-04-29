@@ -108,6 +108,7 @@ public class HomeFragment extends Fragment{
 
 
 
+
     FloatingActionButton fab;
     public HomeFragment() {
         // Required empty public constructor
@@ -376,11 +377,35 @@ public class HomeFragment extends Fragment{
         notificationManager.notify(1, notification);
     }
 
+    public void sendOnChannel2(View v) {
+        String title = "Alert!!!";
+        String message = "You have not reached the minimum steps!\n Please exercise!";
+
+        Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_message)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManager.notify(1, notification);
+    }
+
     public void Refresh(){
+        Calendar currentTime = Calendar.getInstance();
         if (currentHeartRate>MaxHeartRate) {
             sendOnChannel1(null);
+
+        }
+
+        //insert different timings here for prompt of steps count
+        if(currentStepsCount < (7500/2) && (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)){
+            sendOnChannel2(null);
+
         }
         runnable(60000);
+
     }
 
     public void runnable(int milliseconds){
