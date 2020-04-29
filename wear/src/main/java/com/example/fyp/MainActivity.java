@@ -79,6 +79,8 @@ public class MainActivity extends WearableActivity {
             }
         });
 
+        Refresh();
+
     }
 
 
@@ -93,22 +95,22 @@ public class MainActivity extends WearableActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.setTitle("ALERT!!!");
         alertDialog.show();
-    }
+    }*/
 
     public void Refresh(){
         Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
         String time = "Current Time:" + format.format(currentTime.getTime());
         mTextView.setText(time);
 
         //set fixed time : eg 7pm=19:00:00
-        int setHour = 15; //testing times only
+       /* int setHour = 15; //testing times only
         int setMin = 12;
         int setSec = 00;
 
         if ((currentTime.get(Calendar.HOUR_OF_DAY) == setHour) && (currentTime.get(Calendar.MINUTE) == setMin) && (currentTime.get(Calendar.SECOND) == setSec)) {
             showAlertDialog();
-        }
+        }*/
         runnable(1000);
     }
 
@@ -121,7 +123,7 @@ public class MainActivity extends WearableActivity {
             }
         };
         handler.postDelayed(runnable, milliseconds);
-    }*/
+    }
 
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {

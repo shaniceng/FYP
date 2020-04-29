@@ -63,30 +63,21 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         // Enables Always-on
         setAmbientEnabled();
 
-        sensorManager = ((SensorManager)
-                getSystemService(SENSOR_SERVICE));
+        sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         getHartRate();
 
-        ambientUpdateAlarmManager =
-                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
+        ambientUpdateAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent ambientUpdateIntent = new Intent(AMBIENT_UPDATE_ACTION);
-
-        ambientUpdatePendingIntent = PendingIntent.getBroadcast(
-                this, 0, ambientUpdateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+        ambientUpdatePendingIntent = PendingIntent.getBroadcast(this, 0, ambientUpdateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         ambientUpdateBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                refreshDisplayAndSetNextUpdate();
-            }
+            public void onReceive(Context context, Intent intent) { refreshDisplayAndSetNextUpdate(); }
         };
     }
     private void getHartRate() {
         SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-
         mSensorManager.registerListener(this, mHeartRateSensor, 5000000);
         //suggesting android to take data in every 5s, if nth to do, android will auto collect data.
     }
@@ -95,16 +86,18 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-            msg = "" + (int)event.values[0];
-            mTextViewHeart.setText(msg + "BPM");
-            Log.d(TAG, msg);
+        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE){
+                msg = "" + (int) event.values[0];
+            if(msg != null) {
+                mTextViewHeart.setText(msg + "BPM");
+                Log.d(TAG, msg);
 
-            //new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
+                //new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
 
-            if(userMaxHeartRate<(int)event.values[0]){
-                userMaxHeartRate = (int)event.values[0];
-                //new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+                if (userMaxHeartRate < (int) event.values[0]) {
+                    userMaxHeartRate = (int) event.values[0];
+                    //new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+                }
             }
         }
 
@@ -133,14 +126,14 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         super.onPause();
         //finish();
         refreshDisplayAndSetNextUpdate();
-        //unregisterReceiver(ambientUpdateBroadcastReceiver);
-        //ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+        unregisterReceiver(ambientUpdateBroadcastReceiver);
+        ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        sensorManager.registerListener(this, this.sensor, 5000000);
+        refreshDisplayAndSetNextUpdate();
     }
 
     class SendThread extends Thread {
@@ -199,13 +192,17 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         if (isAmbient()) {
             // Implement data retrieval and update the screen for ambient mode
             sensorManager.registerListener(this, this.sensor, 5000000);
-            new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
-            new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+            if(msg != null) {
+                new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
+                new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+            }
         } else {
             // Implement data retrieval and update the screen for interactive mode
             sensorManager.registerListener(this, this.sensor, 5000000);
-            new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
-            new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+            if(msg != null) {
+                new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
+                new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+            }
         }
         long timeMs = System.currentTimeMillis();
         // Schedule a new alarm

@@ -182,7 +182,7 @@ public class HomeFragment extends Fragment{
     private void insertData() {
         String id = databaseReference.push().getKey();
         Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 
         int x = Integer.parseInt(format.format(currentTime.getTime()).replaceAll("[\\D]",""));
         int y = currentHeartRate;
@@ -202,6 +202,7 @@ public class HomeFragment extends Fragment{
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
                         dataVals.add(new Entry(pointValue.getxValue(), pointValue.getyValue()));
+
                     }
                     showChart(dataVals);
                 }else{
@@ -299,7 +300,6 @@ public class HomeFragment extends Fragment{
                 currentHeartRate=Integer.parseInt(heart.replaceAll("[\\D]",""));
                 ratedMaxHR.setText(String.valueOf(currentHeartRate));
                 insertData();
-
             }
             else if(intent.getStringExtra("countSteps")!=null){
                 steps = intent.getStringExtra("countSteps");
@@ -311,8 +311,8 @@ public class HomeFragment extends Fragment{
             else if(intent.getStringExtra("maxHeartRate") !=null){
                 max_HeartRate = intent.getStringExtra("maxHeartRate");
                 maxHeartrate.setText(max_HeartRate);
-            }
 
+            }
         }
     }
 
@@ -350,8 +350,5 @@ public class HomeFragment extends Fragment{
         };
         handler.postDelayed(runnable, milliseconds);
     }
-
-
-
 
 }

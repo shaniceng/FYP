@@ -79,6 +79,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         Calendar currentTime = Calendar.getInstance();
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
 
+
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             // Initialize if it is the first time use
             if(!prefs.contains(Initial_Count_Key) || ((int) event.values[0] == 0)){
@@ -86,7 +87,6 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
                 editor.putInt(Initial_Count_Key, (int) event.values[0]);
                 editor.commit();
             }
-
             if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 00)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt(Initial_Count_Key, (int) event.values[0]);
@@ -97,7 +97,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             int stepCount = (int) event.values[0] - startingStepCount;
 
             String step = String.valueOf(stepCount);
-            msg = "Steps count:\n " + stepCount + " steps";
+            msg = "Steps count:\n " + step + " steps";
             mTextViewSteps.setText(msg);
             circularProgressBar.setProgressWithAnimation(stepCount); // =1s
             Log.d(TAG, msg);
@@ -106,10 +106,8 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             //display starting steps count to phone app database
         } else
             Log.d(TAG, "Unknown sensor type");
+
     }
-
-
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.d(TAG, "onAccuracyChanged - accuracy: " + accuracy);
