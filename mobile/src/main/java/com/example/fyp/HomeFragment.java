@@ -257,7 +257,7 @@ public class HomeFragment extends Fragment{
         });
     }
 
-    private void showChart(ArrayList<Entry> dataVals) {
+   private void showChart(ArrayList<Entry> dataVals) {
 
         //display line
         lineDataSet.setFillAlpha(110);

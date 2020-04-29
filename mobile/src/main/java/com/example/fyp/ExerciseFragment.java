@@ -16,7 +16,7 @@ import static android.view.View.GONE;
 
 public class ExerciseFragment extends AppCompatActivity {
 
-    Button back, running;
+    Button back, walking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +46,8 @@ public class ExerciseFragment extends AppCompatActivity {
             }
         });
 
-        running =findViewById(R.id.btnRunning);
-        running.setOnClickListener(new View.OnClickListener() {
+        walking =findViewById(R.id.btnWalking);
+        walking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
