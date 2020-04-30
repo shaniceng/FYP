@@ -290,10 +290,12 @@ public class HomeFragment extends Fragment{
     private void showChart(ArrayList<Entry> dataVals) {
 
         //display line
+        lineDataSet.setFillAlpha(110);
         lineDataSet.setColor(Color.BLACK);
         lineDataSet.setCircleColor(Color.BLACK);
         lineDataSet.setFormLineWidth(10f);
         lineDataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        lineDataSet.setFormSize(15.f);
         lineDataSet.setValueTextSize(20f);
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillFormatter(new IFillFormatter() {
@@ -304,6 +306,7 @@ public class HomeFragment extends Fragment{
         });
         Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
         lineDataSet.setFillDrawable(drawable);
+
 
         //display x-axis
         XAxis xAxis = lineChart.getXAxis();
@@ -352,6 +355,7 @@ public class HomeFragment extends Fragment{
             if(intent.getStringExtra("message")!=null){
                 message = intent.getStringExtra("message");
                 Log.v(TAG, "Main activity received message: " + message);
+
             }
             else if(intent.getStringExtra("timing")!=null) {
                time  = intent.getStringExtra("timing");
@@ -381,6 +385,8 @@ public class HomeFragment extends Fragment{
             }
         }
     }
+
+
 
 
         //notification
