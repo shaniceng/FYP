@@ -153,12 +153,13 @@ public class TimerActivity extends WearableActivity {
 
         pauseChronometer(v);
         chronometertext = chronometer.getText().toString();
-        new TimerActivity.SendThread(datapath, TrackText).start();
         new TimerActivity.SendThread(chromoPath, chronometertext).start();
+
+
 
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset=0;
-
+        new TimerActivity.SendThread(datapath, TrackText).start();
         AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
         builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {

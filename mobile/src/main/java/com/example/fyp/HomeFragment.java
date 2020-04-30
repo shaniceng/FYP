@@ -355,11 +355,12 @@ public class HomeFragment extends Fragment{
             if(intent.getStringExtra("message")!=null){
                 message = intent.getStringExtra("message");
                 Log.v(TAG, "Main activity received message: " + message);
+                insertLockInData();
 
             }
             else if(intent.getStringExtra("timing")!=null) {
                time  = intent.getStringExtra("timing");
-                insertLockInData();
+
 
             }
             else if(intent.getStringExtra("heartRate")!=null){
