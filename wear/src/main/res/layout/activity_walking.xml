@@ -12,27 +12,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
+        android:padding="@dimen/inner_frame_layout_padding">
 
 
-        <Chronometer
-            android:id="@+id/chronometer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edge"
-            android:format="00:00:00"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:textSize="26sp"
-            app:layout_constraintBottom_toTopOf="@+id/btnStartTimer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTrackName" />
-
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/btnStartTimer"
             android:layout_width="42dp"
             android:layout_height="40dp"
@@ -46,6 +29,10 @@
             app:layout_constraintTop_toBottomOf="@+id/chronometer"
             app:layout_constraintVertical_bias="1.0" />
 
+            app:layout_constraintBottom_toTopOf="@+id/btnStartTimer"
+
+            android:format="00:00:00"
+
         <ImageButton
             android:id="@+id/btnStopTimer"
             android:layout_width="43dp"
@@ -57,7 +44,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btnStartTimer"
             app:layout_constraintTop_toBottomOf="@+id/chronometer"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0" />-->
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+
+            android:background="@drawable/rounded_edge"
+            android:paddingLeft="12dp"
+            android:paddingTop="8dp"
+
+            android:paddingRight="12dp"
+            android:paddingBottom="8dp"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTrackName" />
 
         <TextView
             android:id="@+id/tvTrackName"
@@ -71,6 +76,53 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/startBtn"
+            android:layout_width="39dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/timerbtn_back"
+            android:onClick="startChronometer"
+            android:src="@drawable/ic_play_arrow_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stopBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chronometer"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageButton
+            android:id="@+id/pauseBtn"
+            android:layout_width="37dp"
+            android:layout_height="42dp"
+
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/timerbtn_back"
+            android:onClick="pauseChronometer"
+            android:src="@drawable/ic_pause_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chronometer"
+            app:layout_constraintVertical_bias="0.75" />
+
+        <ImageButton
+            android:id="@+id/stopBtn"
+            android:layout_width="41dp"
+            android:layout_height="45dp"
+
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/timerbtn_back"
+            android:onClick="resetChronometer"
+            android:src="@drawable/ic_stop_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/startBtn"
+            app:layout_constraintTop_toBottomOf="@+id/chronometer" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

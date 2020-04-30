@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -21,7 +22,6 @@
             android:id="@+id/ActivityImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/ic_icon_awesome_running"
             android:backgroundTint="#1E2947"
             android:padding="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -70,10 +70,10 @@
 
         <TextView
             android:id="@+id/BackgroundStartTime"
-            android:layout_width="70dp"
-            android:layout_height="19dp"
+            android:layout_width="88dp"
+            android:layout_height="22dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/round"
             android:backgroundTint="#979797"
             android:paddingLeft="5dp"
