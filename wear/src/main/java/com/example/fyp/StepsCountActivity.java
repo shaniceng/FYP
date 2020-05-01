@@ -12,12 +12,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.Task;
@@ -26,10 +25,7 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -38,10 +34,9 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
 
     private SensorManager sensorManager;
     private Sensor sensor;
-    private TextView mTextViewSteps, textViewDate, textViewTime;
+    private TextView mTextViewSteps;
     private static final String TAG = "FitActivity";
     private CircularProgressBar circularProgressBar;
-    Calendar calendar;
     private String step;
     private String msg;
     private static final String Initial_Count_Key = "FootStepInitialCount";
@@ -52,6 +47,10 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     private AlarmManager ambientUpdateAlarmManager;
     private PendingIntent ambientUpdatePendingIntent;
     private BroadcastReceiver ambientUpdateBroadcastReceiver;
+
+    private Calendar currentTime;
+    private SharedPreferences prefs;
+    private int currentSteps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +65,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
 
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         getStepCount();
+
 
         circularProgressBar= findViewById(R.id.circularProgressBar);
         circularProgressBar.setProgressMax(7500);
@@ -97,32 +97,32 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        Calendar currentTime = Calendar.getInstance();
+        currentTime = Calendar.getInstance();
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
 
 
-            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             // Initialize if it is the first time use
             if(!prefs.contains(Initial_Count_Key) || ((int) event.values[0] == 0)){
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt(Initial_Count_Key, (int) event.values[0]);
                 editor.commit();
             }
-            if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 00)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+            if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt(Initial_Count_Key, (int) event.values[0]);
                 editor.commit();
             }
 
             int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
-            int stepCount = (int) event.values[0] - startingStepCount;
+             int stepCount = (int) event.values[0] - startingStepCount;
+              currentSteps = (int) event.values[0];
 
             step = String.valueOf(stepCount);
             msg = "Steps count:\n " + step + " steps";
             mTextViewSteps.setText(msg);
             circularProgressBar.setProgressWithAnimation(stepCount); // =1s
             Log.d(TAG, msg);
-            //new StepsCountActivity.SendThread(stepsPath, step).start();
 
             //display starting steps count to phone app database
         } else
@@ -146,7 +146,11 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     @Override
     protected void onPause() {
         super.onPause();
-
+        if((currentTime.get(Calendar.HOUR_OF_DAY)==00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(Initial_Count_Key, currentSteps);
+            editor.commit();
+        }
         unregisterReceiver(ambientUpdateBroadcastReceiver);
         ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
         refreshDisplayAndSetNextUpdate();
@@ -156,8 +160,14 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     protected void onStop() {
         super.onStop();
         sensorManager.registerListener(this, this.sensor, 3);
-        //refreshDisplayAndSetNextUpdate();
+        if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(Initial_Count_Key, currentSteps);
+            editor.commit();
+        }
+        refreshDisplayAndSetNextUpdate();
     }
+
 
     class SendThread extends Thread {
         String path;
@@ -209,14 +219,16 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         }
     }
 
-    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(3600000);
+    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(600000);
     private void refreshDisplayAndSetNextUpdate() {
         if (isAmbient()) {
             // Implement data retrieval and update the screen for ambient mode
             sensorManager.registerListener(this, this.sensor, 3);
             if(msg != null) {
                 new StepsCountActivity.SendThread(stepsPath, step).start();
+
             }
+
         } else {
             // Implement data retrieval and update the screen for interactive mode
             sensorManager.registerListener(this, this.sensor, 3);
@@ -224,6 +236,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
                 new StepsCountActivity.SendThread(stepsPath, step).start();
             }
         }
+
         long timeMs = System.currentTimeMillis();
         // Schedule a new alarm
         if (isAmbient()) {
@@ -242,6 +255,11 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
+        if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(Initial_Count_Key, currentSteps);
+            editor.commit();
+        }
         refreshDisplayAndSetNextUpdate();
     }
 

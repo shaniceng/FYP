@@ -428,7 +428,7 @@
                            android:id="@+id/ActivityImageView"
                            android:layout_width="100dp"
                            android:layout_height="100dp"
-                           android:background="@drawable/ic_icon_awesome_running"
+                           android:background="@drawable/ic_icon_awesome_jogging"
                            android:backgroundTint="#1E2947"
                            android:padding="50dp"
                            app:layout_constraintBottom_toBottomOf="parent"

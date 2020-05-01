@@ -39,6 +39,9 @@ public class TimerActivity extends WearableActivity {
     private String chronometertext;
     private String TrackText;
 
+    private boolean running;
+    private long pauseOffset;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +51,24 @@ public class TimerActivity extends WearableActivity {
         Intent intent = getIntent();
         TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
 
+        startTimer = findViewById(R.id.startBtn);
+        pauseTimer=findViewById(R.id.pauseBtn);
+        stopTimer=findViewById(R.id.stopBtn);
+
         // Enables Always-on
         setAmbientEnabled();
 
         trackName=findViewById(R.id.tvTrackName);
         chronometer = findViewById(R.id.chronometer);
-        startTimer = findViewById(R.id.btnStartTimer);
-        stopTimer = findViewById(R.id.btnStopTimer);
+       // startTimer = findViewById(R.id.btnStartTimer);
+       // stopTimer = findViewById(R.id.btnStopTimer);
 
         trackName.setText(TrackText);
+        pauseTimer.setVisibility(View.GONE);
 
         handler = new Handler();
 
-        startTimer.setOnClickListener(new View.OnClickListener() {
+/*        startTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!isResume){
@@ -85,6 +93,7 @@ public class TimerActivity extends WearableActivity {
             @Override
             public void onClick(View v) {
                 if(!isResume){
+
                     startTimer.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
                     tMilliSec=0L;
                     tStart=0L;
@@ -93,11 +102,12 @@ public class TimerActivity extends WearableActivity {
                     sec=0;
                     min = 0;
                     milliSec=0;
+                    new TimerActivity.SendThread(datapath, TrackText).start();
                     chronometertext = chronometer.getText().toString();
                     chronometer.setText("00:00:00");
 
                     //Requires a new thread to avoid blocking the UI
-                    new TimerActivity.SendThread(datapath, TrackText).start();
+
                     new TimerActivity.SendThread(chromoPath, chronometertext).start();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
@@ -114,7 +124,57 @@ public class TimerActivity extends WearableActivity {
                     alertDialog.show();
                 }
             }
-        });
+        });*/
+    }
+
+    public void startChronometer(View v){
+        if(!running){
+            chronometer.setBase(SystemClock.elapsedRealtime()- pauseOffset);
+            chronometer.start();
+            running = true;
+            startTimer.setVisibility(View.GONE);
+            stopTimer.setVisibility(View.GONE);
+            pauseTimer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void pauseChronometer(View v){
+        if(running){
+            chronometer.stop();
+            pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
+            running=false;
+            startTimer.setVisibility(View.VISIBLE);
+            stopTimer.setVisibility(View.VISIBLE);
+            pauseTimer.setVisibility(View.GONE);
+        }
+
+    }
+    public void resetChronometer(View v){
+
+        pauseChronometer(v);
+        chronometertext = chronometer.getText().toString();
+        new TimerActivity.SendThread(chromoPath, chronometertext).start();
+
+
+
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset=0;
+        new TimerActivity.SendThread(datapath, TrackText).start();
+        AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
+        builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        startActivity(new Intent(TimerActivity.this, TrackActivity.class));
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setTitle("Good Job!");
+        alertDialog.show();
+
+
+
     }
 
     public Runnable runnable = new Runnable() {

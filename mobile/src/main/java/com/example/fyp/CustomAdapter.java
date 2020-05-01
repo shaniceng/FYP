@@ -4,21 +4,34 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> { //for recycler view
 
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
+    private ArrayList<String> currentTime;
+    private ArrayList<Integer> image;
+    private int[] menuIcons = {R.drawable.ic_icon_awesome_walking, R.drawable.ic_icon_awesome_jogging,R.drawable.ic_awesome_running
+            ,R.drawable.ic_awesome_taichi,R.drawable.ic_awesome_yoga,R.drawable.ic_awesome_zumba,
+            R.drawable.ic_awesome_swimming,R.drawable.ic_awesome_strengthtraining,R.drawable.ic_awesome_others};
 
-    public CustomAdapter(ArrayList<String> dataset, ArrayList<String> timeSet){
+
+    public CustomAdapter(ArrayList<String> dataset, ArrayList<String> timeSet, ArrayList<String> currentTime, ArrayList<Integer> image){
         mDataSet=dataset;
         mTimeSet=timeSet;
+        this.currentTime=currentTime;
+        this.image=image;
     }
 
     @NonNull
@@ -30,8 +43,78 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.ViewHolder holder, int position) {
+
         holder.title.setText(mDataSet.get(position));
         holder.time.setText(mTimeSet.get(position));
+        holder.stopTime.setText(currentTime.get(position));
+
+        if(mDataSet!=null) {
+            switch (String.valueOf(mDataSet.get(position))) {
+                case "Brisk Walking":
+                    image.add(menuIcons[0]);
+                    break;
+                case "Jogging":
+                    image.add(menuIcons[1]);
+                    break;
+                case "Running":
+                    image.add(menuIcons[2]);
+                    break;
+                case "Tai Chi":
+                    image.add(menuIcons[3]);
+                    break;
+                case "Yoga":
+                    image.add(menuIcons[4]);
+                    break;
+                case "Zumba":
+                    image.add(menuIcons[5]);
+                    break;
+                case "Swimming":
+                    image.add(menuIcons[6]);
+                    break;
+                case "Strength Training":
+                    image.add(menuIcons[7]);
+                    break;
+                default:
+                    image.add(menuIcons[8]);
+            }
+        } else{
+            image.add(menuIcons[8]);
+        }
+
+        holder.activityPic.setImageResource(image.get(position));
+
+
+        /*switch (String.valueOf(mDataSet.get(position))) {
+            case "Brisk Walking":
+                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                break;
+            case "Jogging":
+                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_jogging);
+                break;
+            case "Running":
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_running);
+                break;
+            case "Tai Chi":
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_taichi);
+                break;
+            case "Yoga":
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_yoga);
+                break;
+            case "Zumba":
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_zumba);
+                break;
+            case "Swimming":
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_swimming);
+                break;
+            case "Strength Training":
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_strengthtraining);
+                break;
+
+            default:
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_others);
+        }*/
+
+
     }
 
     @Override
@@ -40,12 +123,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, time;
+        public TextView title, time, stopTime;
+        public ImageView activityPic;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             time = itemView.findViewById(R.id.tvInsertDuration);
             title=itemView.findViewById(R.id.tvActivityName);
+            activityPic=itemView.findViewById(R.id.ActivityImageView);
+            stopTime=itemView.findViewById(R.id.tvStartTime);
+
         }
     }
 }

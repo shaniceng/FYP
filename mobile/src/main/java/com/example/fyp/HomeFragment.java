@@ -65,6 +65,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.fyp.App.CHANNEL_1_ID;
@@ -83,6 +85,8 @@ public class HomeFragment extends Fragment{
     private RecyclerView.Adapter mAdapter;
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
+    private ArrayList<String> currentTimeA;
+    private ArrayList<Integer> image;
     private ArrayList<Entry> yValues;
     private String time;
     private String message, steps, heart, max_HeartRate;
@@ -92,7 +96,7 @@ public class HomeFragment extends Fragment{
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, stepsDataBaseRef;
+    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef;
     private LineChart lineChart;
     private LineDataSet lineDataSet = new LineDataSet(null, null);
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
@@ -128,10 +132,11 @@ public class HomeFragment extends Fragment{
         String date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
         databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/" + date);
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
+        lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
 
 
         //get Max heart rate for each individual age
-        DatabaseReference mydatabaseRef = firebaseDatabase.getReference(firebaseAuth.getUid());
+        DatabaseReference mydatabaseRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
         mydatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -165,8 +170,7 @@ public class HomeFragment extends Fragment{
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
-        mDataSet = new ArrayList<>();
-        mTimeSet=new ArrayList<>();
+
         circularProgressBar.setProgressMax(7500);
 
         notificationManager = NotificationManagerCompat.from(getActivity());
@@ -174,6 +178,7 @@ public class HomeFragment extends Fragment{
 
         retrieveStepsData();
         retrieveData();
+        RetrieveLockInData();
         return v;
     }
 
@@ -217,7 +222,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertStepsData() {
-        String id = databaseReference.push().getKey();
+        String id = stepsDataBaseRef.push().getKey();
         StepsPointValue pointSteps = new StepsPointValue(currentStepsCount);
         stepsDataBaseRef.child(id).setValue(pointSteps);
 
@@ -246,7 +251,47 @@ public class HomeFragment extends Fragment{
         });
     }
 
-   private void showChart(ArrayList<Entry> dataVals) {
+    private void insertLockInData() {
+        Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
+        String cTime = format.format(currentTime.getTime());
+        String id = lockinDataBaseRef.push().getKey();
+        LockInValue lockInValue = new LockInValue(message,time,cTime);
+        lockinDataBaseRef.child(id).setValue(lockInValue);
+
+        RetrieveLockInData();
+    }
+
+    private void RetrieveLockInData() {
+        lockinDataBaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mDataSet = new ArrayList<>();
+                mTimeSet=new ArrayList<>();
+                image = new ArrayList<>();
+                currentTimeA = new ArrayList<>();
+                if(dataSnapshot.hasChildren()){
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        LockInValue lockInValue = myDataSnapshot.getValue(LockInValue.class);
+                        mTimeSet.add(lockInValue.getDuration());
+                        mDataSet.add(lockInValue.getActivity());
+                        currentTimeA.add(lockInValue.getcTime());
+                        InsertRecyclerView();
+                    }
+                }else{
+                    Toast.makeText(getActivity(),"Error in retrieving activity", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void showChart(ArrayList<Entry> dataVals) {
 
         //display line
         lineDataSet.setFillAlpha(110);
@@ -263,7 +308,7 @@ public class HomeFragment extends Fragment{
                 return lineChart.getAxisLeft().getAxisMinimum();
             }
         });
-        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+        Drawable drawable = ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.fade_red);
         lineDataSet.setFillDrawable(drawable);
 
 
@@ -286,6 +331,16 @@ public class HomeFragment extends Fragment{
         //y-rightaxis
         lineChart.getAxisRight().setEnabled(false);
         lineChart.setVisibleXRangeMaximum(6f);
+
+
+        lineDataSet.setValues(dataVals);
+        lineDataSet.setLabel("Heart rate");
+        iLineDataSets.clear();
+        iLineDataSets.add(lineDataSet);
+
+        lineData = new LineData(iLineDataSets);
+        lineChart.clear();
+        lineChart.setData(lineData);
         lineChart.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -293,14 +348,6 @@ public class HomeFragment extends Fragment{
                         YAxis.AxisDependency.RIGHT);
             }
         }, 6000);
-
-        lineDataSet.setValues(dataVals);
-        lineDataSet.setLabel("Heart rate");
-        iLineDataSets.clear();
-        iLineDataSets.add(lineDataSet);
-        lineData = new LineData(iLineDataSets);
-        lineChart.clear();
-        lineChart.setData(lineData);
         lineChart.invalidate();
 
     }
@@ -311,20 +358,15 @@ public class HomeFragment extends Fragment{
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(intent.getStringExtra("message")!=null){
-                message = intent.getStringExtra("message");
-                Log.v(TAG, "Main activity received message: " + message);
+            if(intent.getStringExtra("message")!=null ||intent.getStringExtra("timing")!=null) {
+                if (intent.getStringExtra("message") != null) {
+                    message = intent.getStringExtra("message");
+                    Log.v(TAG, "Main activity received message: " + message);
+                    insertLockInData();
 
-            }
-            else if(intent.getStringExtra("timing")!=null) {
-               time  = intent.getStringExtra("timing");
-                mTimeSet.add(time);
-                mDataSet.add(message);
-                mlayoutManager=new LinearLayoutManager(getContext());
-                mrecyclerView.setHasFixedSize(true);
-                mAdapter = new CustomAdapter(mDataSet,mTimeSet);
-                mrecyclerView.setLayoutManager(mlayoutManager);
-                mrecyclerView.setAdapter(mAdapter);
+                } else if (intent.getStringExtra("timing") != null) {
+                    time = intent.getStringExtra("timing");
+                }
 
             }
             else if(intent.getStringExtra("heartRate")!=null){
@@ -410,6 +452,15 @@ public class HomeFragment extends Fragment{
             }
         };
         handler.postDelayed(runnable, milliseconds);
+    }
+
+    //insert activity into home page
+    public void InsertRecyclerView(){
+        mlayoutManager=new LinearLayoutManager(getContext());
+        mrecyclerView.setHasFixedSize(true);
+        mAdapter = new CustomAdapter(mDataSet,mTimeSet, currentTimeA, image);
+        mrecyclerView.setLayoutManager(mlayoutManager);
+        mrecyclerView.setAdapter(mAdapter);
     }
 
 }

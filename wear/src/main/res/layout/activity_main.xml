@@ -48,14 +48,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Track Activity" />
+                    android:background="#4E6A88"
+                    android:text="Track Activity"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/btnWHeartRate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Heart Rate" />
+                    android:background="@color/babyPink"
+                    android:text="Heart Rate"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/btnWStepsCount"
@@ -63,14 +69,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="50dp"
-                    android:text="Steps Count" />
-
-                <TextView
-                    android:id="@+id/tvBatt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:text="TextView" />
+                    android:background="#CDDC39"
+                    android:text="Steps Count"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
 
             </LinearLayout>
         </ScrollView>
