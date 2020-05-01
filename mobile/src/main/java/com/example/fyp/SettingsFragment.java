@@ -1,7 +1,11 @@
 package com.example.fyp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,9 +30,10 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class SettingsFragment extends Fragment {
     private Button editProfile, logout;
-    private TextView name, email, age, gender, height, weight, birthday;
+    private TextView name, email, age, gender, height, weight, birthday, batt;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
+    private String battery;
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -45,6 +51,7 @@ public class SettingsFragment extends Fragment {
         height=v.findViewById(R.id.tvHeight);
         weight=v.findViewById(R.id.tvWeight);
         birthday=v.findViewById(R.id.tvBirthday);
+        batt=v.findViewById(R.id.tvBattery);
 
         logout=v.findViewById(R.id.btnLogout);
         firebaseAuth=FirebaseAuth.getInstance();
@@ -89,6 +96,25 @@ public class SettingsFragment extends Fragment {
                 Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        SettingsFragment.MessageReceiver messageReceiver = new SettingsFragment.MessageReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+
+
         return v;
     }
+
+    public class MessageReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getStringExtra("battPercentageLife") != null) {
+                 battery = intent.getStringExtra("battPercentageLife");
+                batt.setText(battery + "%");
+
+            }
+        }
+    }
+
 }

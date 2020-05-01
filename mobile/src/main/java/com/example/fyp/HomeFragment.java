@@ -65,6 +65,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.fyp.App.CHANNEL_1_ID;
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
     private ArrayList<String> currentTimeA;
+    private ArrayList<Integer> image;
     private ArrayList<Entry> yValues;
     private String time;
     private String message, steps, heart, max_HeartRate;
@@ -99,6 +101,10 @@ public class HomeFragment extends Fragment{
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
     private LineData lineData ;
     private YAxis leftAxis;
+
+    private int[] menuIcons = {R.drawable.ic_icon_awesome_walking, R.drawable.ic_icon_awesome_jogging,R.drawable.ic_awesome_running,
+            R.drawable.ic_awesome_taichi,R.drawable.ic_awesome_yoga,R.drawable.ic_awesome_zumba,
+            R.drawable.ic_awesome_swimming,R.drawable.ic_awesome_strengthtraining,R.drawable.ic_awesome_others};
 
     FloatingActionButton fab;
     public HomeFragment() {
@@ -265,6 +271,7 @@ public class HomeFragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mDataSet = new ArrayList<>();
                 mTimeSet=new ArrayList<>();
+                image = new ArrayList<>();
                 currentTimeA = new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
@@ -450,9 +457,43 @@ public class HomeFragment extends Fragment{
 
     //insert activity into home page
     public void InsertRecyclerView(){
+
+        if(message!=null) {
+            switch (message) {
+                case "Brisk Walking":
+                    image.add(menuIcons[0]);
+                    break;
+                case "Jogging":
+                    image.add(menuIcons[1]);
+                    break;
+                case "Running":
+                    image.add(menuIcons[2]);
+                    break;
+                case "Tai Chi":
+                    image.add(menuIcons[3]);
+                    break;
+                case "Yoga":
+                    image.add(menuIcons[4]);
+                    break;
+                case "Zumba":
+                    image.add(menuIcons[5]);
+                    break;
+                case "Swimming":
+                    image.add(menuIcons[6]);
+                    break;
+                case "Strength Training":
+                    image.add(menuIcons[7]);
+                    break;
+                default:
+                    image.add(menuIcons[8]);
+            }
+        } else{
+            image.add(menuIcons[8]);
+        }
+
         mlayoutManager=new LinearLayoutManager(getContext());
         mrecyclerView.setHasFixedSize(true);
-        mAdapter = new CustomAdapter(mDataSet,mTimeSet, currentTimeA);
+        mAdapter = new CustomAdapter(mDataSet,mTimeSet, currentTimeA, image);
         mrecyclerView.setLayoutManager(mlayoutManager);
         mrecyclerView.setAdapter(mAdapter);
     }

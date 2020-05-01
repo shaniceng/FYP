@@ -93,12 +93,11 @@
             android:id="@+id/tvBattery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Battery"
             android:layout_gravity="center"
-            android:textColor="#000000"
-            android:textSize="20sp"
             android:drawableStart="@drawable/ic_battery_charging_full_black_24dp"
-            android:drawableTint="#000000"/>
+            android:drawableTint="#000000"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
     </LinearLayout>
 

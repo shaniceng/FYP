@@ -22,8 +22,8 @@
             android:id="@+id/ActivityImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:backgroundTint="#1E2947"
             android:padding="50dp"
+            android:src="@drawable/ic_awesome_running"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -14,18 +14,21 @@ import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> { //for recycler view
 
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
-    private ArrayList<ImageView> activityPic;
     private ArrayList<String> currentTime;
+    private ArrayList<Integer> image;
 
-    public CustomAdapter(ArrayList<String> dataset, ArrayList<String> timeSet,ArrayList<String> currentTime){
+
+    public CustomAdapter(ArrayList<String> dataset, ArrayList<String> timeSet, ArrayList<String> currentTime, ArrayList<Integer> image){
         mDataSet=dataset;
         mTimeSet=timeSet;
         this.currentTime=currentTime;
+        this.image=image;
     }
 
     @NonNull
@@ -41,36 +44,40 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.title.setText(mDataSet.get(position));
         holder.time.setText(mTimeSet.get(position));
         holder.stopTime.setText(currentTime.get(position));
+        holder.activityPic.setImageResource(image.get(position));
 
-/*        switch (mDataSet.get(position)) {
+
+        /*switch (String.valueOf(mDataSet.get(position))) {
             case "Brisk Walking":
                 holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
                 break;
             case "Jogging":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_jogging);
                 break;
             case "Running":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_running);
                 break;
             case "Tai Chi":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_taichi);
                 break;
             case "Yoga":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_yoga);
                 break;
             case "Zumba":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_zumba);
                 break;
             case "Swimming":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_swimming);
                 break;
             case "Strength Training":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_strengthtraining);
                 break;
 
             default:
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
+                holder.activityPic.setImageResource(R.drawable.ic_awesome_others);
         }*/
+
+
     }
 
     @Override
@@ -88,7 +95,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             title=itemView.findViewById(R.id.tvActivityName);
             activityPic=itemView.findViewById(R.id.ActivityImageView);
             stopTime=itemView.findViewById(R.id.tvStartTime);
-
 
         }
     }
