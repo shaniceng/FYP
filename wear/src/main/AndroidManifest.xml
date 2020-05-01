@@ -29,6 +29,15 @@
             android:value="true" />
 
         <activity
+            android:name=".DummyActivity"
+            android:label="@string/title_activity_dummy">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity
             android:name=".TimerActivity"
             android:label="@string/title_activity_walking" />
         <activity

@@ -33,10 +33,7 @@
         <activity android:name=".MenuActivity" />
         <activity android:name=".CreateAccActivity" />
         <activity android:name=".TimerActivity" />
-        <activity
-            android:name=".MapsActivity">
-
-        </activity>
+        <activity android:name=".MapsActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,14 +41,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".ActivityTrackerService"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
-                <!--action android:name="com.google.android.gms.wearable.DATA_CHANGED" /-->
+
+                <!-- action android:name="com.google.android.gms.wearable.DATA_CHANGED" / -->
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-                <data android:scheme="wear" android:host="*" />
+
+                <data
+                    android:host="*"
+                    android:scheme="wear" />
             </intent-filter>
         </service>
     </application>
