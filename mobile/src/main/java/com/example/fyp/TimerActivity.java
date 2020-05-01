@@ -41,13 +41,10 @@ public class TimerActivity extends AppCompatActivity {
         playbtn= (ImageButton)findViewById(R.id.playbtn);
         actname = findViewById(R.id.etActivity);
         actname.setVisibility(View.GONE);
-        activity = getIntent().getStringExtra("NAME").toString();
-         //Toast.makeText(TimerActivity.this, activity, Toast.LENGTH_LONG).show();
+        activity = getIntent().getStringExtra("NAME");
 
         if(activity.matches("Others")){
             actname.setVisibility(View.VISIBLE);
-            activity =null;
-
         }
 
 
@@ -72,14 +69,11 @@ public class TimerActivity extends AppCompatActivity {
             chronometer.setBase(SystemClock.elapsedRealtime()- pauseOffset);
 
             chronometer.start();
-            Toast.makeText(TimerActivity.this,String.valueOf(chronometer.getText()), Toast.LENGTH_SHORT).show();
             running = true;
             playbtn.setImageResource(R.drawable.ic_pause_black_24dp);
         }
         else if(running){
             chronometer.stop();
-            Toast.makeText(TimerActivity.this,String.valueOf(chronometer.getText()), Toast.LENGTH_SHORT).show();
-
             pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
             running=false;
             playbtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
@@ -97,26 +91,44 @@ public class TimerActivity extends AppCompatActivity {
 
     }
     public void resetChronometer(View v){
+
+        if (getIntent().getStringExtra("NAME").matches("Others")) {
+
+            activity = actname.getText().toString();
+
+            if (activity.matches("")) {
+                activity = null;
+            } else {
+                activity = actname.getText().toString();
+            }
+        }
+
         duration = getSecondsFromDurationString(String.valueOf(chronometer.getText()));
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        pauseOffset=0;
-        pauseChronometer(v);
-        playbtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
 
-        SimpleDateFormat currentTime = new SimpleDateFormat("KK:mm:ss a");
-        saveCurrentTime = currentTime.format(calForDate.getTime());
+        if(activity!=null && duration!=null) {
 
-        if(activity!=null) {
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            pauseOffset=0;
+            pauseChronometer(v);
+            playbtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+
+            SimpleDateFormat currentTime = new SimpleDateFormat("KK:mm:ss a");
+            saveCurrentTime = currentTime.format(calForDate.getTime());
 
             activityInsert.setActivity(activity);
             activityInsert.setcDuration(duration);
             activityInsert.setcTime(saveCurrentTime);
             reff.push().setValue(activityInsert);
             Toast.makeText(TimerActivity.this, "Session has been recorded successfully", Toast.LENGTH_LONG).show();
+            actname.setText("");
+            super.onBackPressed();
         }
-        else{
-            Toast.makeText(TimerActivity.this, "Please enter activity name", Toast.LENGTH_LONG).show();
-
+        else if(activity==null){
+            Toast.makeText(TimerActivity.this, "Please enter activity name before ending session", Toast.LENGTH_LONG).show();
+            //pauseChronometer(v);
+        }
+        else if (duration==null){
+            Toast.makeText(TimerActivity.this, "Session duration is too short", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -140,8 +152,12 @@ public class TimerActivity extends AppCompatActivity {
             hours = Integer.parseInt(parts[0]);
         }
 
-        //total seconds = seconds + (minutes*60) + (hours*3600);
-
-        return (String.valueOf(hours)+":"+String.valueOf(minutes)+":"+String.valueOf(seconds));
+        seconds = seconds + (minutes*60) + (hours*3600);
+        if(seconds <5){
+            return null;
+        }
+        else {
+            return (String.valueOf(hours) + ":" + String.valueOf(minutes) + ":" + String.valueOf(seconds));
+        }
     }
 }
