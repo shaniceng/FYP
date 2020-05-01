@@ -84,11 +84,11 @@ public class SettingsFragment extends Fragment {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                 name.setText(userProfile.getUserName());
                 email.setText(userProfile.getUserEmail());
-                age.setText(userProfile.getUserAge());
-                gender.setText(userProfile.getUserGender());
-                height.setText(userProfile.getUserHeight());
-                weight.setText(userProfile.getUserWeight());
-                birthday.setText(userProfile.getUserBirthday());
+                age.setText("Age: " + userProfile.getUserAge() + " years old");
+                gender.setText("Gender: "+ userProfile.getUserGender());
+                height.setText("Height: " + userProfile.getUserHeight() + " cm");
+                weight.setText("Weight: " +userProfile.getUserWeight() +" kg");
+                birthday.setText("Birthday: " +userProfile.getUserBirthday());
             }
 
             @Override
