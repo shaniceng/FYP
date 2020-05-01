@@ -14,12 +14,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.TimerTask;
+
 import static android.view.View.GONE;
 
 public class ExerciseFragment extends AppCompatActivity implements  View.OnClickListener{
 
     Button back, walking,jogging,running,taichi,yoga,zumba,strength,others;
     String activityname;
+    ActivityInsert activityInsert;
+    TimerActivity name;
+    Intent intent;
 
 
     @Override
@@ -65,6 +70,7 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
         zumba.setOnClickListener(this);
         strength.setOnClickListener(this);
         others.setOnClickListener(this);
+        intent = new Intent(ExerciseFragment.this,TimerActivity.class);
 
     }
 
@@ -72,29 +78,36 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btnWalking:
-                startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
-                activityname = "walking";
+                intent.putExtra("NAME","Walking");
+                startActivity(intent);
                 break;
             case R.id.btnJogging:
-                startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
+                intent.putExtra("NAME","Jogging");
+                startActivity(intent);
                 break;
             case R.id.btnRunning:
-                startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
+                intent.putExtra("NAME","Running");
+                startActivity(intent);
                 break;
             case R.id.btnTaiChi:
-                startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
+                intent.putExtra("NAME","Tai Chi");
+                startActivity(intent);
                 break;
             case R.id.btnYoga:
-                startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
+                intent.putExtra("NAME","Yoga");
+                startActivity(intent);
                 break;
             case R.id.btnZumba:
-                startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
+                intent.putExtra("NAME","Zumba");
+                startActivity(intent);
                 break;
             case R.id.btnStrength:
-                startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
+                intent.putExtra("NAME","Strength");
+                startActivity(intent);
                 break;
             case R.id.btnOthers:
-                startActivity(new Intent(ExerciseFragment.this,TimerActivity.class));
+                intent.putExtra("NAME","Others");
+                startActivity(intent);
                 break;
 
         }
