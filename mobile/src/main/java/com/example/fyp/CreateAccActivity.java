@@ -134,7 +134,7 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
 
     private void sendUserData(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
+        DatabaseReference myRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid() );
         UserProfile userProfile=new UserProfile(name,email,age, gender, height, weight, birthday);
         myRef.setValue(userProfile);
     }

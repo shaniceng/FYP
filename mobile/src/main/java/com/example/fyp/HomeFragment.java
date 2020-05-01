@@ -103,8 +103,8 @@ public class HomeFragment extends Fragment{
     private LineData lineData ;
     private YAxis leftAxis;
 
-    private int[] menuIcons = {R.drawable.ic_icon_awesome_walking, R.drawable.ic_icon_awesome_jogging,R.drawable.ic_awesome_running,
-            R.drawable.ic_awesome_taichi,R.drawable.ic_awesome_yoga,R.drawable.ic_awesome_zumba,
+    private int[] menuIcons = {R.drawable.ic_icon_awesome_walking, R.drawable.ic_icon_awesome_jogging,R.drawable.ic_awesome_running
+            ,R.drawable.ic_awesome_taichi,R.drawable.ic_awesome_yoga,R.drawable.ic_awesome_zumba,
             R.drawable.ic_awesome_swimming,R.drawable.ic_awesome_strengthtraining,R.drawable.ic_awesome_others};
 
     FloatingActionButton fab;
@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment{
 
 
         //get Max heart rate for each individual age
-        DatabaseReference mydatabaseRef = firebaseDatabase.getReference(firebaseAuth.getUid());
+        DatabaseReference mydatabaseRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
         mydatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -257,7 +257,7 @@ public class HomeFragment extends Fragment{
 
     private void insertLockInData() {
         Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
         String cTime = format.format(currentTime.getTime());
         String id = lockinDataBaseRef.push().getKey();
         LockInValue lockInValue = new LockInValue(message,time,cTime);
@@ -335,6 +335,16 @@ public class HomeFragment extends Fragment{
         //y-rightaxis
         lineChart.getAxisRight().setEnabled(false);
         lineChart.setVisibleXRangeMaximum(6f);
+
+
+        lineDataSet.setValues(dataVals);
+        lineDataSet.setLabel("Heart rate");
+        iLineDataSets.clear();
+        iLineDataSets.add(lineDataSet);
+
+        lineData = new LineData(iLineDataSets);
+        lineChart.clear();
+        lineChart.setData(lineData);
         lineChart.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -342,14 +352,6 @@ public class HomeFragment extends Fragment{
                         YAxis.AxisDependency.RIGHT);
             }
         }, 6000);
-
-        lineDataSet.setValues(dataVals);
-        lineDataSet.setLabel("Heart rate");
-        iLineDataSets.clear();
-        iLineDataSets.add(lineDataSet);
-        lineData = new LineData(iLineDataSets);
-        lineChart.clear();
-        lineChart.setData(lineData);
         lineChart.invalidate();
 
     }
@@ -360,15 +362,15 @@ public class HomeFragment extends Fragment{
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(intent.getStringExtra("message")!=null){
-                message = intent.getStringExtra("message");
-                Log.v(TAG, "Main activity received message: " + message);
-                insertLockInData();
+            if(intent.getStringExtra("message")!=null ||intent.getStringExtra("timing")!=null) {
+                if (intent.getStringExtra("message") != null) {
+                    message = intent.getStringExtra("message");
+                    Log.v(TAG, "Main activity received message: " + message);
+                    insertLockInData();
 
-            }
-            else if(intent.getStringExtra("timing")!=null) {
-               time  = intent.getStringExtra("timing");
-
+                } else if (intent.getStringExtra("timing") != null) {
+                    time = intent.getStringExtra("timing");
+                }
 
             }
             else if(intent.getStringExtra("heartRate")!=null){
@@ -459,38 +461,7 @@ public class HomeFragment extends Fragment{
     //insert activity into home page
     public void InsertRecyclerView(){
 
-        if(message!=null) {
-            switch (message) {
-                case "Brisk Walking":
-                    image.add(menuIcons[0]);
-                    break;
-                case "Jogging":
-                    image.add(menuIcons[1]);
-                    break;
-                case "Running":
-                    image.add(menuIcons[2]);
-                    break;
-                case "Tai Chi":
-                    image.add(menuIcons[3]);
-                    break;
-                case "Yoga":
-                    image.add(menuIcons[4]);
-                    break;
-                case "Zumba":
-                    image.add(menuIcons[5]);
-                    break;
-                case "Swimming":
-                    image.add(menuIcons[6]);
-                    break;
-                case "Strength Training":
-                    image.add(menuIcons[7]);
-                    break;
-                default:
-                    image.add(menuIcons[8]);
-            }
-        } else{
-            image.add(menuIcons[8]);
-        }
+
 
         mlayoutManager=new LinearLayoutManager(getContext());
         mrecyclerView.setHasFixedSize(true);
