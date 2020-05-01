@@ -103,10 +103,6 @@ public class HomeFragment extends Fragment{
     private LineData lineData ;
     private YAxis leftAxis;
 
-    private int[] menuIcons = {R.drawable.ic_icon_awesome_walking, R.drawable.ic_icon_awesome_jogging,R.drawable.ic_awesome_running
-            ,R.drawable.ic_awesome_taichi,R.drawable.ic_awesome_yoga,R.drawable.ic_awesome_zumba,
-            R.drawable.ic_awesome_swimming,R.drawable.ic_awesome_strengthtraining,R.drawable.ic_awesome_others};
-
     FloatingActionButton fab;
     public HomeFragment() {
         // Required empty public constructor
@@ -460,9 +456,6 @@ public class HomeFragment extends Fragment{
 
     //insert activity into home page
     public void InsertRecyclerView(){
-
-
-
         mlayoutManager=new LinearLayoutManager(getContext());
         mrecyclerView.setHasFixedSize(true);
         mAdapter = new CustomAdapter(mDataSet,mTimeSet, currentTimeA, image);

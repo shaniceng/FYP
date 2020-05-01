@@ -118,12 +118,6 @@ public class TrackActivity extends WearableActivity {
             public void onClick(View v) {
                 displaySpeechRecognizer();
 
-
-                /*String sporting = sports.getText().toString();
-                finish();
-                Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
-                intent.putExtra(EXTRA_TEXT,sporting);
-                startActivity(intent);*/
             }
         });
         strength_training.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +164,7 @@ public class TrackActivity extends WearableActivity {
             String spokenText = results.get(0);
             // Do something with spokenText
 
+            finish();
             Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
             intent.putExtra(EXTRA_TEXT,spokenText);
             startActivity(intent);
