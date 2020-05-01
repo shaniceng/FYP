@@ -66,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.fyp.App.CHANNEL_1_ID;
@@ -311,7 +312,7 @@ public class HomeFragment extends Fragment{
                 return lineChart.getAxisLeft().getAxisMinimum();
             }
         });
-        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+        Drawable drawable = ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.fade_red);
         lineDataSet.setFillDrawable(drawable);
 
 
