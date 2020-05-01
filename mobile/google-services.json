@@ -15,34 +15,13 @@
       },
       "oauth_client": [
         {
-          "client_id": "823471095534-r5v9stk0lb2d755f7bqq1hqgt2ibse4p.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAZkfm0o_1DtquQ_KIWOgIz2HrWv0Uyi1E"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "823471095534-r5v9stk0lb2d755f7bqq1hqgt2ibse4p.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:823471095534:android:c1a80c8bc8dedb2c2dbdff",
-        "android_client_info": {
-          "package_name": "com.example.fyptester"
-        }
-      },
-      "oauth_client": [
+          "client_id": "823471095534-fe90iro1l8dg7b0t361j3b7lnj5oc5c4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fyp",
+            "certificate_hash": "f69590a09ecdc17c9693d10648b91818e21b0e39"
+          }
+        },
         {
           "client_id": "823471095534-r5v9stk0lb2d755f7bqq1hqgt2ibse4p.apps.googleusercontent.com",
           "client_type": 3
