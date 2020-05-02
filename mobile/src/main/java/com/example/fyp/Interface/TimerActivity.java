@@ -1,24 +1,25 @@
-package com.example.fyp;
+package com.example.fyp.Interface;
 
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentManager;
 
+import com.example.fyp.ActivityInsert;
+import com.example.fyp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Timer;
 
 public class TimerActivity extends AppCompatActivity {
     private Chronometer chronometer;
@@ -31,6 +32,8 @@ public class TimerActivity extends AppCompatActivity {
     DatabaseReference reff;
     ActivityInsert activityInsert;
     EditText actname;
+    ImageView imageAct;
+    Button back;
 
 
 
@@ -42,10 +45,22 @@ public class TimerActivity extends AppCompatActivity {
         actname = findViewById(R.id.etActivity);
         actname.setVisibility(View.GONE);
         activity = getIntent().getStringExtra("NAME");
+        imageAct =findViewById(R.id.ivActivity);
+
+        int image = getIntent().getIntExtra("image",R.drawable.ic_icon_awesome_walking);
+        imageAct.setImageResource(image);
 
         if(activity.matches("Others")){
             actname.setVisibility(View.VISIBLE);
         }
+
+        back =findViewById(R.id.backbutton2);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
 

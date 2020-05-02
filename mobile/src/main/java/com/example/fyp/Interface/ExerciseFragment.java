@@ -1,22 +1,14 @@
-package com.example.fyp;
+package com.example.fyp.Interface;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import java.util.TimerTask;
-
-import static android.view.View.GONE;
+import com.example.fyp.ActivityInsert;
+import com.example.fyp.R;
 
 public class ExerciseFragment extends AppCompatActivity implements  View.OnClickListener{
 
@@ -32,13 +24,13 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
-       /* back =findViewById(R.id.backbutton);
+        back =findViewById(R.id.backbutton);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                back.setVisibility(GONE);
-
-               //For fragment to fragment
+                //back.setVisibility(GONE);
+                onBackPressed();
+               /*//For fragment to fragment
                //   FragmentManager fm = getSupportFragmentManager();
                 //  Fragment fragment =new HomeFragment();
                 //  HomeFragment homefragment = new HomeFragment();
@@ -49,9 +41,9 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
                 FragmentManager fm = getSupportFragmentManager();
                 HomeFragment homefragment = new HomeFragment();
                 fm.beginTransaction().replace(R.id.exercise_layout,homefragment).commit();
-
+                */
             }
-        }); */
+        });
 
         walking =findViewById(R.id.btnWalking);
         jogging =findViewById(R.id.btnJogging);
@@ -79,34 +71,42 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
         switch(v.getId()){
             case R.id.btnWalking:
                 intent.putExtra("NAME","Walking");
+                intent.putExtra("image",R.drawable.ic_icon_awesome_walking);
                 startActivity(intent);
                 break;
             case R.id.btnJogging:
                 intent.putExtra("NAME","Jogging");
+                intent.putExtra("image",R.drawable.ic_icon_awesome_jogging);
                 startActivity(intent);
                 break;
             case R.id.btnRunning:
                 intent.putExtra("NAME","Running");
+                intent.putExtra("image",R.drawable.ic_awesome_running);
                 startActivity(intent);
                 break;
             case R.id.btnTaiChi:
                 intent.putExtra("NAME","Tai Chi");
+                intent.putExtra("image",R.drawable.ic_awesome_taichi);
                 startActivity(intent);
                 break;
             case R.id.btnYoga:
                 intent.putExtra("NAME","Yoga");
+                intent.putExtra("image",R.drawable.ic_awesome_yoga);
                 startActivity(intent);
                 break;
             case R.id.btnZumba:
                 intent.putExtra("NAME","Zumba");
+                intent.putExtra("image",R.drawable.ic_awesome_zumba);
                 startActivity(intent);
                 break;
             case R.id.btnStrength:
                 intent.putExtra("NAME","Strength");
+                intent.putExtra("image",R.drawable.ic_awesome_strengthtraining);
                 startActivity(intent);
                 break;
             case R.id.btnOthers:
                 intent.putExtra("NAME","Others");
+                intent.putExtra("image",R.drawable.ic_awesome_others);
                 startActivity(intent);
                 break;
 

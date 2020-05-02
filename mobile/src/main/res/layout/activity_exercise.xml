@@ -9,7 +9,7 @@
     android:background="#E8E8E8"
 
     android:id="@+id/exercise_layout"
-    tools:context=".ExerciseFragment">
+    tools:context=".Interface.ExerciseFragment">
 
 
     <TextView
@@ -56,7 +56,7 @@
             android:layout_marginStart="40dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_walking"
+            android:drawableTop="@drawable/ic_icon_awesome_jogging"
             android:padding="10dp"
             android:text="Jogging"
             app:layout_constraintStart_toEndOf="@+id/btnWalking"
@@ -69,7 +69,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_walking"
+            android:drawableTop="@drawable/ic_awesome_running"
             android:padding="10dp"
             android:text="Running"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +83,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_walking"
+            android:drawableTop="@drawable/ic_awesome_taichi"
             android:padding="10dp"
             android:text="Tai Chi"
             app:layout_constraintStart_toEndOf="@+id/btnRunning"
@@ -96,7 +96,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_walking"
+            android:drawableTop="@drawable/ic_awesome_yoga"
             android:padding="10dp"
             android:text="Yoga"
             app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +110,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_walking"
+            android:drawableTop="@drawable/ic_awesome_zumba"
             android:padding="10dp"
             android:text="Zumba"
             app:layout_constraintStart_toEndOf="@+id/btnYoga"
@@ -123,7 +123,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_walking"
+            android:drawableTop="@drawable/ic_awesome_strengthtraining"
             android:padding="10dp"
             android:text="Strength-training"
             app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +137,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/round"
             android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_walking"
+            android:drawableTop="@drawable/ic_awesome_others"
             android:padding="10dp"
             android:text="Others"
             app:layout_constraintStart_toEndOf="@+id/btnStrength"
@@ -148,11 +148,11 @@
 
     <Button
         android:id="@+id/backbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_arrow_back_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
