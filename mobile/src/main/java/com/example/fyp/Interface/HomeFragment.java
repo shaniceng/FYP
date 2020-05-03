@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<Integer> image;
     private ArrayList<Entry> yValues;
     private String time;
-    private String message, steps, heart, max_HeartRate;
+    private String message, steps, heart, max_HeartRate, notiRadioText;
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
     private int currentHeartRate, MaxHeartRate, currentStepsCount;
@@ -162,6 +162,7 @@ public class HomeFragment extends Fragment{
         circularProgressBar.setProgressMax(7500);
 
         notificationManager = NotificationManagerCompat.from(getActivity());
+        getRadioText();
         Refresh();
 
         retrieveStepsData();
@@ -267,13 +268,13 @@ public class HomeFragment extends Fragment{
                         InsertRecyclerView();
                     }
                 }else{
-                    Toast.makeText(getActivity(),"Error in retrieving activity", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"No activity to retrieve", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getActivity(),"Error in retrieving activity", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -381,6 +382,24 @@ public class HomeFragment extends Fragment{
         }
     }
 
+    public void getRadioText(){
+        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        DatabaseReference databaseRadio = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
+        databaseRadio.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                notiRadioText = userProfile.getRadiotext();
+                Log.d("radioText", notiRadioText);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 
 
@@ -423,9 +442,22 @@ public class HomeFragment extends Fragment{
         }
 
         //insert different timings here for prompt of steps count
-        if(currentStepsCount < (7500/2) && (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)){
+        if((currentStepsCount < (7500/2) )&& (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)){
             sendOnChannel2(null);
 
+        }
+
+        if(notiRadioText == "4pm") {
+            if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 14) && (currentTime.get(Calendar.MINUTE) == 53)) {
+                sendOnChannel2(null);
+
+            }
+        }
+        else if(notiRadioText == "7pm") {
+            if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
+                sendOnChannel2(null);
+
+            }
         }
         runnable(60000);
 
