@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E8E8E8"
-    tools:context=".SettingsFragment">
+    tools:context=".Interface.SettingsFragment">
 
     <Button
         android:id="@+id/btnEditProfile"
