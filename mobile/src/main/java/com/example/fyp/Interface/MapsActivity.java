@@ -106,7 +106,9 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         park.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //code later
+
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                SingaporeParks();
                 nearByPlace("park");
 
             }
@@ -115,8 +117,9 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         gym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mMap.clear();
                 //code later
-                nearByPlace("gym");
+                //nearByPlace("gym");
 
             }
         });
@@ -125,7 +128,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
                 //code later
-                nearByPlace("stadium");
+                //nearByPlace("stadium");
 
             }
         });
@@ -136,6 +139,58 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
 
     }
 
+    private void SingaporeParks(){
+        LatLng Vista_Park = new LatLng(1.4297, 103.7961);
+        LatLng Singapore_Botanic_Gardens = new LatLng(1.3138397,103.8159136);
+        LatLng War_Memorial_Park = new LatLng(1.2928957, 103.8546778);
+        LatLng Bishan_Ang_Mo_Kio_Park = new LatLng(1.3634088, 103.8435614);
+        LatLng Fort_Canning_Park = new LatLng(1.2945126, 103.845801);
+        LatLng Punggol_Park = new LatLng(1.3769802, 103.8986585);
+        LatLng Punggol_Waterway_Park = new LatLng(1.4111243, 103.9046565);
+        LatLng Bukit_Timah_Nature_Reserve = new LatLng(1.3540562, 103.7769454);
+        LatLng Fountain_of_Wealth = new LatLng(1.2947425, 103.8589026);
+        LatLng Springleaf_Nature_Park = new LatLng(1.4014737, 103.8174668);
+        LatLng Dairy_Farm_Nature_Park = new LatLng(1.3618794, 103.7753145);
+        LatLng Kebun_Baru_Bird_Corner = new LatLng(1.3743012, 103.8402669);
+        LatLng Ang_Mo_Kio_Town_Garden_West = new LatLng(1.3720142, 103.8257891);
+        LatLng Lower_Peirce_Reservoir_Park = new LatLng(1.3743688, 103.8434332);
+        LatLng Bishan_Park_1_Near_Grub = new LatLng(1.3643363, 103.8351006);
+        LatLng Bishan_Ang_Mo_Kio_Park_Inclusive_Playground = new LatLng(1.3632348, 103.8442614);
+        LatLng TreeTop_Walk = new LatLng(1.3607287, 103.8125215);
+        LatLng Neram_Park = new LatLng(1.3856951, 103.8658256);
+        LatLng MacRitchie_Trail = new LatLng(1.3419705, 103.8348653);
+        LatLng MacRitchie_Reservoir_Park = new LatLng(1.3413779, 103.8348204);
+
+
+        mMap.addMarker(new MarkerOptions().position(Vista_Park).title("Vista Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Singapore_Botanic_Gardens).title("Singapore Botanic Gardens").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(War_Memorial_Park).title("War Memorial Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+
+        mMap.addMarker(new MarkerOptions().position(Bishan_Ang_Mo_Kio_Park).title("Bishan Ang Mo Kio Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Fort_Canning_Park).title("Fort Canning Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Punggol_Park).title("Punggol Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Punggol_Waterway_Park).title("Punggol_Waterway_Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Bukit_Timah_Nature_Reserve).title("Bukit Timah Nature Reserve").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Fountain_of_Wealth).title("Fountain of Wealth").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Springleaf_Nature_Park).title("Springleaf Nature").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Dairy_Farm_Nature_Park).title("Dairy Farm Nature Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Kebun_Baru_Bird_Corner).title("Kebun Baru Bird Corner").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Ang_Mo_Kio_Town_Garden_West).title("Ang Mo Kio Town Garden West").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Lower_Peirce_Reservoir_Park).title("Lower Peirce Reservoir Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Bishan_Park_1_Near_Grub).title("Bishan Park 1 Near Grub").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Bishan_Ang_Mo_Kio_Park_Inclusive_Playground).title("Bishan-Ang Mo Kio Park Inclusive Playground").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        //mMap.addMarker(new MarkerOptions().position(TreeTop_Walk).title("Bishan-Ang Mo Kio Park Inclusive Playground").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(TreeTop_Walk).title("TreeTop Walk").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(Neram_Park).title("Neram Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(MacRitchie_Trail).title("MacRitchie Trail").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+        mMap.addMarker(new MarkerOptions().position(MacRitchie_Reservoir_Park).title("MacRitchie Reservoir Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_mappin_40)));
+
+
+    }
+
+    private void SingaporeGym(){
+
+    }
 
     private void nearByPlace(final String placeType) {
 
@@ -208,7 +263,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
     private String getUrl(double latitude, double longitude, String placeType) {
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location="+latitude+","+longitude);
-        googlePlacesUrl.append("&radius="+1000);
+        googlePlacesUrl.append("&radius="+1000000);
         googlePlacesUrl.append("&type="+placeType);
         googlePlacesUrl.append("&sensor=true");
         googlePlacesUrl.append("&key="+getResources().getString(R.string.browser_key));
