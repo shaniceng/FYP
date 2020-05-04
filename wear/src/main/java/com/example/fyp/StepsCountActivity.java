@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -40,6 +41,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     private String step;
     private String msg;
     private static final String Initial_Count_Key = "FootStepInitialCount";
+    private static final String Current_Steps_Now = "CurrentStepsCount";
     String stepsPath = "/steps-count-path";
 
     private static final String AMBIENT_UPDATE_ACTION = "com.your.package.action.AMBIENT_STEPS_UPDATE";
@@ -81,7 +83,16 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             public void onReceive(Context context, Intent intent) { refreshDisplayAndSetNextUpdate(); }
         };
 
-        resetSteps();
+
+        currentTime = Calendar.getInstance();
+        if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 00)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+            prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(Initial_Count_Key, prefs.getInt(Current_Steps_Now, -1));
+            editor.commit();
+        }
+       
+       // resetSteps();
     }
     private void getStepCount() {
         SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
@@ -95,7 +106,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        resetSteps();
+        //resetSteps();
         currentTime = Calendar.getInstance();
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
 
@@ -106,15 +117,20 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
                 editor.putInt(Initial_Count_Key, (int) event.values[0]);
                 editor.commit();
             }
-            if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+           /* if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 00)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt(Initial_Count_Key, (int) event.values[0]);
                 editor.commit();
-            }
+            }*/
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(Current_Steps_Now, (int) event.values[0]);
+            editor.commit();
+
+            //currentSteps = (int) event.values[0];
 
             int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
-             int stepCount = (int) event.values[0] - startingStepCount;
-              currentSteps = (int) event.values[0];
+            int stepCount = (int) event.values[0] - startingStepCount;
+
 
             step = String.valueOf(stepCount);
             msg = "Steps count:\n " + step + " steps";
@@ -138,7 +154,8 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
         registerReceiver(ambientUpdateBroadcastReceiver, filter);
         refreshDisplayAndSetNextUpdate();
-        resetSteps();
+       // startAlarm();
+        //resetSteps();
 
     }
 
@@ -153,7 +170,8 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         unregisterReceiver(ambientUpdateBroadcastReceiver);
         ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
         refreshDisplayAndSetNextUpdate();
-        resetSteps();
+        //startAlarm();
+        //resetSteps();
     }
 
     @Override
@@ -166,7 +184,8 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             editor.commit();
         }
         refreshDisplayAndSetNextUpdate();
-        resetSteps();
+       // cancelAlarm();
+        //resetSteps();
     }
 
 
@@ -262,25 +281,28 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             editor.commit();
         }
         refreshDisplayAndSetNextUpdate();
-        resetSteps();
+        //startAlarm();
+        //resetSteps();
     }
 
     @Override
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
         refreshDisplayAndSetNextUpdate();
+        //resetSteps();
     }
 
-    public void resetSteps(){
-        Intent myIntent = new Intent(StepsCountActivity.this, StepsCountActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(StepsCountActivity.this, 0, myIntent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+    /*private void startAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
         Calendar firingCal= Calendar.getInstance();
         Calendar currentCal = Calendar.getInstance();
 
-        firingCal.set(Calendar.HOUR, 0); // At the hour you wanna fire
-        firingCal.set(Calendar.MINUTE, 0); // Particular minute
+        firingCal.set(Calendar.HOUR_OF_DAY, 20); // At the hour you wanna fire
+        firingCal.set(Calendar.MINUTE, 24); // Particular minute
         firingCal.set(Calendar.SECOND, 0); // particular second
 
         long intendedTime = firingCal.getTimeInMillis();
@@ -289,14 +311,55 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         if(intendedTime >= currentTime){
             // you can add buffer time too here to ignore some small differences in milliseconds
             // set from today
-            alarmManager.setRepeating(AlarmManager.RTC, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
         } else{
             // set from next day
             // you might consider using calendar.add() for adding one day to the current day
             firingCal.add(Calendar.DAY_OF_MONTH, 1);
             intendedTime = firingCal.getTimeInMillis();
 
-            alarmManager.setRepeating(AlarmManager.RTC, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
         }
     }
+
+    private void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+        //mTextView.setText("Alarm canceled");
+    }*/
+
+   /* public void resetSteps(){
+        Intent myIntent = new Intent(StepsCountActivity.this, MyAlarmReceiver.class);
+        myIntent.putExtra("id", Initial_Count_Key);
+        myIntent.putExtra("count",currentSteps);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(StepsCountActivity.this, 0, myIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Calendar firingCal= Calendar.getInstance();
+        Calendar currentCal = Calendar.getInstance();
+
+        firingCal.set(Calendar.HOUR_OF_DAY, 18); // At the hour you wanna fire
+        firingCal.set(Calendar.MINUTE, 05); // Particular minute
+        firingCal.set(Calendar.SECOND, 0); // particular second
+
+        long intendedTime = firingCal.getTimeInMillis();
+        long currentTime = currentCal.getTimeInMillis();
+
+        if(intendedTime >= currentTime){
+            // you can add buffer time too here to ignore some small differences in milliseconds
+            // set from today
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+        } else{
+            // set from next day
+            // you might consider using calendar.add() for adding one day to the current day
+            firingCal.add(Calendar.DAY_OF_MONTH, 1);
+            intendedTime = firingCal.getTimeInMillis();
+
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+    }*/
+
 }
