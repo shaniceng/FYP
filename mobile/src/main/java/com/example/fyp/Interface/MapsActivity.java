@@ -107,6 +107,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
 
+                mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
                 SingaporeParks();
                 //nearByPlace("park");
@@ -132,8 +133,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
 
             }
         });
-
-
 
         return v;
 
