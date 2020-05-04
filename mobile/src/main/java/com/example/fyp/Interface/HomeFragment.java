@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment{
         retrieveStepsData();
         retrieveData();
         RetrieveLockInData();
-        retrieveMaxHR();
+        //retrieveMaxHR();
         return v;
     }
 
@@ -316,8 +316,11 @@ public class HomeFragment extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 MaxHRPointValue maxHRPointValue = dataSnapshot.getValue(MaxHRPointValue.class);
-                maxHeartrate.setText(String.valueOf(maxHRPointValue.getHr()) + "BPM");
 
+                if(maxHRPointValue.getHr()!=0) {
+                    MaxHeartRate = maxHRPointValue.getHr();
+                    maxHeartrate.setText(String.valueOf(maxHRPointValue.getHr()) + "BPM");
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -431,7 +434,6 @@ public class HomeFragment extends Fragment{
             }
             else if(intent.getStringExtra("maxHeartRate") !=null){
                 max_HeartRate = intent.getStringExtra("maxHeartRate");
-                //maxHeartrate.setText(max_HeartRate);
                 insertMaxHR();
             }
         }
