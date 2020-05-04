@@ -79,7 +79,7 @@ import static com.example.fyp.App.CHANNEL_1_ID;
 public class HomeFragment extends Fragment{
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, tv5;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -119,12 +119,27 @@ public class HomeFragment extends Fragment{
 
         yValues= new ArrayList<>();
 
+        
+
         mrecyclerView = v.findViewById(R.id.activity_RV);
         stepsCount=v.findViewById(R.id.tvStepsCount);
         HeartRate=v.findViewById(R.id.tvResting_value);
         maxHeartrate=v.findViewById(R.id.tvMAX_value);
         ratedMaxHR=v.findViewById(R.id.tvAvgResting_value);
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
+
+        // Register the local broadcast receiver
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+
+
+        circularProgressBar.setProgressMax(7500);
+
+        notificationManager = NotificationManagerCompat.from(getActivity());
+        getRadioText();
+        Refresh();
+
 
         lineChart=v.findViewById(R.id.lineChart);
         firebaseDatabase= FirebaseDatabase.getInstance();
@@ -138,6 +153,9 @@ public class HomeFragment extends Fragment{
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
 
+        retrieveStepsData();
+        retrieveData();
+        RetrieveLockInData();
 
 
         //get Max heart rate for each individual age
@@ -164,27 +182,11 @@ public class HomeFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), ExerciseFragment.class));
-
-
-
             }
         });
 
-        // Register the local broadcast receiver
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
 
-        circularProgressBar.setProgressMax(7500);
-
-        notificationManager = NotificationManagerCompat.from(getActivity());
-        getRadioText();
-        Refresh();
-
-        retrieveStepsData();
-        retrieveData();
-        RetrieveLockInData();
         //retrieveMaxHR();
         return v;
     }
@@ -250,6 +252,7 @@ public class HomeFragment extends Fragment{
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         StepsPointValue stepsPointValue = myDataSnapshot.getValue(StepsPointValue.class);
+                        currentStepsCount=stepsPointValue.getSteps();
                         stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
                         circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
                     }
@@ -451,6 +454,7 @@ public class HomeFragment extends Fragment{
     }
 
     public void getRadioText(){
+
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
         DatabaseReference databaseRadio = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
@@ -459,7 +463,8 @@ public class HomeFragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                 notiRadioText = userProfile.getRadiotext();
-                Log.d("radioText", notiRadioText);
+                //tv5.setText(notiRadioText);
+                //Refresh();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -487,7 +492,21 @@ public class HomeFragment extends Fragment{
 
     public void sendOnChannel2(View v) {
         String title = "Alert!!!";
-        String message = "You have not reached the minimum steps!\n Please exercise!";
+        String message = "You have not reached half of the minimum steps today!\n Please exercise!";
+
+        Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_message)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManager.notify(1, notification);
+    }
+    public void sendOnChannel3(View v) {
+        String title = "Alert!!!";
+        String message = "You have not reached the minimum steps today!\n Please exercise!";
 
         Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_message)
@@ -513,18 +532,22 @@ public class HomeFragment extends Fragment{
 
         }
 
-        if(notiRadioText == "4pm") {
-            if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 14) && (currentTime.get(Calendar.MINUTE) == 53)) {
-                sendOnChannel2(null);
+        getRadioText();
+        //tv5.setText(notiRadioText);
+        //sendOnChannel3(null);
+        if("4pm".equals(notiRadioText) ) {
+            if ( (currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) &&(currentStepsCount < 7500) ) {
+                sendOnChannel3(null);
 
             }
         }
-        else if(notiRadioText == "7pm") {
+        else if("7pm".equals(notiRadioText) ) {
             if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
-                sendOnChannel2(null);
+                sendOnChannel3(null);
 
             }
         }
+
         runnable(60000);
 
     }
