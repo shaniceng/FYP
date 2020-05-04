@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment{
 
         yValues= new ArrayList<>();
 
-        
+
 
         mrecyclerView = v.findViewById(R.id.activity_RV);
         stepsCount=v.findViewById(R.id.tvStepsCount);

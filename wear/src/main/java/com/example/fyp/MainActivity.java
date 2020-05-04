@@ -109,6 +109,7 @@ public class MainActivity extends WearableActivity {
         };
 
         Refresh();
+        startAlarm();
 
     }
 
@@ -212,6 +213,7 @@ public class MainActivity extends WearableActivity {
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
         refreshDisplayAndSetNextUpdate();
+        startAlarm();
 
     }
 
@@ -227,6 +229,7 @@ public class MainActivity extends WearableActivity {
         IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
         registerReceiver(ambientUpdateBroadcastReceiver, filter);
         refreshDisplayAndSetNextUpdate();
+        startAlarm();
 
 
     }
@@ -237,6 +240,7 @@ public class MainActivity extends WearableActivity {
         unregisterReceiver(ambientUpdateBroadcastReceiver);
         ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
         refreshDisplayAndSetNextUpdate();
+        startAlarm();
 
     }
 
@@ -244,9 +248,37 @@ public class MainActivity extends WearableActivity {
     protected void onStop() {
         super.onStop();
         refreshDisplayAndSetNextUpdate();
+        startAlarm();
 
     }
 
+    private void startAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
+        Calendar firingCal= Calendar.getInstance();
+        Calendar currentCal = Calendar.getInstance();
+
+        firingCal.set(Calendar.HOUR_OF_DAY, 00); // At the hour you wanna fire
+        firingCal.set(Calendar.MINUTE, 0); // Particular minute
+        firingCal.set(Calendar.SECOND, 0); // particular second
+
+        long intendedTime = firingCal.getTimeInMillis();
+        long currentTime = currentCal.getTimeInMillis();
+
+        if(intendedTime >= currentTime){
+            // you can add buffer time too here to ignore some small differences in milliseconds
+            // set from today
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+        } else{
+            // set from next day
+            // you might consider using calendar.add() for adding one day to the current day
+            firingCal.add(Calendar.DAY_OF_MONTH, 1);
+            intendedTime = firingCal.getTimeInMillis();
+
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+    }
 }
 
