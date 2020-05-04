@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -35,14 +37,19 @@ import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,10 +59,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.sql.Time;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.fyp.App.CHANNEL_1_ID;
 
@@ -173,10 +183,16 @@ public class HomeFragment extends Fragment{
 
     private void insertData() {
         String id = databaseReference.push().getKey();
-        Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+       //Calendar currentTime = Calendar.getInstance();
+        //SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        Calendar currentTime    = Calendar.getInstance()                ;
+        int hour                = currentTime.get(Calendar.HOUR_OF_DAY) ;
+        int minute              = currentTime.get(Calendar.MINUTE)      ;
+        int second              = currentTime.get(Calendar.SECOND);
 
-        int x = Integer.parseInt(format.format(currentTime.getTime()).replaceAll("[\\D]",""));
+        int storetime = (hour*3600) + (minute*60) +second;
+        //store in seconds
+        int x =(storetime);
         int y = currentHeartRate;
         PointValue pointValue = new PointValue(x,y);
         databaseReference.child(id).setValue(pointValue);
@@ -193,6 +209,7 @@ public class HomeFragment extends Fragment{
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
+
                         dataVals.add(new Entry(pointValue.getxValue(), pointValue.getyValue()));
 
                     }
@@ -303,10 +320,12 @@ public class HomeFragment extends Fragment{
 
         //display x-axis
         XAxis xAxis = lineChart.getXAxis();
-        xAxis.setLabelCount(5);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.enableGridDashedLine(0.1f,100f,0);
         xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setLabelCount(5, true);
+       // xAxis.setValueFormatter(new MyValueFormatter());
+
 
         //display y-axis
         //y-left-axis
@@ -319,8 +338,8 @@ public class HomeFragment extends Fragment{
 
         //y-rightaxis
         lineChart.getAxisRight().setEnabled(false);
-        lineChart.setVisibleXRangeMaximum(6f);
-
+        lineChart.setVisibleXRangeMinimum(5f);
+        lineChart.setVisibleXRangeMaximum(8f);
 
         lineDataSet.setValues(dataVals);
         lineDataSet.setLabel("Heart rate");
@@ -328,6 +347,7 @@ public class HomeFragment extends Fragment{
         iLineDataSets.add(lineDataSet);
 
         lineData = new LineData(iLineDataSets);
+
         lineChart.clear();
         lineChart.setData(lineData);
         lineChart.postDelayed(new Runnable() {
@@ -336,11 +356,12 @@ public class HomeFragment extends Fragment{
                 lineChart.moveViewTo(lineData.getXMax(), lineData.getYMax(),
                         YAxis.AxisDependency.RIGHT);
             }
-        }, 6000);
+        }, 1000);
+        lineChart.setVisibleXRangeMinimum(300f);
+        lineChart.setVisibleXRangeMaximum(3600f);
         lineChart.invalidate();
 
     }
-
 
     //setup a broadcast receiver to receive the messages from the wear device via the listenerService.
     public class MessageReceiver extends BroadcastReceiver {
