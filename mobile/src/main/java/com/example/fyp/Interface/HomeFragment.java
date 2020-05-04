@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fyp.CustomAdapter;
 import com.example.fyp.Interface.ExerciseFragment;
 import com.example.fyp.LockInValue;
+import com.example.fyp.MaxHRPointValue;
 import com.example.fyp.PointValue;
 import com.example.fyp.R;
 import com.example.fyp.StepsPointValue;
@@ -64,6 +65,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -85,6 +87,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<String> mTimeSet;
     private ArrayList<String> currentTimeA;
     private ArrayList<Integer> image;
+    private ArrayList <Integer> avrHeartRate = new ArrayList();
     private ArrayList<Entry> yValues;
     private String time;
     private String message, steps, heart, max_HeartRate, notiRadioText;
@@ -94,12 +97,14 @@ public class HomeFragment extends Fragment{
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef;
+    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref;
     private LineChart lineChart;
     private LineDataSet lineDataSet = new LineDataSet(null, null);
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
     private LineData lineData ;
     private YAxis leftAxis;
+
+    private String date;
 
     FloatingActionButton fab;
     public HomeFragment() {
@@ -127,10 +132,12 @@ public class HomeFragment extends Fragment{
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
+        date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
         databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/" + date);
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
+        maxHRDataref = firebaseDatabase.getReference("Chart Values/" +"MaxHeartRate/" +currentuser + "/" + date );
+
 
 
         //get Max heart rate for each individual age
@@ -140,7 +147,7 @@ public class HomeFragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                 MaxHeartRate= 220 - Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]",""));
-                ratedMaxHR.setText(String.valueOf(MaxHeartRate));
+                //ratedMaxHR.setText(String.valueOf(MaxHeartRate));
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -178,6 +185,7 @@ public class HomeFragment extends Fragment{
         retrieveStepsData();
         retrieveData();
         RetrieveLockInData();
+        retrieveMaxHR();
         return v;
     }
 
@@ -297,6 +305,27 @@ public class HomeFragment extends Fragment{
 
     }
 
+    private void insertMaxHR() {
+        MaxHRPointValue maxHRPointValue = new MaxHRPointValue(MaxHeartRate);
+        maxHRDataref.setValue(maxHRPointValue);
+        retrieveMaxHR();
+    }
+
+    private void retrieveMaxHR() {
+        maxHRDataref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                MaxHRPointValue maxHRPointValue = dataSnapshot.getValue(MaxHRPointValue.class);
+                maxHeartrate.setText(String.valueOf(maxHRPointValue.getHr()) + "BPM");
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void showChart(ArrayList<Entry> dataVals) {
 
         //display line
@@ -384,8 +413,13 @@ public class HomeFragment extends Fragment{
                 Log.v(TAG, "Main activity received message: " + message);
                 HeartRate.setText(heart);
                 currentHeartRate=Integer.parseInt(heart.replaceAll("[\\D]",""));
-                ratedMaxHR.setText(String.valueOf(currentHeartRate));
                 insertData();
+                avrHeartRate.add(currentHeartRate);
+                ratedMaxHR.setText( String.format("%.1f", calculateAverage(avrHeartRate))+"BPM");
+                //String.format("Value of a: %.2f", a)
+
+
+
             }
             else if(intent.getStringExtra("countSteps")!=null){
                 steps = intent.getStringExtra("countSteps");
@@ -397,10 +431,21 @@ public class HomeFragment extends Fragment{
             }
             else if(intent.getStringExtra("maxHeartRate") !=null){
                 max_HeartRate = intent.getStringExtra("maxHeartRate");
-                maxHeartrate.setText(max_HeartRate);
-
+                //maxHeartrate.setText(max_HeartRate);
+                insertMaxHR();
             }
         }
+    }
+
+    private double calculateAverage(List<Integer> avrHeartRate) {
+        Integer sum = 0;
+        if(!avrHeartRate.isEmpty()) {
+            for (Integer avrHR : avrHeartRate) {
+                sum += avrHR;
+            }
+            return sum.doubleValue() / avrHeartRate.size();
+        }
+        return sum;
     }
 
     public void getRadioText(){
@@ -420,8 +465,6 @@ public class HomeFragment extends Fragment{
             }
         });
     }
-
-
 
 
         //notification
