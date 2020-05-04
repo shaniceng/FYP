@@ -91,7 +91,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             editor.putInt(Initial_Count_Key, prefs.getInt(Current_Steps_Now, -1));
             editor.commit();
         }
-       
+
        // resetSteps();
     }
     private void getStepCount() {
