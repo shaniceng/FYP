@@ -136,7 +136,7 @@ public class HomeFragment extends Fragment{
         databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/" + date);
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
-        maxHRDataref = firebaseDatabase.getReference("Chart Values/" +"MaxHeartRate/" +currentuser + "/" + date );
+        maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
 
 
 
