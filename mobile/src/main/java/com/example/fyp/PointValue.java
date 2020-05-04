@@ -1,7 +1,8 @@
 package com.example.fyp;
 
 public class PointValue {
-    int xValue, yValue;
+    int xValue;
+    int yValue;
 
 
     public PointValue() {

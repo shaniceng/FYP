@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Refresh();
+        //Refresh();
     }
 
     private void validate(String userEmail, String userPassword){
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void sendOnChannel1(View v) {
+   /* public void sendOnChannel1(View v) {
         String title = "Alert!!!";
         String message = "You have not reached the sufficient steps for today!";
 
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         handler.postDelayed(runnable, milliseconds);
-    }
+    }*/
 
 
 }

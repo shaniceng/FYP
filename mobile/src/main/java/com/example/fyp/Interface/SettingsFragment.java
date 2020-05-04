@@ -32,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class SettingsFragment extends Fragment {
     private Button editProfile, logout;
-    private TextView name, email, age, gender, height, weight, birthday, batt;
+    private TextView name, email, age, gender, height, weight, birthday, batt, radioButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private String battery;
@@ -54,6 +54,7 @@ public class SettingsFragment extends Fragment {
         weight=v.findViewById(R.id.tvWeight);
         birthday=v.findViewById(R.id.tvBirthday);
         batt=v.findViewById(R.id.tvBattery);
+        radioButton=v.findViewById(R.id.tvRadioButton);
 
         logout=v.findViewById(R.id.btnLogout);
         firebaseAuth=FirebaseAuth.getInstance();
@@ -91,6 +92,7 @@ public class SettingsFragment extends Fragment {
                 height.setText("Height: " + userProfile.getUserHeight() + " cm");
                 weight.setText("Weight: " +userProfile.getUserWeight() +" kg");
                 birthday.setText("Birthday: " +userProfile.getUserBirthday());
+                radioButton.setText("Preferred prompt at: " + userProfile.getRadiotext());
             }
 
             @Override

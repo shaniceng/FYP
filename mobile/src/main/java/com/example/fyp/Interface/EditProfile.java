@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +27,16 @@ public class EditProfile extends AppCompatActivity {
  private TextView userEmail;
  private FirebaseAuth firebaseAuth;
  private FirebaseDatabase firebaseDatabase;
+ private String radioEdittext;
+ private RadioButton radioButton;
+ private RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        radioGroup=findViewById(R.id.radioGroupEdit);
 
         newUserName=findViewById(R.id.etNewUserName);
         newUserAge=findViewById(R.id.etEditAge);
@@ -80,7 +87,7 @@ public class EditProfile extends AppCompatActivity {
                 String weight = newUserWeight.getText().toString();
                 String birthday = newUserBirthday.getText().toString();
 
-                UserProfile userProfile=new UserProfile(name, email, age,gender,height,weight,birthday);
+                UserProfile userProfile=new UserProfile(name, email, age,gender,height,weight,birthday, radioEdittext);
                 databaseReference.setValue(userProfile);
 
                 finish();
@@ -88,5 +95,12 @@ public class EditProfile extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void checkButton(View v){
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        radioButton=findViewById(radioId);
+        radioEdittext = radioButton.getText().toString();
+
     }
 }

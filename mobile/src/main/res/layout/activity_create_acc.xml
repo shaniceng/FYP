@@ -168,6 +168,39 @@
             android:inputType="text"
             android:paddingLeft="16dp" />
 
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="32dp">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prefer time for notification prompt:"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/rb4pm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4pm"
+                android:textSize="18sp"
+                android:onClick="checkButton"/>
+
+            <RadioButton
+                android:id="@+id/rb7pm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7pm"
+                android:textSize="18sp"
+                android:onClick="checkButton"/>
+        </RadioGroup>
+
         <Button
             android:id="@+id/btnCreateAcc"
             android:layout_width="match_parent"

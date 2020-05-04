@@ -109,6 +109,7 @@ public class MainActivity extends WearableActivity {
         };
 
         Refresh();
+
     }
 
 
@@ -211,6 +212,7 @@ public class MainActivity extends WearableActivity {
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
         refreshDisplayAndSetNextUpdate();
+
     }
 
     @Override
@@ -235,12 +237,16 @@ public class MainActivity extends WearableActivity {
         unregisterReceiver(ambientUpdateBroadcastReceiver);
         ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
         refreshDisplayAndSetNextUpdate();
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         refreshDisplayAndSetNextUpdate();
+
     }
+
+
 }
 

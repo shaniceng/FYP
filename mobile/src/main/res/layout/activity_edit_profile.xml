@@ -268,6 +268,38 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <RadioGroup
+                    android:id="@+id/radioGroupEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Prefer time for notification prompt:"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb4pm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="4pm"
+                        android:textSize="18sp"
+                        android:onClick="checkButton"/>
+
+                    <RadioButton
+                        android:id="@+id/rb7pm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="7pm"
+                        android:textSize="18sp"
+                        android:onClick="checkButton"/>
+                </RadioGroup>
+
 
 
 

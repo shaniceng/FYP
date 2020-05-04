@@ -7,6 +7,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +28,9 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
     private Button regButtton;
     private ImageButton closeButton;
     private FirebaseAuth firebaseAuth;
-    private String email, name, password, age, gender, height, weight, birthday;
+    private String email, name, password, age, gender, height, weight, birthday, radiotext;
+    private RadioButton radioButton;
+    private RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
         setContentView(R.layout.activity_create_acc);
         setupUIViews();
 
+        radioGroup=findViewById(R.id.radioGroup);
 
         firebaseAuth=FirebaseAuth.getInstance();
 
@@ -135,7 +140,7 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
     private void sendUserData(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid() );
-        UserProfile userProfile=new UserProfile(name,email,age, gender, height, weight, birthday);
+        UserProfile userProfile=new UserProfile(name,email,age, gender, height, weight, birthday, radiotext);
         myRef.setValue(userProfile);
     }
 
@@ -151,4 +156,11 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
 
     }
     //to here
+
+    public void checkButton(View v){
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        radioButton=findViewById(radioId);
+        radiotext = radioButton.getText().toString();
+
+    }
 }
