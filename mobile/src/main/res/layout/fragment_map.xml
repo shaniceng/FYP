@@ -20,7 +20,7 @@
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="400dp">
+            android:layout_height="600dp">
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/map"
@@ -28,23 +28,40 @@
                 android:layout_height="match_parent" />
 
         </FrameLayout>
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/parkbutton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Park Button" />
+            android:text="Park Button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
             android:id="@+id/gymbutton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="gym Button" />
+            android:layout_marginStart="19dp"
+            android:text="gym Button"
+            app:layout_constraintEnd_toStartOf="@+id/stadiumbutton"
+            app:layout_constraintStart_toEndOf="@+id/parkbutton"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
             android:id="@+id/stadiumbutton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="stadium Button" />
+            android:text="stadium Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
         <androidx.recyclerview.widget.RecyclerView
