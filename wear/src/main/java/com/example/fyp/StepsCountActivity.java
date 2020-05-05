@@ -189,6 +189,8 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     }
 
 
+
+
     class SendThread extends Thread {
         String path;
         String message;
@@ -290,6 +292,12 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         super.onUpdateAmbient();
         refreshDisplayAndSetNextUpdate();
         //resetSteps();
+    }
+
+    @Override
+    public void onDestroy() {
+        ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+        super.onDestroy();
     }
 
 

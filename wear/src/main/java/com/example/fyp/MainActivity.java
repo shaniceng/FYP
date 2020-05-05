@@ -70,7 +70,7 @@ public class MainActivity extends WearableActivity {
         String time = "Current Time:" + format.format(calendar.getTime());
         mTextView.setText(time);
 
-
+        //startAlarm();
         // Enables Always-on
         setAmbientEnabled();
         trackActivity.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +110,7 @@ public class MainActivity extends WearableActivity {
 
         Refresh();
         startAlarm();
+
 
     }
 
@@ -213,7 +214,7 @@ public class MainActivity extends WearableActivity {
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
         refreshDisplayAndSetNextUpdate();
-        startAlarm();
+        //startAlarm();
 
     }
 
@@ -221,6 +222,7 @@ public class MainActivity extends WearableActivity {
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
         refreshDisplayAndSetNextUpdate();
+        //startAlarm();
     }
 
     @Override
@@ -248,7 +250,7 @@ public class MainActivity extends WearableActivity {
     protected void onStop() {
         super.onStop();
         refreshDisplayAndSetNextUpdate();
-        startAlarm();
+        cancelAlarm();
 
     }
 
@@ -261,8 +263,8 @@ public class MainActivity extends WearableActivity {
         Calendar currentCal = Calendar.getInstance();
 
         firingCal.set(Calendar.HOUR_OF_DAY, 00); // At the hour you wanna fire
-        firingCal.set(Calendar.MINUTE, 0); // Particular minute
-        firingCal.set(Calendar.SECOND, 0); // particular second
+        firingCal.set(Calendar.MINUTE, 00); // Particular minute
+        firingCal.set(Calendar.SECOND, 00); // particular second
 
         long intendedTime = firingCal.getTimeInMillis();
         long currentTime = currentCal.getTimeInMillis();
@@ -280,5 +282,14 @@ public class MainActivity extends WearableActivity {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
         }
     }
+    private void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+        //mTextView.setText("Alarm canceled");
+    }
+
 }
 

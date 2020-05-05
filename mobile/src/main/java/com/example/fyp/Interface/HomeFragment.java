@@ -88,6 +88,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<String> currentTimeA;
     private ArrayList<Integer> image;
     private ArrayList <Integer> avrHeartRate = new ArrayList();
+    private ArrayList <Integer> sumOf = new ArrayList();
     private ArrayList<Entry> yValues;
     private String time;
     private String message, steps, heart, max_HeartRate, notiRadioText;
@@ -443,6 +444,17 @@ public class HomeFragment extends Fragment{
     }
 
     private double calculateAverage(List<Integer> avrHeartRate) {
+        Integer sum = 0;
+        if(!avrHeartRate.isEmpty()) {
+            for (Integer avrHR : avrHeartRate) {
+                sum += avrHR;
+            }
+            return sum.doubleValue() / avrHeartRate.size();
+        }
+        return sum;
+    }
+
+    private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
         Integer sum = 0;
         if(!avrHeartRate.isEmpty()) {
             for (Integer avrHR : avrHeartRate) {
