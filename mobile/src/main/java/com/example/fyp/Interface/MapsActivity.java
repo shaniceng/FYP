@@ -108,6 +108,12 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
             public void onClick(View v) {
 
                 mMap.clear();
+
+                latitude=mLastLocation.getLatitude();
+                longitude=mLastLocation.getLongitude();
+
+                LatLng latLng = new LatLng(latitude,longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
                 SingaporeParks();
                 //nearByPlace("park");
@@ -119,7 +125,15 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
                 mMap.clear();
-                //code later
+
+                latitude=mLastLocation.getLatitude();
+                longitude=mLastLocation.getLongitude();
+
+                LatLng latLng = new LatLng(latitude,longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                SingaporeGym();
+
                 //nearByPlace("gym");
 
             }
@@ -128,7 +142,15 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         stadium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //code later
+                mMap.clear();
+
+                latitude=mLastLocation.getLatitude();
+                longitude=mLastLocation.getLongitude();
+
+                LatLng latLng = new LatLng(latitude,longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                //SingaporeGym();
                 //nearByPlace("stadium");
 
             }
@@ -151,6 +173,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         mMap.addMarker(new MarkerOptions().position(Woodlands_Town_Part_East).title("Woodlands Town Part East").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
         LatLng Vista_Park = new LatLng(1.4297, 103.7961);
         mMap.addMarker(new MarkerOptions().position(Vista_Park).title("Vista Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        LatLng Mandai_Tekong_Park = new LatLng(1.4349, 103.7941);
+        mMap.addMarker(new MarkerOptions().position(Mandai_Tekong_Park).title("Mandai Tekong Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
 
         //Sembawang
         LatLng Sembawang_Park = new LatLng (1.4604, 103.8363);
@@ -501,15 +525,15 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         mMap.addMarker(new MarkerOptions().position(Aljunied_Park).title("Aljunied Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
 
         //Ang Mo Kio
-        //LatLng Ang_Mo_Kio_Town_Garden_West = new LatLng(1.3720142, 103.8257891);
-        //mMap.addMarker(new MarkerOptions().position(Ang_Mo_Kio_Town_Garden_West).title("Ang Mo Kio Town Garden West").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        LatLng Ang_Mo_Kio_Town_Garden_West = new LatLng(1.3743688, 103.8434332);
+        mMap.addMarker(new MarkerOptions().position(Ang_Mo_Kio_Town_Garden_West).title("Ang Mo Kio Town Garden West").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
         LatLng Bishan_Ang_Mo_Kio_Park = new LatLng(1.3634088, 103.8435614);
         mMap.addMarker(new MarkerOptions().position(Bishan_Ang_Mo_Kio_Park).title("Bishan-Ang Mo Kio Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
         LatLng Gelenggang_Park = new LatLng (1.3734,103.8296);
         mMap.addMarker(new MarkerOptions().position(Gelenggang_Park).title("Gelenggang Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
         LatLng Leban_Park = new LatLng (1.3728,103.829);
         mMap.addMarker(new MarkerOptions().position(Leban_Park).title("Leban Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        LatLng Lower_Peirce_Reservoir_Park = new LatLng(1.3743688, 103.8434332);
+        LatLng Lower_Peirce_Reservoir_Park = new LatLng(1.3720142, 103.8257891);
         mMap.addMarker(new MarkerOptions().position(Lower_Peirce_Reservoir_Park).title("Lower Peirce Reservoir Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
         LatLng Thomson_Nature_Park = new LatLng (1.3858,103.8215);
         mMap.addMarker(new MarkerOptions().position(Thomson_Nature_Park).title("Thomson Nature Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
@@ -562,6 +586,236 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
     }
 
     private void SingaporeGym(){
+
+        //Amore Fitness
+        LatLng AF_Jurong= new LatLng(1.339312,103.705409);
+        mMap.addMarker(new MarkerOptions().position(AF_Jurong).title("Amore Fitness & Boutique Spa (Ladies only)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng AF_Hillion = new LatLng(1.378237,103.763838);
+        mMap.addMarker(new MarkerOptions().position(AF_Hillion).title("Amore Fitness & Boutique Spa (Ladies only)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng AF_Orchard= new LatLng(1.300009,103.845348);
+        mMap.addMarker(new MarkerOptions().position(AF_Orchard).title("Amore Fitness & Boutique Spa (Ladies only)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng AF_Bugis= new LatLng(1.298936,103.855062);
+        mMap.addMarker(new MarkerOptions().position(AF_Bugis).title("Amore Fitness & Boutique Spa (Ladies only)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng AF_Woodlands= new LatLng(1.435164,103.787190);
+        mMap.addMarker(new MarkerOptions().position(AF_Woodlands).title("Amore Fitness & Boutique Spa (Ladies only)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng AF_Heartland_Mall= new LatLng(1.359489,103.885019);
+        mMap.addMarker(new MarkerOptions().position(AF_Heartland_Mall).title("Amore Fitness & Boutique Spa (Ladies only)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng AF_Tampines= new LatLng(1.354310,103.945015);
+        mMap.addMarker(new MarkerOptions().position(AF_Tampines).title("Amore Fitness & Boutique Spa").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng AF_Kovan= new LatLng(1.359498,103.885019);
+        mMap.addMarker(new MarkerOptions().position(AF_Kovan).title("Amore Fitness & Boutique Spa (Ladies only)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        //amorefitness.com,6266 6822
+
+        //Anytime Fitness
+        LatLng ATF_Sembawang= new LatLng(1.441785,103.825146);
+        mMap.addMarker(new MarkerOptions().position(ATF_Sembawang).title("Anytime Fitness Sembawang").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Woods_Square= new LatLng(1.441785,103.825146);
+        mMap.addMarker(new MarkerOptions().position(ATF_Woods_Square).title("Anytime Fitness Woods Square").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Admiralty= new LatLng(1.439115, 103.802638);
+        mMap.addMarker(new MarkerOptions().position(ATF_Admiralty).title("Anytime Fitness Admiralty").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Woodgrove= new LatLng(1.429252,103.780894);
+        mMap.addMarker(new MarkerOptions().position(ATF_Woodgrove).title("Anytime Fitness @ The Woodgrove").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Woodlands= new LatLng(1.427608,103.792182);
+        mMap.addMarker(new MarkerOptions().position(ATF_Woodlands).title("Anytime Fitness Woodlands").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Junction9= new LatLng(1.433212,103.841639);
+        mMap.addMarker(new MarkerOptions().position(ATF_Junction9).title("Anytime Fitness Junction 9").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_NorthPoint_City= new LatLng(1.428545,103.836557);
+        mMap.addMarker(new MarkerOptions().position(ATF_NorthPoint_City).title("Anytime Fitness Northpoint City").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Wisteria= new LatLng(1.418198,103.841366);
+        mMap.addMarker(new MarkerOptions().position(ATF_Wisteria).title("Anytime Fitness Wisteria Mall").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_AMK= new LatLng(1.371968,103.845946);
+        mMap.addMarker(new MarkerOptions().position(ATF_AMK).title("Anytime Fitness Ang Mo Kio").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Greenwich= new LatLng(1.387700,103.869542);
+        mMap.addMarker(new MarkerOptions().position(ATF_Greenwich).title("Anytime Fitness Greenwich").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_SengKang_Rivervale= new LatLng(1.392345,103.904515);
+        mMap.addMarker(new MarkerOptions().position(ATF_SengKang_Rivervale).title("Anytime Fitness Sengkang Rivervale").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Buangkok= new LatLng(1.379298,103.87821);
+        mMap.addMarker(new MarkerOptions().position(ATF_Buangkok).title("Anytime Fitness Buangkok").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Hougang_Central= new LatLng(1.375016,103.882749);
+        mMap.addMarker(new MarkerOptions().position(ATF_Hougang_Central).title("Anytime Fitness Hougang Central").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Serangoon_Garden= new LatLng(1.363265,103.865831);
+        mMap.addMarker(new MarkerOptions().position(ATF_Serangoon_Garden).title("Anytime Fitness Serangoon Garden").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Upper_Thomson= new LatLng(1.354012,103.834230);
+        mMap.addMarker(new MarkerOptions().position(ATF_Upper_Thomson).title("Anytime Fitness Upper Thomson").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Punggol_Oasis= new LatLng(1.402847, 103.913231);
+        mMap.addMarker(new MarkerOptions().position(ATF_Punggol_Oasis).title("Anytime Fitness Punggol Oasis").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_SKH_Campus= new LatLng(1.396426, 103.891121);
+        mMap.addMarker(new MarkerOptions().position(ATF_SKH_Campus).title("Anytime Fitness SKH Campus").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Bishan_North= new LatLng(1.361371, 103.841574);
+        mMap.addMarker(new MarkerOptions().position(ATF_Bishan_North).title("Anytime Fitness Bishan North").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Kovan= new LatLng(1.360367, 103.888094);
+        mMap.addMarker(new MarkerOptions().position(ATF_Kovan).title("Anytime Fitness Kovan").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Elias_CC= new LatLng(1.378329, 103.942766);
+        mMap.addMarker(new MarkerOptions().position(ATF_Elias_CC).title("Anytime Fitness Elias CC").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Pasir_Ris= new LatLng(1.375738, 103.955730);
+        mMap.addMarker(new MarkerOptions().position(ATF_Pasir_Ris).title("Anytime Fitness Pasir Ris E!Hub").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Tampines_North= new LatLng(1.357473, 103.946582);
+        mMap.addMarker(new MarkerOptions().position(ATF_Tampines_North).title("Anytime Fitness Tampines North").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Tampines_1= new LatLng(1.348848, 103.935738);
+        mMap.addMarker(new MarkerOptions().position(ATF_Tampines_1).title("Anytime Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Tampines_2= new LatLng(1.354301, 103.960276);
+        mMap.addMarker(new MarkerOptions().position(ATF_Tampines_2).title("Anytime Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Loyang_Point= new LatLng(1.367024, 103.964746);
+        mMap.addMarker(new MarkerOptions().position(ATF_Loyang_Point).title("Anytime Fitness Loyang Point").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Eastpoint_Mall= new LatLng(1.342658, 103.953158);
+        mMap.addMarker(new MarkerOptions().position(ATF_Eastpoint_Mall).title("Anytime Fitness Eastpoint Mall").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Changi_Business_Park= new LatLng(1.334696, 103.966575);
+        mMap.addMarker(new MarkerOptions().position(ATF_Changi_Business_Park).title("Anytime Fitness Changi Business Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Bedok_South_Bedok_CC= new LatLng(1.324712, 103.936021);
+        mMap.addMarker(new MarkerOptions().position(ATF_Bedok_South_Bedok_CC).title("Anytime Fitness Bedok South Bedok CC").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Kembangan= new LatLng(1.318825, 103.911415);
+        mMap.addMarker(new MarkerOptions().position(ATF_Kembangan).title("Anytime Fitness Kembangan").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Paya_Lebar= new LatLng(1.315137, 103.894644);
+        mMap.addMarker(new MarkerOptions().position(ATF_Paya_Lebar).title("Anytime Fitness Paya Lebar").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_East_Coast= new LatLng(1.301708, 103.906695);
+        mMap.addMarker(new MarkerOptions().position(ATF_East_Coast).title("Anytime Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Kallang_Wave= new LatLng(1.303030, 103.873546);
+        mMap.addMarker(new MarkerOptions().position(ATF_Kallang_Wave).title("Anytime Fitness Kallang Wave").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Upper_Cross_Street= new LatLng(1.284414, 103.845793);
+        mMap.addMarker(new MarkerOptions().position(ATF_Upper_Cross_Street).title("Anytime Fitness Upper Cross Street").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Cecil_Street= new LatLng(1.283031, 103.850493);
+        mMap.addMarker(new MarkerOptions().position(ATF_Cecil_Street).title("Anytime Fitness Cecil Street").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Cantonment_Road= new LatLng(1.279191, 103.840169);
+        mMap.addMarker(new MarkerOptions().position(ATF_Cantonment_Road).title("Anytime Fitness Cantonment Road").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Tanjong_Pagar= new LatLng(1.276082, 103.845915);
+        mMap.addMarker(new MarkerOptions().position(ATF_Tanjong_Pagar).title("Anytime Fitness Tanjong Pagar").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_HarbourFront= new LatLng(1.264541, 103.818660);
+        mMap.addMarker(new MarkerOptions().position(ATF_HarbourFront).title("Anytime Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Queensway= new LatLng(1.287946, 103.803675);
+        mMap.addMarker(new MarkerOptions().position(ATF_Queensway).title("Anytime Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Telok_Blangah= new LatLng(1.273702, 103.808377);
+        mMap.addMarker(new MarkerOptions().position(ATF_Telok_Blangah).title("Anytime Fitness Telok Blangah").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Pasir_Panjang= new LatLng(1.274558, 103.794223);
+        mMap.addMarker(new MarkerOptions().position(ATF_Pasir_Panjang).title("Anytime Fitness Pasir Panjang").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Clementi_City= new LatLng(1.314244, 103.765172);
+        mMap.addMarker(new MarkerOptions().position(ATF_Clementi_City).title("Anytime Fitness Clementi City").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_West_Coast= new LatLng(1.303729, 103.766028);
+        mMap.addMarker(new MarkerOptions().position(ATF_West_Coast).title("Anytime Fitness West Coast").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Taman_Jurong= new LatLng(1.335522, 103.721574);
+        mMap.addMarker(new MarkerOptions().position(ATF_Taman_Jurong).title("Anytime Fitness Boon Lay").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Boon_Lay= new LatLng(1.346288, 103.712581);
+        mMap.addMarker(new MarkerOptions().position(ATF_Boon_Lay).title("Anytime Fitness Taman Jurong").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Jurong_West= new LatLng(1.342407, 103.692496);
+        mMap.addMarker(new MarkerOptions().position(ATF_Jurong_West).title("Anytime Fitness Jurong West").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Bukit_Timah= new LatLng(1.339029, 103.776989);
+        mMap.addMarker(new MarkerOptions().position(ATF_Bukit_Timah).title("Anytime Fitness Bukit Timah").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_CSC_Bukit_Batok= new LatLng(1.352706, 103.749808);
+        mMap.addMarker(new MarkerOptions().position(ATF_CSC_Bukit_Batok).title("Anytime Fitness CSC Bukit Batok").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Fitness_hillV2= new LatLng(1.363136, 103.764190);
+        mMap.addMarker(new MarkerOptions().position(ATF_Fitness_hillV2).title("Anytime Fitness hillV2").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Choa_Chu_Kang= new LatLng(1.376907, 103.745243);
+        mMap.addMarker(new MarkerOptions().position(ATF_Choa_Chu_Kang).title("Anytime Fitness Choa Chu Kang").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Yew_Tee= new LatLng(1.394958, 103.744725);
+        mMap.addMarker(new MarkerOptions().position(ATF_Yew_Tee).title("Anytime Fitness Yew Tee").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Tiong_Bahru_Plaza= new LatLng(1.286415, 103.826478);
+        mMap.addMarker(new MarkerOptions().position(ATF_Tiong_Bahru_Plaza).title("Anytime Fitness Tiong Bahru Plaza").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_River_Valley= new LatLng(1.292185, 103.826451);
+        mMap.addMarker(new MarkerOptions().position(ATF_River_Valley).title("Anytime Fitness River Valley").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Valley_Point= new LatLng(1.293406, 103.827208);
+        mMap.addMarker(new MarkerOptions().position(ATF_Valley_Point).title("Anytime Fitness Valley Point").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_PoMo_Mall= new LatLng(1.300162, 103.849072);
+        mMap.addMarker(new MarkerOptions().position(ATF_PoMo_Mall).title("Anytime Fitness PoMo Mall").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Tanglin= new LatLng(1.305707, 103.822954);
+        mMap.addMarker(new MarkerOptions().position(ATF_Tanglin).title("Anytime Fitness Tanglin").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Jalan_Besar= new LatLng(1.307420, 103.858449);
+        mMap.addMarker(new MarkerOptions().position(ATF_Jalan_Besar).title("Anytime Fitness Jalan Besar").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Stevens= new LatLng(1.319916, 103.827401);
+        mMap.addMarker(new MarkerOptions().position(ATF_Stevens).title("Anytime Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Novena= new LatLng(1.320991, 103.841810);
+        mMap.addMarker(new MarkerOptions().position(ATF_Novena).title("Anytime Fitness Novena").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Toa_Payoh= new LatLng(1.333202, 103.848635);
+        mMap.addMarker(new MarkerOptions().position(ATF_Toa_Payoh).title("Anytime Fitness Toa Payoh").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Potong_Pasir= new LatLng(1.329381, 103.869477);
+        mMap.addMarker(new MarkerOptions().position(ATF_Potong_Pasir).title("Anytime Fitness Potong Pasir").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Geylang_Bahru= new LatLng(1.324311, 103.869705);
+        mMap.addMarker(new MarkerOptions().position(ATF_Geylang_Bahru).title("Anytime Fitness Geylang Bahru").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Balestier= new LatLng(1.322989, 103.852886);
+        mMap.addMarker(new MarkerOptions().position(ATF_Balestier).title("Anytime Fitness Balestier").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Boon_Keng= new LatLng(1.314844, 103.859958);
+        mMap.addMarker(new MarkerOptions().position(ATF_Boon_Keng).title("Anytime Fitness Boon Keng").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_MacPherson= new LatLng(1.323432, 103.884716);
+        mMap.addMarker(new MarkerOptions().position(ATF_MacPherson).title("Anytime Fitness MacPherson").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_Hwi_Yoh= new LatLng(1.374776, 103.873642);
+        mMap.addMarker(new MarkerOptions().position(ATF_Hwi_Yoh).title("Anytime Fitness, Hwi Yoh").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ATF_nex= new LatLng(1.350963, 103.872407);
+        mMap.addMarker(new MarkerOptions().position(ATF_nex).title("Anytime Fitness nex").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+
+        //Contours Express Fitness Boutique
+        LatLng CE_Bedok= new LatLng(1.324729, 103.931670);
+        mMap.addMarker(new MarkerOptions().position(CE_Bedok).title("Contours Express Women's Gym Bedok").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng CE_Bishan= new LatLng(1.359656, 103.842076);
+        mMap.addMarker(new MarkerOptions().position(CE_Bishan).title("Contours Express Women's Gym Bishan").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng CE_Choa_Chu_Kang= new LatLng(1.381907, 103.749400);
+        mMap.addMarker(new MarkerOptions().position(CE_Choa_Chu_Kang).title("Contours Express - Choa Chu Kang").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng CE_Jurong_East= new LatLng(1.333796, 103.739798);
+        mMap.addMarker(new MarkerOptions().position(CE_Jurong_East).title("Contours Express Women's Gym Jurong East").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng CE_Pasir_Ris= new LatLng(1.376096, 103.946410);
+        mMap.addMarker(new MarkerOptions().position(CE_Pasir_Ris).title("Contours Express Women's Gym Pasir Ris").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng CE_Serangoon= new LatLng(1.354098, 103.870964);
+        mMap.addMarker(new MarkerOptions().position(CE_Serangoon).title("Contours Express Women's Gym Serangoon").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng CE_Tampines= new LatLng(1.353163, 103.954220);
+        mMap.addMarker(new MarkerOptions().position(CE_Tampines).title("Contours Express Women's Gym Tampines").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng CE_Woodlands= new LatLng(1.443708, 103.789132);
+        mMap.addMarker(new MarkerOptions().position(CE_Woodlands).title("Contours Express Women's Gym Woodlands").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng CE_Yishun= new LatLng(1.426946, 103.837330);
+        mMap.addMarker(new MarkerOptions().position(CE_Yishun).title("Contours Express Women's Gym Yishun").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+
+        //ActiveSG
+        LatLng ASG_AMK= new LatLng(1.366962, 103.840415);
+        mMap.addMarker(new MarkerOptions().position(ASG_AMK).title("ActiveSG Gym at Ang Mo Kio Community Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Fernvale_Square= new LatLng(1.391261, 103.872987);
+        mMap.addMarker(new MarkerOptions().position(ASG_Fernvale_Square).title("Fernvale Square ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        //LatLng ASG_Toa_Payoh= new LatLng(1.330523, 103.850778);
+        //mMap.addMarker(new MarkerOptions().position(ASG_Toa_Payoh).title("Toa Payoh ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Boon_Lay= new LatLng(1.347790, 103.711543);
+        mMap.addMarker(new MarkerOptions().position(ASG_Boon_Lay).title("ActiveSG Hockey Village @ Boon Lay").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Bishan= new LatLng(1.355539, 103.851013);
+        mMap.addMarker(new MarkerOptions().position(ASG_Bishan).title("Bishan ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Bukit_Gombak= new LatLng(1.359633, 103.752367);
+        mMap.addMarker(new MarkerOptions().position(ASG_Bukit_Gombak).title("Bukit Gombak ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Bukit_Batok= new LatLng(1.344538, 103.747918);
+        mMap.addMarker(new MarkerOptions().position(ASG_Bukit_Batok).title("Bukit Batok ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Choa_Chu_Kang= new LatLng(1.391056, 103.748152);
+        mMap.addMarker(new MarkerOptions().position(ASG_Choa_Chu_Kang).title("Choa Chu Kang ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Clementi= new LatLng(1.310981, 103.765001);
+        mMap.addMarker(new MarkerOptions().position(ASG_Clementi).title("Clementi ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Delta= new LatLng(1.290488, 103.820511);
+        mMap.addMarker(new MarkerOptions().position(ASG_Delta).title("Delta ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Enabling_Village= new LatLng(1.287258, 103.814820);
+        mMap.addMarker(new MarkerOptions().position(ASG_Enabling_Village).title("Enabling Village ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Bedok= new LatLng(1.326986, 103.932151);
+        mMap.addMarker(new MarkerOptions().position(ASG_Bedok).title("Heartbeat@Bedok ActiveSG Gym ").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Hougang= new LatLng(1.370795, 103.888158);
+        mMap.addMarker(new MarkerOptions().position(ASG_Hougang).title("Hougang ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Jalan_Besar= new LatLng(1.310555, 103.859658);
+        mMap.addMarker(new MarkerOptions().position(ASG_Jalan_Besar).title("Jalan Besar ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Jurong_East= new LatLng(1.346900, 103.729192);
+        mMap.addMarker(new MarkerOptions().position(ASG_Jurong_East).title("Jurong East ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Jurong_Lake= new LatLng(1.330536, 103.725610);
+        mMap.addMarker(new MarkerOptions().position(ASG_Jurong_Lake).title("Jurong Lake Gardens Gym ActiveSG").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Jurong_West= new LatLng(1.337832, 103.694191);
+        mMap.addMarker(new MarkerOptions().position(ASG_Jurong_West).title("Jurong West ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Pasir_Ris= new LatLng(1.374015, 103.951895);
+        mMap.addMarker(new MarkerOptions().position(ASG_Pasir_Ris).title("Pasir Ris ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Sengkang= new LatLng(1.396483, 103.886833);
+        mMap.addMarker(new MarkerOptions().position(ASG_Sengkang).title("Sengkang ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Tampines= new LatLng(1.353711, 103.940769);
+        mMap.addMarker(new MarkerOptions().position(ASG_Tampines).title("Tampines ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Toa_Payoh= new LatLng(1.330495, 103.850787);
+        mMap.addMarker(new MarkerOptions().position(ASG_Toa_Payoh).title("Toa Payoh ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Woodlands= new LatLng(1.434116, 103.779787);
+        mMap.addMarker(new MarkerOptions().position(ASG_Woodlands).title("Woodlands ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Yio_Chu_Kang= new LatLng(1.382243, 103.845928);
+        mMap.addMarker(new MarkerOptions().position(ASG_Yio_Chu_Kang).title("Yio Chu Kang ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng ASG_Yishun= new LatLng(1.411999, 103.831112);
+        mMap.addMarker(new MarkerOptions().position(ASG_Yishun).title("Yishun ActiveSG Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+
+
+
+
+        //LatLng gym= new LatLng();
+        //mMap.addMarker(new MarkerOptions().position().title("").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+
 
     }
 
