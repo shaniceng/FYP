@@ -22,6 +22,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PopUpActivity"
+            android:theme = "@style/AppTheme.CustomTheme">
+        </activity>
         <activity android:name=".PasswordActivity" />
 
         <meta-data
@@ -33,7 +36,7 @@
         <activity android:name=".MenuActivity" />
         <activity android:name=".CreateAccActivity" />
         <activity android:name=".Interface.TimerActivity" />
-        <activity android:name=".Interface.MapsActivity"></activity>
+        <activity android:name=".Interface.MapsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
