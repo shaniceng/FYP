@@ -6,12 +6,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,6 +101,8 @@ public class HomeFragment extends Fragment{
     private NotificationManagerCompat notificationManager;
     private int currentHeartRate, MaxHeartRate, currentStepsCount;
 
+    private static final String GET_firebase_steps = "firebaseStepsCount";
+
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref;
@@ -107,6 +111,8 @@ public class HomeFragment extends Fragment{
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
     private LineData lineData ;
     private YAxis leftAxis;
+
+    private SharedPreferences prefs;
 
 
     private String date;
@@ -190,8 +196,8 @@ public class HomeFragment extends Fragment{
             }
         });
 
-        //do shared prefs
-        if(currentStepsCount>=200){
+        //display pop up whenever over 7500 steps
+        if(prefs.getInt(GET_firebase_steps, -1)>=7500){
             startActivity(new Intent(getActivity(), PopUpActivity.class));
         }
 
@@ -254,6 +260,8 @@ public class HomeFragment extends Fragment{
     }
 
     private void retrieveStepsData() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
         stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -264,10 +272,16 @@ public class HomeFragment extends Fragment{
                         stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
                         circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
 
-                    //}
-               // }else{
-                    //Toast.makeText(getActivity(),"Error in retrieving steps", Toast.LENGTH_SHORT).show();
-                //}
+                    if(!prefs.contains(GET_firebase_steps)){
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt(GET_firebase_steps, 0);
+                        editor.commit();
+                    }else {
+                        SharedPreferences.Editor edit = prefs.edit();
+                        edit.putInt(GET_firebase_steps, currentStepsCount);
+                        edit.commit();
+                    }
+
             }
 
             @Override
