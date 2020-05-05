@@ -1,5 +1,6 @@
 package com.example.fyp.Interface;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,8 +32,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fyp.CustomAdapter;
 import com.example.fyp.Interface.ExerciseFragment;
 import com.example.fyp.LockInValue;
+import com.example.fyp.MainActivity;
 import com.example.fyp.MaxHRPointValue;
 import com.example.fyp.PointValue;
+import com.example.fyp.PopUpActivity;
 import com.example.fyp.R;
 import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
@@ -88,6 +91,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<String> currentTimeA;
     private ArrayList<Integer> image;
     private ArrayList <Integer> avrHeartRate = new ArrayList();
+    private ArrayList <Integer> sumOf = new ArrayList();
     private ArrayList<Entry> yValues;
     private String time;
     private String message, steps, heart, max_HeartRate, notiRadioText;
@@ -103,6 +107,7 @@ public class HomeFragment extends Fragment{
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
     private LineData lineData ;
     private YAxis leftAxis;
+
 
     private String date;
 
@@ -185,7 +190,10 @@ public class HomeFragment extends Fragment{
             }
         });
 
-
+        //do shared prefs
+        if(currentStepsCount>=200){
+            startActivity(new Intent(getActivity(), PopUpActivity.class));
+        }
 
         //retrieveMaxHR();
         return v;
@@ -238,9 +246,9 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertStepsData() {
-        String id = stepsDataBaseRef.push().getKey();
+        //String id = stepsDataBaseRef.push().getKey();
         StepsPointValue pointSteps = new StepsPointValue(currentStepsCount);
-        stepsDataBaseRef.child(id).setValue(pointSteps);
+        stepsDataBaseRef.setValue(pointSteps); //.child(id)
 
         retrieveStepsData();
     }
@@ -249,16 +257,17 @@ public class HomeFragment extends Fragment{
         stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChildren()){
-                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-                        StepsPointValue stepsPointValue = myDataSnapshot.getValue(StepsPointValue.class);
+                //if(dataSnapshot.hasChildren()){
+                    //for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
                         currentStepsCount=stepsPointValue.getSteps();
                         stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
                         circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
-                    }
-                }else{
-                    Toast.makeText(getActivity(),"Error in retrieving steps", Toast.LENGTH_SHORT).show();
-                }
+
+                    //}
+               // }else{
+                    //Toast.makeText(getActivity(),"Error in retrieving steps", Toast.LENGTH_SHORT).show();
+                //}
             }
 
             @Override
@@ -266,6 +275,7 @@ public class HomeFragment extends Fragment{
 
             }
         });
+
     }
 
     private void insertLockInData() {
@@ -443,6 +453,19 @@ public class HomeFragment extends Fragment{
     }
 
     private double calculateAverage(List<Integer> avrHeartRate) {
+        Integer sum = 0;
+        if(!avrHeartRate.isEmpty()) {
+            for (Integer avrHR : avrHeartRate) {
+                sum += avrHR;
+            }
+            return sum.doubleValue() / avrHeartRate.size();
+        }
+        return sum;
+    }
+
+
+    //calculate sum of moderate activity in a week (NOT DONE)
+    private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
         Integer sum = 0;
         if(!avrHeartRate.isEmpty()) {
             for (Integer avrHR : avrHeartRate) {

@@ -91,7 +91,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             editor.putInt(Initial_Count_Key, prefs.getInt(Current_Steps_Now, -1));
             editor.commit();
         }
-       
+
        // resetSteps();
     }
     private void getStepCount() {
@@ -117,22 +117,26 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
                 editor.putInt(Initial_Count_Key, (int) event.values[0]);
                 editor.commit();
             }
-           /* if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 00)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+            if(!prefs.contains("dailyCurrentSteps") || ((int) event.values[0] == 0)){
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt(Initial_Count_Key, (int) event.values[0]);
+                editor.putInt("dailyCurrentSteps", (int) event.values[0]);
                 editor.commit();
-            }*/
+            }
+
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(Current_Steps_Now, (int) event.values[0]);
             editor.commit();
 
-            //currentSteps = (int) event.values[0];
-
             int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
             int stepCount = (int) event.values[0] - startingStepCount;
 
+            //to send to mainActivity so can send to app
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putInt("dailyCurrentSteps", stepCount);
+            edit.commit();
 
-            step = String.valueOf(stepCount);
+
+            step = String.valueOf(prefs.getInt("dailyCurrentSteps", -1));
             msg = "Steps count:\n " + step + " steps";
             mTextViewSteps.setText(msg);
             circularProgressBar.setProgressWithAnimation(stepCount); // =1s
@@ -154,8 +158,6 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
         registerReceiver(ambientUpdateBroadcastReceiver, filter);
         refreshDisplayAndSetNextUpdate();
-       // startAlarm();
-        //resetSteps();
 
     }
 
@@ -170,22 +172,14 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         unregisterReceiver(ambientUpdateBroadcastReceiver);
         ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
         refreshDisplayAndSetNextUpdate();
-        //startAlarm();
-        //resetSteps();
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         sensorManager.registerListener(this, this.sensor, 3);
-        if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(Initial_Count_Key, currentSteps);
-            editor.commit();
-        }
         refreshDisplayAndSetNextUpdate();
-       // cancelAlarm();
-        //resetSteps();
     }
 
 
@@ -244,9 +238,10 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         if (isAmbient()) {
             // Implement data retrieval and update the screen for ambient mode
             sensorManager.registerListener(this, this.sensor, 3);
-            if(msg != null) {
-                new StepsCountActivity.SendThread(stepsPath, step).start();
-
+            if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt(Initial_Count_Key, currentSteps);
+                editor.commit();
             }
 
         } else {
@@ -275,91 +270,18 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
-        if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(Initial_Count_Key, currentSteps);
-            editor.commit();
-        }
         refreshDisplayAndSetNextUpdate();
-        //startAlarm();
-        //resetSteps();
     }
 
     @Override
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
         refreshDisplayAndSetNextUpdate();
-        //resetSteps();
     }
 
-
-    /*private void startAlarm() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-
-        Calendar firingCal= Calendar.getInstance();
-        Calendar currentCal = Calendar.getInstance();
-
-        firingCal.set(Calendar.HOUR_OF_DAY, 20); // At the hour you wanna fire
-        firingCal.set(Calendar.MINUTE, 24); // Particular minute
-        firingCal.set(Calendar.SECOND, 0); // particular second
-
-        long intendedTime = firingCal.getTimeInMillis();
-        long currentTime = currentCal.getTimeInMillis();
-
-        if(intendedTime >= currentTime){
-            // you can add buffer time too here to ignore some small differences in milliseconds
-            // set from today
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
-        } else{
-            // set from next day
-            // you might consider using calendar.add() for adding one day to the current day
-            firingCal.add(Calendar.DAY_OF_MONTH, 1);
-            intendedTime = firingCal.getTimeInMillis();
-
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
-        }
+    @Override
+    public void onDestroy() {
+        ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+        super.onDestroy();
     }
-
-    private void cancelAlarm() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-
-        alarmManager.cancel(pendingIntent);
-        //mTextView.setText("Alarm canceled");
-    }*/
-
-   /* public void resetSteps(){
-        Intent myIntent = new Intent(StepsCountActivity.this, MyAlarmReceiver.class);
-        myIntent.putExtra("id", Initial_Count_Key);
-        myIntent.putExtra("count",currentSteps);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(StepsCountActivity.this, 0, myIntent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        Calendar firingCal= Calendar.getInstance();
-        Calendar currentCal = Calendar.getInstance();
-
-        firingCal.set(Calendar.HOUR_OF_DAY, 18); // At the hour you wanna fire
-        firingCal.set(Calendar.MINUTE, 05); // Particular minute
-        firingCal.set(Calendar.SECOND, 0); // particular second
-
-        long intendedTime = firingCal.getTimeInMillis();
-        long currentTime = currentCal.getTimeInMillis();
-
-        if(intendedTime >= currentTime){
-            // you can add buffer time too here to ignore some small differences in milliseconds
-            // set from today
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
-        } else{
-            // set from next day
-            // you might consider using calendar.add() for adding one day to the current day
-            firingCal.add(Calendar.DAY_OF_MONTH, 1);
-            intendedTime = firingCal.getTimeInMillis();
-
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
-        }
-    }*/
-
 }
