@@ -150,7 +150,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
                 LatLng latLng = new LatLng(latitude,longitude);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-                //SingaporeGym();
+                SingaporeStadium();
                 //nearByPlace("stadium");
 
             }
@@ -812,11 +812,133 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
 
 
 
+        //GYMMBOXX
+        LatLng GB_Kebun_Baru= new LatLng(1.373239, 103.837463);
+        mMap.addMarker(new MarkerOptions().position(GB_Kebun_Baru).title("GYMMBOXX Kebun Baru").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng GB_Keat_Hong= new LatLng(1.384148, 103.745171);
+        mMap.addMarker(new MarkerOptions().position(GB_Keat_Hong).title("GYMMBOXX Keat Hong").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng GB_Bishan= new LatLng(1.349938, 103.850881);
+        mMap.addMarker(new MarkerOptions().position(GB_Bishan).title("GYMMBOXX Bishan").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng GB_JCube= new LatLng(1.333444, 103.740326);
+        mMap.addMarker(new MarkerOptions().position(GB_JCube).title("GYMMBOXX JCube").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng GB_Tampines= new LatLng(1.352164, 103.943606);
+        mMap.addMarker(new MarkerOptions().position(GB_Tampines).title("GYMMBOXX Tampines Century Square").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng GB_Bedok_Point= new LatLng(1.325166, 103.932259);
+        mMap.addMarker(new MarkerOptions().position(GB_Bedok_Point).title("GYMMBOXX Bedok Point").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
 
+        //True Fitness
+        LatLng TF_AMK= new LatLng(1.372891, 103.847665);
+        mMap.addMarker(new MarkerOptions().position(TF_AMK).title("True Fitness (Djitsun Mall, Ang Mo Kio)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng TF_Tampines= new LatLng(1.352130, 103.941966);
+        mMap.addMarker(new MarkerOptions().position(TF_Tampines).title("True Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng TF_Novena= new LatLng(1.319684, 103.843993);
+        mMap.addMarker(new MarkerOptions().position(TF_Novena).title("True Fitness (Velocity@Novena Square)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng TF_Upper_Changi= new LatLng(1.323157, 103.921411);
+        mMap.addMarker(new MarkerOptions().position(TF_Upper_Changi).title("True Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng TF_Zion= new LatLng(1.292934, 103.832157);
+        mMap.addMarker(new MarkerOptions().position(TF_Zion).title("True Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng TF_Promenade= new LatLng(1.292888, 103.859718);
+        mMap.addMarker(new MarkerOptions().position(TF_Promenade).title("True Fitness TFX").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng TF_HarbouorFront= new LatLng(1.264232, 103.820368);
+        mMap.addMarker(new MarkerOptions().position(TF_HarbouorFront).title("True Fitness").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+
+
+        //Fitness First
+        LatLng FF_AMK= new LatLng(1.369752, 103.848707);
+        mMap.addMarker(new MarkerOptions().position(FF_AMK).title("Fitness First - AMK Hub").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Junction10= new LatLng(1.380832, 103.760158);
+        mMap.addMarker(new MarkerOptions().position(FF_Junction10).title("Fitness First - Junction 10").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Tanjong_Pagar= new LatLng(1.275026, 103.843655);
+        mMap.addMarker(new MarkerOptions().position(FF_Tanjong_Pagar).title("Fitness First").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Clementi= new LatLng(1.312046, 103.764891);
+        mMap.addMarker(new MarkerOptions().position(FF_Clementi).title("Fitness First - 321 Clementi").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Alexandra= new LatLng(1.274880, 103.799745);
+        mMap.addMarker(new MarkerOptions().position(FF_Alexandra).title("Fitness First - Alexandra (Mapletree Business City)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Bugis_Junction= new LatLng(1.299701, 103.855730);
+        mMap.addMarker(new MarkerOptions().position(FF_Bugis_Junction).title("Fitness First - Bugis Junction").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Capital_Tower= new LatLng(1.277795, 103.847544);
+        mMap.addMarker(new MarkerOptions().position(FF_Capital_Tower).title("Fitness First - Capital Tower").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Changi= new LatLng(1.335244, 103.963867);
+        mMap.addMarker(new MarkerOptions().position(FF_Changi).title("Fitness First - Changi (UE Biz Hub)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Fusionopolis= new LatLng(1.299763, 103.787741);
+        mMap.addMarker(new MarkerOptions().position(FF_Fusionopolis).title("Fitness First - Fusionopolis").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Marina_Bay= new LatLng(1.280054, 103.855070);
+        mMap.addMarker(new MarkerOptions().position(FF_Marina_Bay).title("Fitness First Marina Bay Financial Centre (MBFC)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Market_Street= new LatLng(1.284390, 103.850517);
+        mMap.addMarker(new MarkerOptions().position(FF_Market_Street).title("Fitness First - Market Street (Raffles Place)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_One_George_Street= new LatLng(1.285675, 103.847863);
+        mMap.addMarker(new MarkerOptions().position(FF_One_George_Street).title("Fitness First - One George Street").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_One_Raffles_Quay= new LatLng(1.281152, 103.851928);
+        mMap.addMarker(new MarkerOptions().position(FF_One_Raffles_Quay).title("Fitness First - One Raffles Quay").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Paragon= new LatLng(1.304343, 103.836177);
+        mMap.addMarker(new MarkerOptions().position(FF_Paragon).title("Fitness First - Paragon").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Paya_Lebar= new LatLng(1.318687, 103.893856);
+        mMap.addMarker(new MarkerOptions().position(FF_Paya_Lebar).title("Fitness First Paya Lebar").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Tampines= new LatLng(1.353155, 103.943672);
+        mMap.addMarker(new MarkerOptions().position(FF_Tampines).title("Fitness First - Tampines (CPF building)\n").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Dhoby_Ghaut= new LatLng(1.299424, 103.847637);
+        mMap.addMarker(new MarkerOptions().position(FF_Dhoby_Ghaut).title("Fitness First - The Cathay Dhoby Ghaut").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Metropolis= new LatLng(1.305533, 103.791977);
+        mMap.addMarker(new MarkerOptions().position(FF_Metropolis).title("Fitness First - The Metropolis").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FF_Westgate= new LatLng(1.334228, 103.743315);
+        mMap.addMarker(new MarkerOptions().position(FF_Westgate).title("Fitness First - Westgate").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+
+        //Fitness Workz Gym
+        LatLng FW_Bukit_Batok= new LatLng(1.365851, 103.750302);
+        mMap.addMarker(new MarkerOptions().position(FW_Bukit_Batok).title("Fitness Workz Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng FW_Balestier= new LatLng(1.329011, 103.848763);
+        mMap.addMarker(new MarkerOptions().position(FW_Balestier).title("Fitness Workz Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        //LatLng FW_Khatib= new LatLng(1.365835, 103.750318);
+        //mMap.addMarker(new MarkerOptions().position().title("Fitness Workz Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        //LatLng FW_Sembawang= new LatLng();
+        //mMap.addMarker(new MarkerOptions().position().title("Fitness Workz Gym").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+
+    }
+
+    private void SingaporeStadium(){
+
+        LatLng Stadium_Woodlands= new LatLng(1.434573, 103.780822);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Woodlands).title("Woodlands Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Sports_Centre_Woodlands= new LatLng(1.434118, 103.779801);
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Woodlands).title("Woodlands ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Yio_Chu_Kang= new LatLng(1.382958, 103.846586);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Yio_Chu_Kang).title("Yio Chu Kang Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Sports_Centre_Yio_Chu_Kang= new LatLng(1.381832, 103.845008);
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Yio_Chu_Kang).title("Yio Chu Kang ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Sports_Centre_Sengkang= new LatLng(1.396528, 103.886842);
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Sengkang).title("Sengkang Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Bishan= new LatLng(1.354501, 103.851566);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Bishan).title("Bishan ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Sports_Hall_Bishan= new LatLng(1.355330, 103.850899);
+        mMap.addMarker(new MarkerOptions().position(Sports_Hall_Bishan).title("Bishan Sports Hall").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Serangoon= new LatLng(1.355977, 103.874897);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Serangoon).title("Serangoon Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Sports_Centre_Hougang= new LatLng(1.370874, 103.888147);
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Hougang).title("Hougang ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Hougang= new LatLng(1.369689, 103.887101);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Hougang).title("Hougang ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Bedok= new LatLng(1.326547, 103.939376);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Bedok).title("Bedok ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Field_Kallang= new LatLng(1.304224, 103.880911);
+        mMap.addMarker(new MarkerOptions().position(Field_Kallang).title("Kallang ActiveSG Field").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Queenstown= new LatLng(1.295858, 103.802460);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Queenstown).title("Queenstown ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Clementi= new LatLng(1.310137, 103.762699);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Clementi).title("Clementi ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_MOE_PESEB= new LatLng(1.320489, 103.819856);
+        mMap.addMarker(new MarkerOptions().position(Stadium_MOE_PESEB).title("MOE PESEB Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Toa_Payoh= new LatLng(1.330365, 103.852983);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Toa_Payoh).title("Toa Payoh Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Jurong_East= new LatLng(1.346743, 103.729946);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Jurong_East).title("Jurong East Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Jurong_West= new LatLng(1.338414, 103.694975);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Jurong_West).title("Jurong West ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Stadium_Bukit_Gombak= new LatLng(1.358339, 103.753617);
+        mMap.addMarker(new MarkerOptions().position(Stadium_Bukit_Gombak).title("Bukit Gombak ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        LatLng Sports_Centre_Choa_Chu_Kang= new LatLng(1.391084, 103.748157);
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Choa_Chu_Kang).title("Choa Chu Kang ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
         //LatLng gym= new LatLng();
         //mMap.addMarker(new MarkerOptions().position().title("").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
-
-
     }
 
    /* private void nearByPlace(final String placeType) {

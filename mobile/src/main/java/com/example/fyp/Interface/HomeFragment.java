@@ -260,9 +260,9 @@ public class HomeFragment extends Fragment{
                 //if(dataSnapshot.hasChildren()){
                     //for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
-                        currentStepsCount=stepsPointValue.getSteps();
-                        stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
-                        circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
+                            currentStepsCount = stepsPointValue.getSteps();
+                            stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
+                            circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
 
                     //}
                // }else{
