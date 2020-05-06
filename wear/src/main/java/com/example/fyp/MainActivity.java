@@ -271,6 +271,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
         refreshDisplayAndSetNextUpdate();
+        startAlarm();
 
     }
 
@@ -303,7 +304,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     protected void onStop() {
         super.onStop();
         refreshDisplayAndSetNextUpdate();
-        cancelAlarm();
+        startAlarm();
     }
 
     private void startAlarm() {
@@ -341,5 +342,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         alarmManager.cancel(pendingIntent);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelAlarm();
+    }
 }
 

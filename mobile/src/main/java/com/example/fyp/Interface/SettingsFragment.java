@@ -164,44 +164,46 @@ public class SettingsFragment extends Fragment {
         stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
-                dataSteps = stepsPointValue.getSteps();
+                if(dataSnapshot.hasChildren()) {
+                    StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
+                    dataSteps = stepsPointValue.getSteps();
 
-                if ((lastDay == thisDay - 1) && (dataSteps > 100)) { //testing at 100 steps a day first must EDIT HERE
-                    // CONSECUTIVE DAYS
-                    //if today hit >7500, count up
-                    counterOfConsecutiveDays = counterOfConsecutiveDays + 1;
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("YOUR DATE PREF KEY", thisDay);
-                    editor.putInt("YOUR COUNTER PREF KEY", counterOfConsecutiveDays);
-                    editor.commit();
+                    if ((lastDay == thisDay - 1) && (dataSteps > 100)) { //testing at 100 steps a day first must EDIT HERE
+                        // CONSECUTIVE DAYS
+                        //if today hit >7500, count up
+                        counterOfConsecutiveDays = counterOfConsecutiveDays + 1;
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("YOUR DATE PREF KEY", thisDay);
+                        editor.putInt("YOUR COUNTER PREF KEY", counterOfConsecutiveDays);
+                        editor.commit();
 
-                } else {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("YOUR DATE PREF KEY", thisDay);
-                    editor.putInt("YOUR COUNTER PREF KEY", 1);
-                    editor.commit();
-                }
+                    } else {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("YOUR DATE PREF KEY", thisDay);
+                        editor.putInt("YOUR COUNTER PREF KEY", 1);
+                        editor.commit();
+                    }
 
 
-                if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 3) {
-                    //change greyscale to colour for 3days streak
-                    iv3days.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 7) {
-                    //change greyscale to colour for 7days streak
-                    iv1week.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 21) {
-                    //change greyscale to colour for 3 weeks streak
-                    iv3weeks.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 30) {
-                    //change greyscale to colour for 1month streak
-                    iv1month.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 90) {
-                    //change greyscale to colour for 3month streak
-                    iv3months.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 180) {
-                    //change greyscale to colour for 6month streak
-                    iv6months.setImageResource(R.drawable.badges_colour);
+                    if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 3) {
+                        //change greyscale to colour for 3days streak
+                        iv3days.setImageResource(R.drawable.badges_colour);
+                    } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 7) {
+                        //change greyscale to colour for 7days streak
+                        iv1week.setImageResource(R.drawable.badges_colour);
+                    } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 21) {
+                        //change greyscale to colour for 3 weeks streak
+                        iv3weeks.setImageResource(R.drawable.badges_colour);
+                    } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 30) {
+                        //change greyscale to colour for 1month streak
+                        iv1month.setImageResource(R.drawable.badges_colour);
+                    } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 90) {
+                        //change greyscale to colour for 3month streak
+                        iv3months.setImageResource(R.drawable.badges_colour);
+                    } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 180) {
+                        //change greyscale to colour for 6month streak
+                        iv6months.setImageResource(R.drawable.badges_colour);
+                    }
                 }
 
             }

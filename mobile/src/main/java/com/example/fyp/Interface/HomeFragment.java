@@ -265,23 +265,23 @@ public class HomeFragment extends Fragment{
         stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //if(dataSnapshot.hasChildren()){
+                if(dataSnapshot.hasChildren()) {
                     //for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-                        StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
-                        currentStepsCount=stepsPointValue.getSteps();
-                        stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
-                        circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
+                    StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
+                    currentStepsCount = stepsPointValue.getSteps();
+                    stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
+                    circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
 
-                    if(!prefs.contains(GET_firebase_steps)){
+                    if (!prefs.contains(GET_firebase_steps)) {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt(GET_firebase_steps, 0);
                         editor.commit();
-                    }else {
+                    } else {
                         SharedPreferences.Editor edit = prefs.edit();
                         edit.putInt(GET_firebase_steps, currentStepsCount);
                         edit.commit();
                     }
-
+                }
             }
 
             @Override

@@ -40,8 +40,8 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     private CircularProgressBar circularProgressBar;
     private String step;
     private String msg;
-    private static final String Initial_Count_Key = "FootStepInitialCount";
     private static final String Current_Steps_Now = "CurrentStepsCount";
+    private static final String Initial_Count_Key = "FootStepInitialCount";
     String stepsPath = "/steps-count-path";
 
     private static final String AMBIENT_UPDATE_ACTION = "com.your.package.action.AMBIENT_STEPS_UPDATE";
@@ -84,13 +84,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         };
 
 
-        currentTime = Calendar.getInstance();
-        if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 00)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
-            prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(Initial_Count_Key, prefs.getInt(Current_Steps_Now, -1));
-            editor.commit();
-        }
+
 
        // resetSteps();
     }
