@@ -42,6 +42,7 @@ import com.example.fyp.R;
 import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -70,8 +71,10 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.fyp.App.CHANNEL_1_ID;
@@ -99,7 +102,7 @@ public class HomeFragment extends Fragment{
     private String message, steps, heart, max_HeartRate, notiRadioText;
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
-    private int currentHeartRate, MaxHeartRate, currentStepsCount;
+    private int currentHeartRate, MaxHeartRate, currentStepsCount, databaseHeart;
 
     private static final String GET_firebase_steps = "firebaseStepsCount";
 
@@ -333,9 +336,9 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertMaxHR() {
-        MaxHRPointValue maxHRPointValue = new MaxHRPointValue(MaxHeartRate);
-        maxHRDataref.setValue(maxHRPointValue);
-        retrieveMaxHR();
+         MaxHRPointValue maxHRPointValue2 = new MaxHRPointValue(Integer.parseInt(max_HeartRate.replaceAll("[\\D]", "")));
+         maxHRDataref.setValue(maxHRPointValue2);
+         retrieveMaxHR();
     }
 
     private void retrieveMaxHR() {
@@ -345,7 +348,7 @@ public class HomeFragment extends Fragment{
                 MaxHRPointValue maxHRPointValue = dataSnapshot.getValue(MaxHRPointValue.class);
 
                 if(maxHRPointValue.getHr()!=0) {
-                    MaxHeartRate = maxHRPointValue.getHr();
+                    databaseHeart = maxHRPointValue.getHr();
                     maxHeartrate.setText(String.valueOf(maxHRPointValue.getHr()) + "BPM");
                 }
             }
@@ -383,7 +386,7 @@ public class HomeFragment extends Fragment{
         xAxis.enableGridDashedLine(0.1f,100f,0);
         xAxis.setAvoidFirstLastClipping(true);
         xAxis.setLabelCount(5, true);
-       // xAxis.setValueFormatter(new MyValueFormatter());
+        xAxis.setValueFormatter(new TimeAxisFormatter(lineChart));
 
 
         //display y-axis
@@ -558,7 +561,7 @@ public class HomeFragment extends Fragment{
 
     public void Refresh(){
         Calendar currentTime = Calendar.getInstance();
-        if (currentHeartRate>MaxHeartRate) {
+        if (currentHeartRate>databaseHeart) {
             sendOnChannel1(null);
 
         }
@@ -609,4 +612,21 @@ public class HomeFragment extends Fragment{
         mrecyclerView.setAdapter(mAdapter);
     }
 
+    public class TimeAxisFormatter extends ValueFormatter implements IAxisValueFormatter {
+        private Chart chart;
+
+        public TimeAxisFormatter(Chart chart) {
+            this.chart = chart;
+        }
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            String result = "";
+            Date date = new Date((long) value);
+            SimpleDateFormat prettyFormat = new SimpleDateFormat("hh:mm a");
+            prettyFormat.setTimeZone(TimeZone.getDefault());
+            result = prettyFormat.format(date);
+            return result;
+        }
+    }
 }

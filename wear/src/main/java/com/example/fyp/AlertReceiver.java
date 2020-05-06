@@ -24,6 +24,7 @@ public class AlertReceiver extends BroadcastReceiver {
             prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(Initial_Count_Key, prefs.getInt(Current_Steps_Now, -1));
+            editor.putInt("getMaxcurrentHeartRate", 0);
             editor.commit();
 
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
