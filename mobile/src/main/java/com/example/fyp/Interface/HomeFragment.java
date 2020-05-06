@@ -265,7 +265,9 @@ public class HomeFragment extends Fragment{
                     stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
                     circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
                 }
-                    //}
+                else{
+                    Toast.makeText(getActivity(),"Error in retrieving steps", Toast.LENGTH_SHORT).show();
+                    }
                // }else{
                     //Toast.makeText(getActivity(),"Error in retrieving steps", Toast.LENGTH_SHORT).show();
                 //}
