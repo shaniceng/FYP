@@ -373,10 +373,10 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- TODO: Insert graph of data -->
-                 <com.github.mikephil.charting.charts.LineChart
-                     android:layout_width="match_parent"
-                     android:layout_height="300dp"
-                     android:id="@+id/lineChart"/>
+                    <com.jjoe64.graphview.GraphView
+                        android:layout_width="match_parent"
+                        android:layout_height="500dp"
+                        android:id="@+id/graphView" />
 
 
 

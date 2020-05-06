@@ -1,23 +1,23 @@
 package com.example.fyp;
 
 public class PointValue {
-    int xValue;
+    long xValue;
     int yValue;
 
 
     public PointValue() {
     }
 
-    public PointValue(int xValue, int yValue) {
+    public PointValue(long xValue, int yValue) {
         this.xValue = xValue;
         this.yValue = yValue;
     }
 
-    public int getxValue() {
+    public long getxValue() {
         return xValue;
     }
 
-    public void setxValue(int xValue) {
+    public void setxValue(long xValue) {
         this.xValue = xValue;
     }
 
