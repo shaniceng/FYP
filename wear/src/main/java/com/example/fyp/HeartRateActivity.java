@@ -52,6 +52,8 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     private PendingIntent ambientUpdatePendingIntent;
     private BroadcastReceiver ambientUpdateBroadcastReceiver;
 
+    private SensorManager mSensorManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
 //        };
     }
     private void getHartRate() {
-        SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
+        mSensorManager= ((SensorManager)getSystemService(SENSOR_SERVICE));
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         mSensorManager.registerListener(this, mHeartRateSensor, 5000000);
         //suggesting android to take data in every 5s, if nth to do, android will auto collect data.
@@ -124,21 +126,23 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
 //
 //    }
 //
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        //finish();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //finish();
 //        refreshDisplayAndSetNextUpdate();
 //        unregisterReceiver(ambientUpdateBroadcastReceiver);
 //        ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
-//    }
+        mSensorManager.unregisterListener(this);
+    }
 //
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        refreshDisplayAndSetNextUpdate();
-//    }
-//
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mSensorManager.unregisterListener(this);
+
+    }
+
 //    class SendThread extends Thread {
 //        String path;
 //        String message;

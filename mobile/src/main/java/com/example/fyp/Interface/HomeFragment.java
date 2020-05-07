@@ -227,7 +227,7 @@ public class HomeFragment extends Fragment{
         stepbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), StepActivity.class));
+                //startActivity(new Intent(getActivity(), StepActivity.class));
             }
         });
         //display pop up whenever over 7500 steps
@@ -280,8 +280,8 @@ public class HomeFragment extends Fragment{
 
         graphView.getViewport().setMinX(100000);
         graphView.getViewport().setMaxX(500000);
-        graphView.getViewport().setMinY(70);
-        graphView.getViewport().setMaxY(150);
+        graphView.getViewport().setMinY(50);
+        graphView.getViewport().setMaxY(140);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setScrollable(true);

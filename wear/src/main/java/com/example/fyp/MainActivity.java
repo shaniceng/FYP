@@ -66,6 +66,9 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     String heartPath = "/heart-rate-path";
     String maxheartpath = "/max-heart-path";
     private String msg;
+    private Calendar time;
+
+    private  SensorManager mSensorManager;
 
 
     @Override
@@ -110,8 +113,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             }
         });
 
-        sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         getHartRate();
 
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -136,8 +137,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     }
     private void getHartRate() {
-        SensorManager mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
-        Calendar time = Calendar.getInstance();
+        mSensorManager= ((SensorManager) getSystemService(SENSOR_SERVICE));
+        time = Calendar.getInstance();
 
         //get time start of listening heart rate and end of lsitening heart rate, change HERE according to how nuh wants!!!
         //heart rate
@@ -166,32 +167,34 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE){
-            msg = "" + (int) event.values[0];
-            if(msg != null) {
+        if ((time.get(Calendar.HOUR_OF_DAY) >= 6) && (time.get(Calendar.HOUR_OF_DAY) < 22)) {
+            if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+                msg = "" + (int) event.values[0];
+                if (msg != null) {
 //                mTextViewHeart.setText(msg + "BPM");
 //                Log.d(TAG, msg);
 
-                if(!prefs.contains("getMaxcurrentHeartRate")){
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("getMaxcurrentHeartRate", 0);
-                    editor.commit();
+                    if (!prefs.contains("getMaxcurrentHeartRate")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("getMaxcurrentHeartRate", 0);
+                        editor.commit();
+                    } else if (prefs.getInt("getMaxcurrentHeartRate", -1) < ((int) event.values[0])) {
+                        SharedPreferences.Editor edit = prefs.edit();
+                        edit.putInt("getMaxcurrentHeartRate", (int) event.values[0]);
+                        edit.commit();
+                    }
                 }
-                else if(prefs.getInt("getMaxcurrentHeartRate", -1)<((int) event.values[0])){
-                    SharedPreferences.Editor edit = prefs.edit();
-                    edit.putInt("getMaxcurrentHeartRate", (int) event.values[0]);
-                    edit.commit();
-                }
-            }
+            } else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
+                int stepCount = (int) event.values[0] - startingStepCount;
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.putInt("dailyCurrentSteps", stepCount);
+                edit.commit();
+            } else
+                Log.d(TAG, "Unknown sensor type");
+        }else{
+             mSensorManager.unregisterListener(this);
         }
-         else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-            int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
-            int stepCount = (int) event.values[0] - startingStepCount;
-            SharedPreferences.Editor edit = prefs.edit();
-            edit.putInt("dailyCurrentSteps", stepCount);
-            edit.commit();
-        } else
-            Log.d(TAG, "Unknown sensor type");
     }
 
 
@@ -336,6 +339,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         refreshDisplayAndSetNextUpdate();
         refreshHeartRateDisplayAndSend();
         startAlarm();
+        getHartRate();
 
     }
 
@@ -347,6 +351,12 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        getHartRate();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
@@ -354,6 +364,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         refreshDisplayAndSetNextUpdate();
         refreshHeartRateDisplayAndSend();
         startAlarm();
+        getHartRate();
     }
 
     @Override
@@ -364,6 +375,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         refreshDisplayAndSetNextUpdate();
         refreshHeartRateDisplayAndSend();
         startAlarm();
+        mSensorManager.unregisterListener(this);
 
     }
 
@@ -372,6 +384,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         super.onStop();
         refreshDisplayAndSetNextUpdate();
         startAlarm();
+        mSensorManager.unregisterListener(this);
     }
 
 
@@ -414,6 +427,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     protected void onDestroy() {
         super.onDestroy();
         startAlarm();
+        mSensorManager.unregisterListener(this);
     }
 
 }
