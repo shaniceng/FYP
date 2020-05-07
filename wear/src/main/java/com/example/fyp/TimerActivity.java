@@ -126,20 +126,6 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         alertDialog.show();
     }
 
-    public Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            tMilliSec= SystemClock.uptimeMillis()-tStart;
-            tUpdate=tBuff+tMilliSec;
-            sec = (int) (tUpdate/1000);
-            min= sec/60;
-            sec=sec%60;
-            milliSec = (int) (tUpdate%100);
-            chronometer.setText(String.format("%02d", min)+ ":" + String.format("%02d",sec) + ":" +String.format("%02d", milliSec));
-            handler.postDelayed(this, 60);
-        }
-    };
-
     //This actually sends the message to the wearable device.
     class SendThread extends Thread {
         String path;

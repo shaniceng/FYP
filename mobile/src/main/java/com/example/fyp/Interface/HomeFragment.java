@@ -95,12 +95,13 @@ import static com.example.fyp.App.CHANNEL_1_ID;
 public class HomeFragment extends Fragment{
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
+    private ArrayList<Float> mModerateMinsArray;
     private ArrayList<String> currentTimeA;
     private ArrayList<String> activityAvrHeartRate;
     private ArrayList<Integer> image;
@@ -158,6 +159,7 @@ public class HomeFragment extends Fragment{
         ratedMaxHR=v.findViewById(R.id.tvAvgResting_value);
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
         stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
+        moderateMins=v.findViewById(R.id.tvModerateMinsToday);
 
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -228,6 +230,8 @@ public class HomeFragment extends Fragment{
         //retrieveMaxHR();
         return v;
     }
+
+    //for getDataRefOfStepsOfCompetitors to convert long to int
     public static int safeLongToInt(long l) {
         if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
             throw new IllegalArgumentException
@@ -302,7 +306,6 @@ public class HomeFragment extends Fragment{
         });
 
     }
-
 
     private void insertData() {
         String id = databaseReference.push().getKey();
@@ -406,6 +409,7 @@ public class HomeFragment extends Fragment{
                 image = new ArrayList<>();
                 currentTimeA = new ArrayList<>();
                 activityAvrHeartRate = new ArrayList<>();
+                mModerateMinsArray=new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         LockInValue lockInValue = myDataSnapshot.getValue(LockInValue.class);
@@ -414,6 +418,14 @@ public class HomeFragment extends Fragment{
                         currentTimeA.add(lockInValue.getcTime());
                         //activityAvrHeartRate.add(lockInValue.getAvrHeartRate());
                         InsertRecyclerView();
+
+                        if(lockInValue.getDuration()!=null) {
+                            int duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
+                            float mins = duration / 100;
+                            float sec = duration % 100;
+                            mModerateMinsArray.add(mins+(sec/60));
+                            moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)) + "mins");
+                        }
                     }
                 }else{
                     Toast.makeText(getActivity(),"No activity to retrieve", Toast.LENGTH_SHORT).show();
@@ -458,15 +470,14 @@ public class HomeFragment extends Fragment{
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null
-                        || intent.getStringExtra("activityTrackerHeartRate")!=null)
+                if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null)
+                        //|| intent.getStringExtra("activityTrackerHeartRate")!=null)
                 {
                     if (intent.getStringExtra("message") != null) {
                         message = intent.getStringExtra("message");
                         Log.v(TAG, "Main activity received message: " + message);
                         insertLockInData();
-                    }
-                    else if (intent.getStringExtra("timing") != null) {
+                    } else if (intent.getStringExtra("timing") != null) {
                         time = intent.getStringExtra("timing");
                     }
 //                    if(intent.getStringExtra("activityTrackerHeartRate")!=null){
@@ -495,6 +506,13 @@ public class HomeFragment extends Fragment{
                     insertMaxHR();
                 }
             }
+        }
+
+        private double calculateSumOfModerateMins(ArrayList<Float> moderateMins){
+            double sum = 0;
+            for(int i = 0; i < moderateMins.size(); i++)
+                sum += moderateMins.get(i);
+            return sum;
         }
 
         private double calculateAverage(List<Integer> avrHeartRate) {
@@ -552,7 +570,6 @@ public class HomeFragment extends Fragment{
                 }
             });
         }
-
 
         //notification
         public void sendOnChannel1(View v) {
