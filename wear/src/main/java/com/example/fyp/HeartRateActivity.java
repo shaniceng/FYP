@@ -57,12 +57,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heart_rate);
-
-
-
         mTextViewHeart = (TextView) findViewById(R.id.tvHR);
-
-
         // Enables Always-on
         setAmbientEnabled();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

@@ -3,9 +3,15 @@ package com.example.fyp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,18 +25,20 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class TimerActivity extends WearableActivity {
+public class TimerActivity extends WearableActivity implements SensorEventListener{
 
     private final static String TAG = "Wear MainActivity";
-    private TextView trackName;
+    private TextView trackName, heartRate;
     private  Chronometer chronometer;
     private ImageButton startTimer, stopTimer, pauseTimer;
     String datapath = "/message_path";
     String chromoPath = "/chromo-path";
+    String activityHeartRatePath = "/activity_tracking_heart_rate_path";
 
     private boolean isResume;
     Handler handler;
@@ -42,89 +50,35 @@ public class TimerActivity extends WearableActivity {
     private boolean running;
     private long pauseOffset;
 
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private String heartmsg;
+    private SharedPreferences sharedPreferences;
+    //private int avrHeartRate;
+    private ArrayList<Integer> avrHeartRate = new ArrayList();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
-
         Intent intent = getIntent();
         TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
-
         startTimer = findViewById(R.id.startBtn);
-        pauseTimer=findViewById(R.id.pauseBtn);
-        stopTimer=findViewById(R.id.stopBtn);
-
-        // Enables Always-on
-        setAmbientEnabled();
-
-        trackName=findViewById(R.id.tvTrackName);
+        pauseTimer = findViewById(R.id.pauseBtn);
+        stopTimer = findViewById(R.id.stopBtn);
+        trackName = findViewById(R.id.tvTrackName);
         chronometer = findViewById(R.id.chronometer);
-       // startTimer = findViewById(R.id.btnStartTimer);
-       // stopTimer = findViewById(R.id.btnStopTimer);
-
+        heartRate=findViewById(R.id.hrTV);
         trackName.setText(TrackText);
         pauseTimer.setVisibility(View.GONE);
+        sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
         handler = new Handler();
-
-/*        startTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isResume){
-                    tStart=SystemClock.uptimeMillis();
-                    handler.postDelayed(runnable,0);
-                    chronometer.start();
-                    isResume=true;
-                    stopTimer.setVisibility(View.GONE);
-                    startTimer.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
-                }else{
-                    tBuff += tMilliSec;
-                    handler.removeCallbacks(runnable);
-                    chronometer.stop();
-                    isResume=false;
-                    stopTimer.setVisibility(View.VISIBLE);
-                    startTimer.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
-                }
-            }
-        });
-
-        stopTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isResume){
-
-                    startTimer.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
-                    tMilliSec=0L;
-                    tStart=0L;
-                    tBuff=0L;
-                    tUpdate=0L;
-                    sec=0;
-                    min = 0;
-                    milliSec=0;
-                    new TimerActivity.SendThread(datapath, TrackText).start();
-                    chronometertext = chronometer.getText().toString();
-                    chronometer.setText("00:00:00");
-
-                    //Requires a new thread to avoid blocking the UI
-
-                    new TimerActivity.SendThread(chromoPath, chronometertext).start();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
-                    builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                            startActivity(new Intent(TimerActivity.this, TrackActivity.class));
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.setTitle("Good Job!");
-                    alertDialog.show();
-                }
-            }
-        });*/
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        // Enables Always-on
+        setAmbientEnabled();
     }
 
     public void startChronometer(View v){
@@ -135,9 +89,9 @@ public class TimerActivity extends WearableActivity {
             startTimer.setVisibility(View.GONE);
             stopTimer.setVisibility(View.GONE);
             pauseTimer.setVisibility(View.VISIBLE);
+            getHartRate();
         }
     }
-
     public void pauseChronometer(View v){
         if(running){
             chronometer.stop();
@@ -150,14 +104,12 @@ public class TimerActivity extends WearableActivity {
 
     }
     public void resetChronometer(View v){
-
         pauseChronometer(v);
+        sensorManager.unregisterListener(this);
         chronometertext = chronometer.getText().toString();
         new TimerActivity.SendThread(chromoPath, chronometertext).start();
-
-
-
         chronometer.setBase(SystemClock.elapsedRealtime());
+        new TimerActivity.SendThread(activityHeartRatePath, heartRate.getText().toString()).start();
         pauseOffset=0;
         new TimerActivity.SendThread(datapath, TrackText).start();
         AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
@@ -166,15 +118,12 @@ public class TimerActivity extends WearableActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
-                        startActivity(new Intent(TimerActivity.this, TrackActivity.class));
+                        startActivity(new Intent(TimerActivity.this, MainActivity.class));
                     }
                 });
         AlertDialog alertDialog = builder.create();
         alertDialog.setTitle("Good Job!");
         alertDialog.show();
-
-
-
     }
 
     public Runnable runnable = new Runnable() {
@@ -242,6 +191,56 @@ public class TimerActivity extends WearableActivity {
         }
     }
 
+    private void getHartRate() {
+        SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
+        Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        mSensorManager.registerListener((SensorEventListener) this, mHeartRateSensor, 5000000);
+        //suggesting android to take data in every 5s, if nth to do, android will auto collect data.
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE){
+            heartmsg = "" + (int) event.values[0];
+            if(heartmsg != null) {
+                //heartRate.setText(heartmsg + "BPM");
+                Log.d(TAG, heartmsg);
+
+                if(!sharedPreferences.contains("getMaxcurrentHeartRate")){
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("getMaxcurrentHeartRate", 0);
+                    editor.commit();
+                }
+                else if(sharedPreferences.getInt("getMaxcurrentHeartRate", -1)<((int) event.values[0])){
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                    edit.putInt("getMaxcurrentHeartRate", (int) event.values[0]);
+                    edit.commit();
+                }
+                avrHeartRate.add((int) event.values[0]);
+                heartRate.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
+            }
+        }
+
+        else
+            Log.d(TAG, "Unknown sensor type");
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        Log.d(TAG, "onAccuracyChanged - accuracy: " + accuracy);
+    }
+
+    private double calculateAverage(List<Integer> avrHeartRate) {
+        Integer sum = 0;
+        if (!avrHeartRate.isEmpty()) {
+            for (Integer avrHR : avrHeartRate) {
+                sum += avrHR;
+            }
+            return sum.doubleValue() / avrHeartRate.size();
+        }
+        return sum;
+    }
 
 }
 

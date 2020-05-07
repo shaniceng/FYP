@@ -149,6 +149,7 @@
                         android:layout_marginEnd="10dp"
                         android:fontFamily="sans-serif"
                         android:text="0"
+                        android:textColor="#000000"
                         android:textSize="25sp"
                         app:layout_constraintBottom_toBottomOf="@+id/stepsBackground"
                         app:layout_constraintEnd_toStartOf="@+id/tvSteps"
@@ -162,6 +163,7 @@
                         android:layout_marginEnd="16dp"
                         android:fontFamily="sans-serif"
                         android:text="@string/steps"
+                        android:textColor="#000000"
                         app:layout_constraintBottom_toBottomOf="@+id/stepsBackground"
                         app:layout_constraintEnd_toEndOf="@+id/stepsBackground"
                         app:layout_constraintTop_toTopOf="@+id/stepsBackground" />
@@ -170,6 +172,43 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Middle section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/border_comparison">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Average steps count of other participants currently:"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_avrStepsOfCompetitors"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_avrStepsOfCompetitors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/7500"
+                    android:textAlignment="center"
+                    android:textColor="#003366"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

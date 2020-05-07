@@ -31,4 +31,6 @@ public class ActivityInsert {
     public void setcTime(String cTime) {
         this.cTime = cTime;
     }
+
+
 }

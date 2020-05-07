@@ -95,19 +95,21 @@ import static com.example.fyp.App.CHANNEL_1_ID;
 public class HomeFragment extends Fragment{
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, tv5;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
     private ArrayList<String> currentTimeA;
+    private ArrayList<String> activityAvrHeartRate;
     private ArrayList<Integer> image;
     private ArrayList <Integer> avrHeartRate = new ArrayList();
     private ArrayList <Integer> sumOf = new ArrayList();
+    private ArrayList<Integer> avrStepsFromCompetitors;
     private ArrayList<Entry> yValues;
     private String time;
-    private String message, steps, heart, max_HeartRate, notiRadioText;
+    private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
     private int currentHeartRate, MaxHeartRate, currentStepsCount, databaseHeart;
@@ -116,7 +118,7 @@ public class HomeFragment extends Fragment{
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref;
+    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors;
     private LineChart lineChart;
     private LineDataSet lineDataSet = new LineDataSet(null, null);
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
@@ -155,12 +157,14 @@ public class HomeFragment extends Fragment{
         maxHeartrate=v.findViewById(R.id.tvMAX_value);
         ratedMaxHR=v.findViewById(R.id.tvAvgResting_value);
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
+        stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
 
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         circularProgressBar.setProgressMax(7500);
 
@@ -180,7 +184,9 @@ public class HomeFragment extends Fragment{
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
+        dataRefStepsFromCompetitors = firebaseDatabase.getReference();
 
+        getDataRefOfStepsOfCompetitors();
         retrieveStepsData();
         retrieveData();
         RetrieveLockInData();
@@ -222,13 +228,47 @@ public class HomeFragment extends Fragment{
         //retrieveMaxHR();
         return v;
     }
+    public static int safeLongToInt(long l) {
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException
+                    (l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
+    }
+    private void getDataRefOfStepsOfCompetitors(){
+        dataRefStepsFromCompetitors.child("Steps Count").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                avrStepsFromCompetitors = new ArrayList<>();
+                if(dataSnapshot.hasChildren()){
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        if(myDataSnapshot.hasChildren()) {
+                            avrStepsFromCompetitors.add(safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue()));
+                            //String a = messageSnapshot.child("steps").getValue().toString();
+                            //stepsFromCompetitors.setText(a);
+                            stepsFromCompetitors.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrStepsFromCompetitors)) + "/7500 steps");
+                        }else{
+                            Toast.makeText(getActivity(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void showGraph() {
         graphView.setTitle("Heart Rate(BPM)");
 
-        graphView.getViewport().setMinX(5);
-        graphView.getViewport().setMaxX(50);
-        graphView.getViewport().setMinY(40);
+        graphView.getViewport().setMinX(100000);
+        graphView.getViewport().setMaxX(500000);
+        graphView.getViewport().setMinY(70);
         graphView.getViewport().setMaxY(150);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setXAxisBoundsManual(true);
@@ -277,6 +317,7 @@ public class HomeFragment extends Fragment{
     public void onStart() {
         super.onStart();
         retrieveData();
+        getDataRefOfStepsOfCompetitors();
     }
 
     private void retrieveData() {
@@ -315,27 +356,27 @@ public class HomeFragment extends Fragment{
     }
 
     private void retrieveStepsData() {
-        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
+            stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //if(dataSnapshot.hasChildren()){
                     //for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-                        StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
-                        currentStepsCount=stepsPointValue.getSteps();
-                        stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
-                        circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
+                if(dataSnapshot.hasChildren()) {
+                    StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
+                    currentStepsCount = stepsPointValue.getSteps();
+                    stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
+                    circularProgressBar.setProgressWithAnimation(Float.parseFloat(String.valueOf(stepsPointValue.getSteps()))); // =1s
 
-                    if(!prefs.contains(GET_firebase_steps)){
+                    if (!prefs.contains(GET_firebase_steps)) {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt(GET_firebase_steps, 0);
                         editor.commit();
-                    }else {
+                    } else {
                         SharedPreferences.Editor edit = prefs.edit();
                         edit.putInt(GET_firebase_steps, currentStepsCount);
                         edit.commit();
                     }
+                }
             }
 
             @Override
@@ -353,7 +394,6 @@ public class HomeFragment extends Fragment{
         String id = lockinDataBaseRef.push().getKey();
         LockInValue lockInValue = new LockInValue(message,time,cTime);
         lockinDataBaseRef.child(id).setValue(lockInValue);
-
         RetrieveLockInData();
     }
 
@@ -365,12 +405,14 @@ public class HomeFragment extends Fragment{
                 mTimeSet=new ArrayList<>();
                 image = new ArrayList<>();
                 currentTimeA = new ArrayList<>();
+                activityAvrHeartRate = new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         LockInValue lockInValue = myDataSnapshot.getValue(LockInValue.class);
                         mTimeSet.add(lockInValue.getDuration());
                         mDataSet.add(lockInValue.getActivity());
                         currentTimeA.add(lockInValue.getcTime());
+                        //activityAvrHeartRate.add(lockInValue.getAvrHeartRate());
                         InsertRecyclerView();
                     }
                 }else{
@@ -416,15 +458,20 @@ public class HomeFragment extends Fragment{
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null) {
+                if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null
+                        || intent.getStringExtra("activityTrackerHeartRate")!=null)
+                {
                     if (intent.getStringExtra("message") != null) {
                         message = intent.getStringExtra("message");
                         Log.v(TAG, "Main activity received message: " + message);
                         insertLockInData();
-
-                    } else if (intent.getStringExtra("timing") != null) {
+                    }
+                    else if (intent.getStringExtra("timing") != null) {
                         time = intent.getStringExtra("timing");
                     }
+//                    if(intent.getStringExtra("activityTrackerHeartRate")!=null){
+//                        activityTrackheartRate = intent.getStringExtra("activityTrackerHeartRate");
+//                    }
 
                 } else if (intent.getStringExtra("heartRate") != null) {
                     heart = intent.getStringExtra("heartRate");
@@ -435,7 +482,6 @@ public class HomeFragment extends Fragment{
                     avrHeartRate.add(currentHeartRate);
                     ratedMaxHR.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
                     //String.format("Value of a: %.2f", a)
-
 
                 } else if (intent.getStringExtra("countSteps") != null) {
                     steps = intent.getStringExtra("countSteps");
@@ -462,18 +508,29 @@ public class HomeFragment extends Fragment{
             return sum;
         }
 
-
-        //calculate sum of moderate activity in a week (NOT DONE)
-        private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
-            Integer sum = 0;
-            if (!avrHeartRate.isEmpty()) {
-                for (Integer avrHR : avrHeartRate) {
-                    sum += avrHR;
-                }
-                return sum.doubleValue() / avrHeartRate.size();
+    private double calculateAverageStepsOfCompetitors(ArrayList<Integer> avgStepsFromCompetitors) {
+        Integer sum = 0;
+        if (!avgStepsFromCompetitors.isEmpty() && avgStepsFromCompetitors!=null) {
+            for (Integer avrStepsFromCompet : avgStepsFromCompetitors) {
+                sum += avrStepsFromCompet;
             }
-            return sum;
+            return sum.doubleValue() / avgStepsFromCompetitors.size();
         }
+        return sum;
+    }
+
+//
+//        //calculate sum of moderate activity in a week (NOT DONE)
+//        private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
+//            Integer sum = 0;
+//            if (!avrHeartRate.isEmpty()) {
+//                for (Integer avrHR : avrHeartRate) {
+//                    sum += avrHR;
+//                }
+//                return sum.doubleValue() / avrHeartRate.size();
+//            }
+//            return sum;
+//        }
 
         public void getRadioText() {
 

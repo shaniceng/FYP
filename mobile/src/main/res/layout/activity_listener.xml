@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,33 +20,14 @@
         app:layout_constraintVertical_bias="0.0">
 
 
-
-        <TextView
-            android:id="@+id/tvActivityName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#b6bbd8"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Running"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-
         <TextView
             android:id="@+id/tvDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:text="Duration:"
+            android:textColor="#000000"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
@@ -59,6 +41,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="20dp"
             android:text="End Time:"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,6 +65,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="1:00pm"
+            android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="@+id/BackgroundStartTime"
             app:layout_constraintEnd_toEndOf="@+id/BackgroundStartTime"
             app:layout_constraintStart_toStartOf="@+id/BackgroundStartTime"
@@ -94,6 +78,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:text="45mins"
+            android:textColor="#000000"
             app:layout_constraintStart_toEndOf="@+id/tvDuration"
             app:layout_constraintTop_toBottomOf="@+id/tvActivityName" />
 
@@ -107,6 +92,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
+
+        <!--<TextView
+            android:id="@+id/tv_activityAvrHeartRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="Avr heart rate: BPM"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvInsertDuration"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
+            app:layout_constraintTop_toBottomOf="@+id/tvDuration" />
+-->
+
+        <TextView
+            android:id="@+id/tvActivityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#b6bbd8"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Running"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -345,7 +345,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        cancelAlarm();
+        startAlarm();
     }
+
 }
 
