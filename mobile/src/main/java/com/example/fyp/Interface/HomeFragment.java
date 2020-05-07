@@ -43,6 +43,7 @@ import com.example.fyp.R;
 import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -63,6 +64,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
@@ -71,8 +80,10 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.fyp.App.CHANNEL_1_ID;
@@ -85,29 +96,32 @@ import static com.example.fyp.App.CHANNEL_1_ID;
 public class HomeFragment extends Fragment{
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, tv5;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
     private ArrayList<String> mDataSet;
     private ArrayList<String> mTimeSet;
+    private ArrayList<Float> mModerateMinsArray;
     private ArrayList<String> currentTimeA;
+    private ArrayList<String> activityAvrHeartRate;
     private ArrayList<Integer> image;
     private ArrayList <Integer> avrHeartRate = new ArrayList();
     private ArrayList <Integer> sumOf = new ArrayList();
+    private ArrayList<Integer> avrStepsFromCompetitors;
     private ArrayList<Entry> yValues;
     private String time;
-    private String message, steps, heart, max_HeartRate, notiRadioText;
+    private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
-    private int currentHeartRate, MaxHeartRate, currentStepsCount;
+    private int currentHeartRate, MaxHeartRate, currentStepsCount, databaseHeart;
     private Button stepbtn;
 
     private static final String GET_firebase_steps = "firebaseStepsCount";
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref;
+    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors;
     private LineChart lineChart;
     private LineDataSet lineDataSet = new LineDataSet(null, null);
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
@@ -115,6 +129,10 @@ public class HomeFragment extends Fragment{
     private YAxis leftAxis;
 
     private SharedPreferences prefs;
+
+    private SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
+    private GraphView graphView;
+    private LineGraphSeries lineGraphSeries;
 
 
     private String date;
@@ -132,7 +150,9 @@ public class HomeFragment extends Fragment{
 
         yValues= new ArrayList<>();
 
-
+        graphView=v.findViewById(R.id.graphView);
+        lineGraphSeries=new LineGraphSeries();
+        graphView.addSeries(lineGraphSeries);
 
         mrecyclerView = v.findViewById(R.id.activity_RV);
         stepsCount=v.findViewById(R.id.tvStepsCount);
@@ -140,12 +160,15 @@ public class HomeFragment extends Fragment{
         maxHeartrate=v.findViewById(R.id.tvMAX_value);
         ratedMaxHR=v.findViewById(R.id.tvAvgResting_value);
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
+        stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
+        moderateMins=v.findViewById(R.id.tvModerateMinsToday);
 
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         circularProgressBar.setProgressMax(7500);
 
@@ -154,7 +177,7 @@ public class HomeFragment extends Fragment{
         Refresh();
 
 
-        lineChart=v.findViewById(R.id.lineChart);
+        //lineChart=v.findViewById(R.id.lineChart);
         firebaseDatabase= FirebaseDatabase.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -165,10 +188,13 @@ public class HomeFragment extends Fragment{
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
+        dataRefStepsFromCompetitors = firebaseDatabase.getReference();
 
+        getDataRefOfStepsOfCompetitors();
         retrieveStepsData();
         retrieveData();
         RetrieveLockInData();
+        showGraph();
 
 
         //get Max heart rate for each individual age
@@ -213,42 +239,115 @@ public class HomeFragment extends Fragment{
         return v;
     }
 
+    //for getDataRefOfStepsOfCompetitors to convert long to int
+    public static int safeLongToInt(long l) {
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException
+                    (l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
+    }
+    private void getDataRefOfStepsOfCompetitors(){
+        dataRefStepsFromCompetitors.child("Steps Count").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                avrStepsFromCompetitors = new ArrayList<>();
+                if(dataSnapshot.hasChildren()){
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        if(myDataSnapshot.hasChildren()) {
+                            avrStepsFromCompetitors.add(safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue()));
+                            //String a = messageSnapshot.child("steps").getValue().toString();
+                            //stepsFromCompetitors.setText(a);
+                            stepsFromCompetitors.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrStepsFromCompetitors)) + "/7500 steps");
+                        }else{
+                            Toast.makeText(getActivity(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showGraph() {
+        graphView.setTitle("Heart Rate(BPM)");
+
+        graphView.getViewport().setMinX(100000);
+        graphView.getViewport().setMaxX(500000);
+        graphView.getViewport().setMinY(70);
+        graphView.getViewport().setMaxY(150);
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setScalable(true);
+
+        lineGraphSeries.setDrawBackground(true);
+        lineGraphSeries.setBackgroundColor(R.drawable.fade_red);
+        lineGraphSeries.setColor(Color.BLACK);
+        lineGraphSeries.setDrawDataPoints(true);
+        lineGraphSeries.setDataPointsRadius(10);
+        lineGraphSeries.setThickness(8);
+        graphView.getGridLabelRenderer().setNumHorizontalLabels(4);
+        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if(isValueX) {
+                    return simpleDateFormat.format(new Date((long) value));
+                }else {
+                    return super.formatLabel(value, isValueX);
+                }
+
+            }
+        });
+
+        lineGraphSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(getActivity(), "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     private void insertData() {
         String id = databaseReference.push().getKey();
-       //Calendar currentTime = Calendar.getInstance();
-        //SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-        Calendar currentTime    = Calendar.getInstance()                ;
-        int hour                = currentTime.get(Calendar.HOUR_OF_DAY) ;
-        int minute              = currentTime.get(Calendar.MINUTE)      ;
-        int second              = currentTime.get(Calendar.SECOND);
-
-        int storetime = (hour*3600) + (minute*60) +second;
-        //store in seconds
-        int x =(storetime);
-        int y = currentHeartRate;
+        long x=new Date().getTime();
+        int y=currentHeartRate;
         PointValue pointValue = new PointValue(x,y);
         databaseReference.child(id).setValue(pointValue);
-
         retrieveData();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        retrieveData();
+        getDataRefOfStepsOfCompetitors();
     }
 
     private void retrieveData() {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+                DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
+                int index =0;
 
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
-
-                        dataVals.add(new Entry(pointValue.getxValue(), pointValue.getyValue()));
-
+                        dataVals[index] = new DataPoint(pointValue.getxValue(),pointValue.getyValue());
+                        index++;
+                                //.index(new Entry(pointValue.getxValue(), pointValue.getyValue()));
                     }
-                    showChart(dataVals);
+                   lineGraphSeries.resetData(dataVals);
                 }else{
-                    lineChart.clear();
-                    lineChart.invalidate();
+
                 }
             }
 
@@ -268,15 +367,12 @@ public class HomeFragment extends Fragment{
     }
 
     private void retrieveStepsData() {
-        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
+            stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //if(dataSnapshot.hasChildren()){
                     //for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-
-                if(dataSnapshot.getValue(StepsPointValue.class)!=null) {
+                if(dataSnapshot.hasChildren()) {
                     StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
                     currentStepsCount = stepsPointValue.getSteps();
                     stepsCount.setText(String.valueOf(stepsPointValue.getSteps()));
@@ -292,10 +388,6 @@ public class HomeFragment extends Fragment{
                         edit.commit();
                     }
                 }
-                else{
-                    //error no steps toast
-                }
-
             }
 
             @Override
@@ -313,7 +405,6 @@ public class HomeFragment extends Fragment{
         String id = lockinDataBaseRef.push().getKey();
         LockInValue lockInValue = new LockInValue(message,time,cTime);
         lockinDataBaseRef.child(id).setValue(lockInValue);
-
         RetrieveLockInData();
     }
 
@@ -325,13 +416,24 @@ public class HomeFragment extends Fragment{
                 mTimeSet=new ArrayList<>();
                 image = new ArrayList<>();
                 currentTimeA = new ArrayList<>();
+                activityAvrHeartRate = new ArrayList<>();
+                mModerateMinsArray=new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         LockInValue lockInValue = myDataSnapshot.getValue(LockInValue.class);
                         mTimeSet.add(lockInValue.getDuration());
                         mDataSet.add(lockInValue.getActivity());
                         currentTimeA.add(lockInValue.getcTime());
+                        //activityAvrHeartRate.add(lockInValue.getAvrHeartRate());
                         InsertRecyclerView();
+
+                        if(lockInValue.getDuration()!=null) {
+                            int duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
+                            float mins = duration / 100;
+                            float sec = duration % 100;
+                            mModerateMinsArray.add(mins+(sec/60));
+                            moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)) + "mins");
+                        }
                     }
                 }else{
                     Toast.makeText(getActivity(),"No activity to retrieve", Toast.LENGTH_SHORT).show();
@@ -347,9 +449,9 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertMaxHR() {
-        MaxHRPointValue maxHRPointValue = new MaxHRPointValue(MaxHeartRate);
-        maxHRDataref.setValue(maxHRPointValue);
-        retrieveMaxHR();
+         MaxHRPointValue maxHRPointValue2 = new MaxHRPointValue(Integer.parseInt(max_HeartRate.replaceAll("[\\D]", "")));
+         maxHRDataref.setValue(maxHRPointValue2);
+         retrieveMaxHR();
     }
 
     private void retrieveMaxHR() {
@@ -359,7 +461,7 @@ public class HomeFragment extends Fragment{
                 MaxHRPointValue maxHRPointValue = dataSnapshot.getValue(MaxHRPointValue.class);
 
                 if(maxHRPointValue.getHr()!=0) {
-                    MaxHeartRate = maxHRPointValue.getHr();
+                    databaseHeart = maxHRPointValue.getHr();
                     maxHeartrate.setText(String.valueOf(maxHRPointValue.getHr()) + "BPM");
                 }
             }
@@ -370,257 +472,210 @@ public class HomeFragment extends Fragment{
         });
     }
 
-    private void showChart(ArrayList<Entry> dataVals) {
 
-        //display line
-        lineDataSet.setFillAlpha(110);
-        lineDataSet.setColor(Color.BLACK);
-        lineDataSet.setCircleColor(Color.BLACK);
-        lineDataSet.setFormLineWidth(10f);
-        lineDataSet.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-        lineDataSet.setFormSize(15.f);
-        lineDataSet.setValueTextSize(20f);
-        lineDataSet.setDrawFilled(true);
-        lineDataSet.setFillFormatter(new IFillFormatter() {
+        //setup a broadcast receiver to receive the messages from the wear device via the listenerService.
+        public class MessageReceiver extends BroadcastReceiver {
             @Override
-            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                return lineChart.getAxisLeft().getAxisMinimum();
+            public void onReceive(Context context, Intent intent) {
+
+                if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null)
+                        //|| intent.getStringExtra("activityTrackerHeartRate")!=null)
+                {
+                    if (intent.getStringExtra("message") != null) {
+                        message = intent.getStringExtra("message");
+                        Log.v(TAG, "Main activity received message: " + message);
+                        insertLockInData();
+                    } else if (intent.getStringExtra("timing") != null) {
+                        time = intent.getStringExtra("timing");
+                    }
+//                    if(intent.getStringExtra("activityTrackerHeartRate")!=null){
+//                        activityTrackheartRate = intent.getStringExtra("activityTrackerHeartRate");
+//                    }
+
+                } else if (intent.getStringExtra("heartRate") != null) {
+                    heart = intent.getStringExtra("heartRate");
+                    Log.v(TAG, "Main activity received message: " + message);
+                    HeartRate.setText(heart);
+                    currentHeartRate = Integer.parseInt(heart.replaceAll("[\\D]", ""));
+                    insertData();
+                    avrHeartRate.add(currentHeartRate);
+                    ratedMaxHR.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
+                    //String.format("Value of a: %.2f", a)
+
+                } else if (intent.getStringExtra("countSteps") != null) {
+                    steps = intent.getStringExtra("countSteps");
+                    Log.v(TAG, "Main activity received message: " + message);
+
+                    currentStepsCount = Integer.parseInt(steps);
+                    insertStepsData();
+
+                } else if (intent.getStringExtra("maxHeartRate") != null) {
+                    max_HeartRate = intent.getStringExtra("maxHeartRate");
+                    insertMaxHR();
+                }
             }
-        });
-        Drawable drawable = ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.fade_red);
-        lineDataSet.setFillDrawable(drawable);
+        }
 
+        private double calculateSumOfModerateMins(ArrayList<Float> moderateMins){
+            double sum = 0;
+            for(int i = 0; i < moderateMins.size(); i++)
+                sum += moderateMins.get(i);
+            return sum;
+        }
 
-        //display x-axis
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.enableGridDashedLine(0.1f,100f,0);
-        xAxis.setAvoidFirstLastClipping(true);
-        xAxis.setLabelCount(5, true);
-       // xAxis.setValueFormatter(new MyValueFormatter());
-
-
-        //display y-axis
-        //y-left-axis
-        leftAxis = lineChart.getAxisLeft();
-        leftAxis.removeAllLimitLines();
-        leftAxis.setAxisMaximum(130f);
-        leftAxis.setAxisMinimum(40f);
-        leftAxis.enableGridDashedLine(10f,10f, 0);
-        leftAxis.setDrawLimitLinesBehindData(true);
-
-        //y-rightaxis
-        lineChart.getAxisRight().setEnabled(false);
-        lineChart.setVisibleXRangeMinimum(5f);
-        lineChart.setVisibleXRangeMaximum(8f);
-
-        lineDataSet.setValues(dataVals);
-        lineDataSet.setLabel("Heart rate");
-        iLineDataSets.clear();
-        iLineDataSets.add(lineDataSet);
-
-        lineData = new LineData(iLineDataSets);
-
-        lineChart.clear();
-        lineChart.setData(lineData);
-        lineChart.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                lineChart.moveViewTo(lineData.getXMax(), lineData.getYMax(),
-                        YAxis.AxisDependency.RIGHT);
+        private double calculateAverage(List<Integer> avrHeartRate) {
+            Integer sum = 0;
+            if (!avrHeartRate.isEmpty()) {
+                for (Integer avrHR : avrHeartRate) {
+                    sum += avrHR;
+                }
+                return sum.doubleValue() / avrHeartRate.size();
             }
-        }, 1000);
-        lineChart.setVisibleXRangeMinimum(300f);
-        lineChart.setVisibleXRangeMaximum(3600f);
-        lineChart.invalidate();
+            return sum;
+        }
 
+    private double calculateAverageStepsOfCompetitors(ArrayList<Integer> avgStepsFromCompetitors) {
+        Integer sum = 0;
+        if (!avgStepsFromCompetitors.isEmpty() && avgStepsFromCompetitors!=null) {
+            for (Integer avrStepsFromCompet : avgStepsFromCompetitors) {
+                sum += avrStepsFromCompet;
+            }
+            return sum.doubleValue() / avgStepsFromCompetitors.size();
+        }
+        return sum;
     }
 
-    //setup a broadcast receiver to receive the messages from the wear device via the listenerService.
-    public class MessageReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
+//
+//        //calculate sum of moderate activity in a week (NOT DONE)
+//        private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
+//            Integer sum = 0;
+//            if (!avrHeartRate.isEmpty()) {
+//                for (Integer avrHR : avrHeartRate) {
+//                    sum += avrHR;
+//                }
+//                return sum.doubleValue() / avrHeartRate.size();
+//            }
+//            return sum;
+//        }
 
-            if(intent.getStringExtra("message")!=null ||intent.getStringExtra("timing")!=null) {
-                if (intent.getStringExtra("message") != null) {
-                    message = intent.getStringExtra("message");
-                    Log.v(TAG, "Main activity received message: " + message);
-                    insertLockInData();
+        public void getRadioText() {
 
-                } else if (intent.getStringExtra("timing") != null) {
-                    time = intent.getStringExtra("timing");
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference databaseRadio = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
+            databaseRadio.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                    notiRadioText = userProfile.getRadiotext();
+                    //tv5.setText(notiRadioText);
+                    //Refresh();
                 }
 
-            }
-            else if(intent.getStringExtra("heartRate")!=null){
-                heart = intent.getStringExtra("heartRate");
-                Log.v(TAG, "Main activity received message: " + message);
-                HeartRate.setText(heart);
-                currentHeartRate=Integer.parseInt(heart.replaceAll("[\\D]",""));
-                insertData();
-                avrHeartRate.add(currentHeartRate);
-                ratedMaxHR.setText( String.format("%.1f", calculateAverage(avrHeartRate))+"BPM");
-                //String.format("Value of a: %.2f", a)
-
-
-
-            }
-            else if(intent.getStringExtra("countSteps")!=null){
-                steps = intent.getStringExtra("countSteps");
-                Log.v(TAG, "Main activity received message: " + message);
-
-                currentStepsCount = Integer.parseInt(steps);
-                insertStepsData();
-
-            }
-            else if(intent.getStringExtra("maxHeartRate") !=null){
-                max_HeartRate = intent.getStringExtra("maxHeartRate");
-                insertMaxHR();
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-    }
-
-    private double calculateAverage(List<Integer> avrHeartRate) {
-        Integer sum = 0;
-        if(!avrHeartRate.isEmpty()) {
-            for (Integer avrHR : avrHeartRate) {
-                sum += avrHR;
-            }
-            return sum.doubleValue() / avrHeartRate.size();
-        }
-        return sum;
-    }
-
-
-    //calculate sum of moderate activity in a week (NOT DONE)
-    private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
-        Integer sum = 0;
-        if(!avrHeartRate.isEmpty()) {
-            for (Integer avrHR : avrHeartRate) {
-                sum += avrHR;
-            }
-            return sum.doubleValue() / avrHeartRate.size();
-        }
-        return sum;
-    }
-
-    public void getRadioText(){
-
-        firebaseAuth=FirebaseAuth.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        DatabaseReference databaseRadio = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
-        databaseRadio.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                notiRadioText = userProfile.getRadiotext();
-                //tv5.setText(notiRadioText);
-                //Refresh();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
 
         //notification
-    public void sendOnChannel1(View v) {
-        String title = "Alert!!!";
-        String message = "You have exceeded the Maximum Heart Rate!\n Please slow down!";
+        public void sendOnChannel1(View v) {
+            String title = "Alert!!!";
+            String message = "You have exceeded the Maximum Heart Rate!\n Please slow down!";
 
-        Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_message)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
+            Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+                    .setSmallIcon(R.drawable.ic_message)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .build();
 
-        notificationManager.notify(1, notification);
-    }
-
-    public void sendOnChannel2(View v) {
-        String title = "Alert!!!";
-        String message = "You have not reached half of the minimum steps today!\n Please exercise!";
-
-        Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_message)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
-
-        notificationManager.notify(1, notification);
-    }
-    public void sendOnChannel3(View v) {
-        String title = "Alert!!!";
-        String message = "You have not reached the minimum steps today!\n Please exercise!";
-
-        Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_message)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
-
-        notificationManager.notify(1, notification);
-    }
-
-    public void Refresh(){
-        Calendar currentTime = Calendar.getInstance();
-        if (currentHeartRate>MaxHeartRate) {
-            sendOnChannel1(null);
-
+            notificationManager.notify(1, notification);
         }
 
-        //insert different timings here for prompt of steps count
-        if((currentStepsCount < (7500/2) )&& (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)){
-            sendOnChannel2(null);
+        public void sendOnChannel2(View v) {
+            String title = "Alert!!!";
+            String message = "You have not reached half of the minimum steps today!\n Please exercise!";
 
+            Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+                    .setSmallIcon(R.drawable.ic_message)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .build();
+
+            notificationManager.notify(1, notification);
         }
 
-        getRadioText();
-        //tv5.setText(notiRadioText);
-        //sendOnChannel3(null);
-        if("4pm".equals(notiRadioText) ) {
-            if ( (currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) &&(currentStepsCount < 7500) ) {
-                sendOnChannel3(null);
+        public void sendOnChannel3(View v) {
+            String title = "Alert!!!";
+            String message = "You have not reached the minimum steps today!\n Please exercise!";
+
+            Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+                    .setSmallIcon(R.drawable.ic_message)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .build();
+
+            notificationManager.notify(1, notification);
+        }
+
+        public void Refresh() {
+            Calendar currentTime = Calendar.getInstance();
+            if (currentHeartRate > databaseHeart) {
+                sendOnChannel1(null);
 
             }
-        }
-        else if("7pm".equals(notiRadioText) ) {
-            if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
-                sendOnChannel3(null);
+
+            //insert different timings here for prompt of steps count
+            if ((currentStepsCount < (7500 / 2)) && (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)) {
+                sendOnChannel2(null);
 
             }
+
+            getRadioText();
+            //tv5.setText(notiRadioText);
+            //sendOnChannel3(null);
+            if ("4pm".equals(notiRadioText)) {
+                if ((currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) && (currentStepsCount < 7500)) {
+                    sendOnChannel3(null);
+
+                }
+            } else if ("7pm".equals(notiRadioText)) {
+                if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
+                    sendOnChannel3(null);
+
+                }
+            }
+
+            runnable(60000);
+
         }
 
-        runnable(60000);
+        public void runnable(int milliseconds) {
+            final Handler handler = new Handler();
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    Refresh();
+                }
+            };
+            handler.postDelayed(runnable, milliseconds);
+        }
+
+        //insert activity into home page
+        public void InsertRecyclerView() {
+            mlayoutManager = new LinearLayoutManager(getContext());
+            mrecyclerView.setHasFixedSize(true);
+            mAdapter = new CustomAdapter(mDataSet, mTimeSet, currentTimeA, image);
+            mrecyclerView.setLayoutManager(mlayoutManager);
+            mrecyclerView.setAdapter(mAdapter);
+        }
 
     }
 
-    public void runnable(int milliseconds){
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Refresh();
-            }
-        };
-        handler.postDelayed(runnable, milliseconds);
-    }
-
-    //insert activity into home page
-    public void InsertRecyclerView(){
-        mlayoutManager=new LinearLayoutManager(getContext());
-        mrecyclerView.setHasFixedSize(true);
-        mAdapter = new CustomAdapter(mDataSet,mTimeSet, currentTimeA, image);
-        mrecyclerView.setLayoutManager(mlayoutManager);
-        mrecyclerView.setAdapter(mAdapter);
-    }
-
-}

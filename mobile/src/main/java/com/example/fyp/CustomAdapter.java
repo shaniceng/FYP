@@ -22,16 +22,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     private ArrayList<String> mTimeSet;
     private ArrayList<String> currentTime;
     private ArrayList<Integer> image;
+    //private ArrayList<String> heartRateAvr;
     private int[] menuIcons = {R.drawable.ic_icon_awesome_walking, R.drawable.ic_icon_awesome_jogging,R.drawable.ic_awesome_running
             ,R.drawable.ic_awesome_taichi,R.drawable.ic_awesome_yoga,R.drawable.ic_awesome_zumba,
             R.drawable.ic_awesome_swimming,R.drawable.ic_awesome_strengthtraining,R.drawable.ic_awesome_others};
 
 
-    public CustomAdapter(ArrayList<String> dataset, ArrayList<String> timeSet, ArrayList<String> currentTime, ArrayList<Integer> image){
+    public CustomAdapter(ArrayList<String> dataset, ArrayList<String> timeSet, ArrayList<String> currentTime, ArrayList<Integer> image){ //ArrayList<String> heartRateAvr){
         mDataSet=dataset;
         mTimeSet=timeSet;
         this.currentTime=currentTime;
         this.image=image;
+        //this.heartRateAvr=heartRateAvr;
     }
 
     @NonNull
@@ -47,6 +49,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.title.setText(mDataSet.get(position));
         holder.time.setText(mTimeSet.get(position));
         holder.stopTime.setText(currentTime.get(position));
+      //  holder.heartRate.setText(heartRateAvr.get(position));
 
         if(mDataSet!=null) {
             switch (String.valueOf(mDataSet.get(position))) {
@@ -83,38 +86,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         holder.activityPic.setImageResource(image.get(position));
 
-
-        /*switch (String.valueOf(mDataSet.get(position))) {
-            case "Brisk Walking":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_walking);
-                break;
-            case "Jogging":
-                holder.activityPic.setImageResource(R.drawable.ic_icon_awesome_jogging);
-                break;
-            case "Running":
-                holder.activityPic.setImageResource(R.drawable.ic_awesome_running);
-                break;
-            case "Tai Chi":
-                holder.activityPic.setImageResource(R.drawable.ic_awesome_taichi);
-                break;
-            case "Yoga":
-                holder.activityPic.setImageResource(R.drawable.ic_awesome_yoga);
-                break;
-            case "Zumba":
-                holder.activityPic.setImageResource(R.drawable.ic_awesome_zumba);
-                break;
-            case "Swimming":
-                holder.activityPic.setImageResource(R.drawable.ic_awesome_swimming);
-                break;
-            case "Strength Training":
-                holder.activityPic.setImageResource(R.drawable.ic_awesome_strengthtraining);
-                break;
-
-            default:
-                holder.activityPic.setImageResource(R.drawable.ic_awesome_others);
-        }*/
-
-
     }
 
     @Override
@@ -123,15 +94,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, time, stopTime;
+        public TextView title, time, stopTime, heartRate;
         public ImageView activityPic;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             time = itemView.findViewById(R.id.tvInsertDuration);
             title=itemView.findViewById(R.id.tvActivityName);
             activityPic=itemView.findViewById(R.id.ActivityImageView);
             stopTime=itemView.findViewById(R.id.tvStartTime);
+           // heartRate=itemView.findViewById(R.id.tv_activityAvrHeartRate);
 
         }
     }

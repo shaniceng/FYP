@@ -56,8 +56,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0">
 
                     <TextView
                         android:id="@+id/tvStep"
@@ -149,6 +151,7 @@
                         android:layout_marginEnd="10dp"
                         android:fontFamily="sans-serif"
                         android:text="0"
+                        android:textColor="#000000"
                         android:textSize="25sp"
                         app:layout_constraintBottom_toBottomOf="@+id/stepsBackground"
                         app:layout_constraintEnd_toStartOf="@+id/tvSteps"
@@ -162,9 +165,28 @@
                         android:layout_marginEnd="16dp"
                         android:fontFamily="sans-serif"
                         android:text="@string/steps"
+                        android:textColor="#000000"
                         app:layout_constraintBottom_toBottomOf="@+id/stepsBackground"
                         app:layout_constraintEnd_toEndOf="@+id/stepsBackground"
                         app:layout_constraintTop_toTopOf="@+id/stepsBackground" />
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="70dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="Your steps count today:"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toTopOf="@+id/stepsBackground"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.89"
+                        app:layout_constraintStart_toEndOf="@+id/tvStep"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
 
                     <Button
                         android:id="@+id/step_btn"
@@ -178,6 +200,43 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Middle section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/border_comparison">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Average steps count of other participants currently:"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_avrStepsOfCompetitors"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_avrStepsOfCompetitors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/7500"
+                    android:textAlignment="center"
+                    android:textColor="#003366"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -381,10 +440,10 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- TODO: Insert graph of data -->
-                 <com.github.mikephil.charting.charts.LineChart
-                     android:layout_width="match_parent"
-                     android:layout_height="300dp"
-                     android:id="@+id/lineChart"/>
+                    <com.jjoe64.graphview.GraphView
+                        android:layout_width="match_parent"
+                        android:layout_height="500dp"
+                        android:id="@+id/graphView" />
 
 
 
@@ -439,19 +498,20 @@
                         android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16dp"
+                        android:text="Activity goal: 150 mins/week"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:text="Activity goal: 150 mins/week" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tvModerateMinsToday"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16dp"
+                        android:text="Minutes of moderate exercise today: mins"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:text="Minutes of moderate exercise today: mins" />
+                        android:textSize="14sp"
+                        android:textStyle="bold|italic" />
 
 
 

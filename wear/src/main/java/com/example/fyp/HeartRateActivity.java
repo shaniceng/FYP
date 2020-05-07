@@ -6,11 +6,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -40,8 +42,9 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     Calendar calendar;
     String heartPath = "/heart-rate-path";
     String maxheartpath = "/max-heart-path";
-    private int userMaxHeartRate;
+    //private int userMaxHeartRate;
     private String msg;
+    private SharedPreferences sharedPreferences;
 
     private static final String AMBIENT_UPDATE_ACTION = "com.your.package.action.AMBIENT_UPDATE";
 
@@ -54,14 +57,10 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heart_rate);
-
-
-
         mTextViewHeart = (TextView) findViewById(R.id.tvHR);
-
-
         // Enables Always-on
         setAmbientEnabled();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
@@ -92,12 +91,16 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
                 mTextViewHeart.setText(msg + "BPM");
                 Log.d(TAG, msg);
 
-                //new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
-
-                if (userMaxHeartRate < (int) event.values[0]) {
-                    userMaxHeartRate = (int) event.values[0];
-                    //new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+                if(!sharedPreferences.contains("getMaxcurrentHeartRate")){
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("getMaxcurrentHeartRate", 0);
+                    editor.commit();
                 }
+                else if(sharedPreferences.getInt("getMaxcurrentHeartRate", -1)<((int) event.values[0])){
+                     SharedPreferences.Editor edit = sharedPreferences.edit();
+                     edit.putInt("getMaxcurrentHeartRate", (int) event.values[0]);
+                     edit.commit();
+                 }
             }
         }
 
@@ -194,14 +197,14 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
             sensorManager.registerListener(this, this.sensor, 5000000);
             if(msg != null) {
                 new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
-                new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+                new HeartRateActivity.SendThread(maxheartpath, sharedPreferences.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
             }
         } else {
             // Implement data retrieval and update the screen for interactive mode
             sensorManager.registerListener(this, this.sensor, 5000000);
             if(msg != null) {
                 new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
-                new HeartRateActivity.SendThread(maxheartpath, userMaxHeartRate + "BPM").start();
+                new HeartRateActivity.SendThread(maxheartpath, sharedPreferences.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
             }
         }
         long timeMs = System.currentTimeMillis();

@@ -1,7 +1,7 @@
 package com.example.fyp;
 
 public class LockInValue {
-    String activity, duration, cTime;
+    String activity, duration, cTime, avrHeartRate;
 
     public LockInValue() {
     }
@@ -10,6 +10,7 @@ public class LockInValue {
         this.activity = activity;
         this.duration = duration;
         this.cTime = cTime;
+        //this.avrHeartRate=avrHeartRate;
     }
 
     public String getActivity() {
@@ -35,4 +36,12 @@ public class LockInValue {
     public void setcTime(String cTime) {
         this.cTime = cTime;
     }
+
+//    public String getAvrHeartRate() {
+//        return avrHeartRate;
+//    }
+//
+//    public void setAvrHeartRate(String avrHeartRate) {
+//        this.avrHeartRate = avrHeartRate;
+//    }
 }
