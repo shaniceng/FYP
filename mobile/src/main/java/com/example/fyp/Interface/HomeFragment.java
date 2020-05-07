@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,6 +115,7 @@ public class HomeFragment extends Fragment{
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
     private int currentHeartRate, MaxHeartRate, currentStepsCount, databaseHeart;
+    private Button stepbtn;
 
     private static final String GET_firebase_steps = "firebaseStepsCount";
 
@@ -221,7 +223,13 @@ public class HomeFragment extends Fragment{
                 startActivity(new Intent(getActivity(), ExerciseFragment.class));
             }
         });
-
+        stepbtn = v.findViewById(R.id.step_btn);
+        stepbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), StepActivity.class));
+            }
+        });
         //display pop up whenever over 7500 steps
         if(prefs.getInt(GET_firebase_steps, -1)>=7500){
             startActivity(new Intent(getActivity(), PopUpActivity.class));
