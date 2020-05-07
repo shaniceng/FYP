@@ -142,31 +142,24 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         //get time start of listening heart rate and end of lsitening heart rate, change HERE according to how nuh wants!!!
         //heart rate
-
         if((time.get(Calendar.HOUR_OF_DAY)>=6) && (time.get(Calendar.HOUR_OF_DAY)<=22)) {
             Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
             mSensorManager.registerListener(this, mHeartRateSensor, 300000000);
-
 
             //stepsCount
             Sensor mStepCountSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
             Sensor mStepDetectSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
             mSensorManager.registerListener(this, mStepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
             mSensorManager.registerListener(this, mStepDetectSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-
         }
         else{
             mSensorManager.unregisterListener(this);
         }
-
-
     }
 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
         if ((time.get(Calendar.HOUR_OF_DAY) >= 6) && (time.get(Calendar.HOUR_OF_DAY) < 22)) {
             if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
                 msg = "" + (int) event.values[0];
@@ -197,12 +190,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         }
     }
 
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.d(TAG, "onAccuracyChanged - accuracy: " + accuracy);
     }
-
 
     public void Refresh(){
         Calendar currentTime = Calendar.getInstance();
@@ -359,12 +350,13 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     protected void onResume() {
         super.onResume();
+        getHartRate();
         IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
         registerReceiver(ambientUpdateBroadcastReceiver, filter);
         refreshDisplayAndSetNextUpdate();
         refreshHeartRateDisplayAndSend();
         startAlarm();
-        getHartRate();
+
     }
 
     @Override
@@ -375,7 +367,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         refreshDisplayAndSetNextUpdate();
         refreshHeartRateDisplayAndSend();
         startAlarm();
-        mSensorManager.unregisterListener(this);
 
     }
 
@@ -384,7 +375,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         super.onStop();
         refreshDisplayAndSetNextUpdate();
         startAlarm();
-        mSensorManager.unregisterListener(this);
     }
 
 
