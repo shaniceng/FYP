@@ -74,5 +74,19 @@
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
+                <Button
+                    android:id="@+id/btnOffHeartRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Off heart rate listener" />
+
+                <Button
+                    android:id="@+id/btnOnHeartRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:text="On heart rate listener" />
+
             </LinearLayout>
         </ScrollView>

@@ -42,7 +42,7 @@ import static android.provider.CalendarContract.EXTRA_EVENT_ID;
 public class MainActivity extends WearableActivity implements SensorEventListener {
 
     private TextView mTextView, currentTime;
-    private Button trackActivity, heartRate, stepsCount;
+    private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate;
     private Calendar calendar;
     private ScrollView myView;
 
@@ -82,6 +82,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         stepsCount = findViewById(R.id.btnWStepsCount);
         currentTime=findViewById(R.id.tvCurrentTime);
         myView= (ScrollView) findViewById(R.id.myview);
+        offHeartRate=findViewById(R.id.btnOffHeartRate);
+        onHeartRate=findViewById(R.id.btnOnHeartRate);
 
         calendar=Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
@@ -111,6 +113,25 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, StepsCountActivity.class));
+            }
+        });
+
+        offHeartRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSensorManager= ((SensorManager) getSystemService(SENSOR_SERVICE));
+                mSensorManager.unregisterListener(MainActivity.this);
+                unregisterReceiver(ambientUpdateBroadcastReceiver);
+                ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+            }
+        });
+        onHeartRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getHartRate();
+                IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
+                registerReceiver(ambientUpdateBroadcastReceiver, filter);
+                refreshDisplayAndSetNextUpdate();
             }
         });
 
