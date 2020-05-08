@@ -1,6 +1,5 @@
 package com.example.fyp.Interface;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,9 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -23,41 +19,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fyp.CustomAdapter;
-import com.example.fyp.Interface.ExerciseFragment;
 import com.example.fyp.LockInValue;
-import com.example.fyp.MainActivity;
 import com.example.fyp.MaxHRPointValue;
 import com.example.fyp.PointValue;
 import com.example.fyp.PopUpActivity;
 import com.example.fyp.R;
 import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
+import com.example.fyp.WeeksModerateMinsPointValue;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +50,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -75,16 +58,11 @@ import com.jjoe64.graphview.series.Series;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
-import java.sql.Time;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 import static com.example.fyp.App.CHANNEL_1_ID;
 
@@ -96,7 +74,7 @@ import static com.example.fyp.App.CHANNEL_1_ID;
 public class HomeFragment extends Fragment{
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -110,6 +88,7 @@ public class HomeFragment extends Fragment{
     private ArrayList <Integer> sumOf = new ArrayList();
     private ArrayList<Integer> avrStepsFromCompetitors;
     private ArrayList<Entry> yValues;
+    private ArrayList<Float> weeklyModerateMins;
     private String time;
     private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
     private CircularProgressBar circularProgressBar;
@@ -121,7 +100,7 @@ public class HomeFragment extends Fragment{
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors;
+    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors, weeklymoderateminsdataref;
     private LineChart lineChart;
     private LineDataSet lineDataSet = new LineDataSet(null, null);
    private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
@@ -137,6 +116,7 @@ public class HomeFragment extends Fragment{
     //private Activity activity = getActivity();
 
     private String date;
+    private String week;
 
     FloatingActionButton fab;
     public HomeFragment() {
@@ -163,6 +143,7 @@ public class HomeFragment extends Fragment{
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
         stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
+        WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
 
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -184,12 +165,16 @@ public class HomeFragment extends Fragment{
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat weekFormat = new SimpleDateFormat("u");
+        week = weekFormat.format(currentDate.getTime());
         date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
         databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/" + date);
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
         dataRefStepsFromCompetitors = firebaseDatabase.getReference();
+        weeklymoderateminsdataref=firebaseDatabase.getReference("Weekly Moderate Mins/" + currentuser+"/");
+
 
         //getting data from firebase
         getDataRefOfStepsOfCompetitors();
@@ -422,6 +407,7 @@ public class HomeFragment extends Fragment{
                             float sec = duration % 100;
                             mModerateMinsArray.add(mins+(sec/60));
                             moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)) + "mins");
+                            insertWeeklyModerateMins();
                         }
                     }
                 }else{
@@ -435,6 +421,31 @@ public class HomeFragment extends Fragment{
             }
         });
 
+    }
+
+    private void insertWeeklyModerateMins(){
+        WeeksModerateMinsPointValue weeksPointValue = new WeeksModerateMinsPointValue(String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)));
+        weeklymoderateminsdataref.child(week).setValue(weeksPointValue);
+        retrieveWeeklyModerateMins();
+    }
+    private void retrieveWeeklyModerateMins(){
+        weeklymoderateminsdataref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                weeklyModerateMins=new ArrayList<>();
+                if(dataSnapshot.hasChildren()){
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        WeeksModerateMinsPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeksModerateMinsPointValue.class);
+                        weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
+                        WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", calculateSumOfWeeklyModerateMins(weeklyModerateMins)) + "mins");
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void insertMaxHR() {
@@ -548,6 +559,14 @@ public class HomeFragment extends Fragment{
         return sum;
     }
 
+        private double calculateSumOfWeeklyModerateMins(ArrayList<Float> weeklymoderatemins){
+            double sum = 0;
+            for(int i = 0; i < weeklymoderatemins.size(); i++)
+                sum += weeklymoderatemins.get(i);
+            return sum;
+        }
+
+
 //
 //        //calculate sum of moderate activity in a week (NOT DONE)
 //        private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
@@ -588,15 +607,17 @@ public class HomeFragment extends Fragment{
             String title = "Alert!!!";
             String message = "You have exceeded the Maximum Heart Rate!\n Please slow down!";
 
-            Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
-                    .setSmallIcon(R.drawable.ic_message)
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                    .build();
+            if(getContext()!=null) {
+                Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.ic_message)
+                        .setContentTitle(title)
+                        .setContentText(message)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .build();
 
-            notificationManager.notify(1, notification);
+                notificationManager.notify(1, notification);
+            }
         }
 
         public void sendOnChannel2(View v) {
