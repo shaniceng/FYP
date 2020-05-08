@@ -134,6 +134,7 @@ public class HomeFragment extends Fragment{
     private GraphView graphView;
     private LineGraphSeries lineGraphSeries;
 
+    //private Activity activity = getActivity();
 
     private String date;
 
@@ -209,7 +210,7 @@ public class HomeFragment extends Fragment{
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
         ExpandableTextView expTv1 = v.findViewById(R.id.expand_text_view).findViewById(R.id.expand_text_view);
@@ -256,7 +257,7 @@ public class HomeFragment extends Fragment{
                             avrStepsFromCompetitors.add(safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue()));
                             stepsFromCompetitors.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrStepsFromCompetitors)) + "/7500 steps");
                         }else{
-                            Toast.makeText(getActivity(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }else{
@@ -273,7 +274,7 @@ public class HomeFragment extends Fragment{
 
     private void showGraph() {
         graphView.setTitle("Heart Rate(BPM)");
-        graphView.getViewport().setMinX(new Date().getTime()-100000);
+        graphView.getViewport().setMinX(new Date().getTime()-1000000);
         graphView.getViewport().setMaxX(new Date().getTime());
         graphView.getViewport().setMinY(50);
         graphView.getViewport().setMaxY(140);
@@ -286,9 +287,9 @@ public class HomeFragment extends Fragment{
         lineGraphSeries.setBackgroundColor(R.drawable.fade_red);
         lineGraphSeries.setColor(Color.BLACK);
         lineGraphSeries.setDrawDataPoints(true);
-        lineGraphSeries.setDataPointsRadius(10);
-        lineGraphSeries.setThickness(8);
-        graphView.getGridLabelRenderer().setNumHorizontalLabels(4);
+        lineGraphSeries.setDataPointsRadius(15);
+        lineGraphSeries.setThickness(10);
+        graphView.getGridLabelRenderer().setNumHorizontalLabels(3);
         graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
             @Override
             public String formatLabel(double value, boolean isValueX) {
@@ -421,7 +422,7 @@ public class HomeFragment extends Fragment{
                         }
                     }
                 }else{
-                    Toast.makeText(getActivity(),"No activity to retrieve", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"No activity to retrieve", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -462,6 +463,11 @@ public class HomeFragment extends Fragment{
         public class MessageReceiver extends BroadcastReceiver {
             @Override
             public void onReceive(Context context, Intent intent) {
+                if (!prefs.contains("HeartRateFromWear")) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("HeartRateFromWear", 0);
+                    editor.commit();
+                }
 
                 if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null)
                         //|| intent.getStringExtra("activityTrackerHeartRate")!=null)
@@ -477,14 +483,25 @@ public class HomeFragment extends Fragment{
 //                        activityTrackheartRate = intent.getStringExtra("activityTrackerHeartRate");
 //                    }
 
-                } else if (intent.getStringExtra("heartRate") != null) {
-                    heart = intent.getStringExtra("heartRate");
-                    Log.v(TAG, "Main activity received message: " + message);
-                    HeartRate.setText(heart);
-                    currentHeartRate = Integer.parseInt(heart.replaceAll("[\\D]", ""));
-                    insertData();
-                    avrHeartRate.add(currentHeartRate);
-                    ratedMaxHR.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
+                } else if (intent.getStringExtra("heartRate") != null ){
+//                       if (currentHeartRate!=(prefs.getInt("HeartRateFromWear", -1)))
+//                    {
+                        heart = intent.getStringExtra("heartRate");
+                        Log.v(TAG, "Main activity received message: " + message);
+                        HeartRate.setText(heart);
+                        currentHeartRate = Integer.parseInt(heart.replaceAll("[\\D]", ""));
+
+                    if(currentHeartRate!=(prefs.getInt("HeartRateFromWear",-1))) {
+
+                        insertData();
+                        avrHeartRate.add(currentHeartRate);
+                        ratedMaxHR.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("HeartRateFromWear", currentHeartRate);
+                        editor.commit();
+                    }
+
                     //String.format("Value of a: %.2f", a)
 
                 } else if (intent.getStringExtra("countSteps") != null) {
@@ -573,7 +590,7 @@ public class HomeFragment extends Fragment{
             String title = "Alert!!!";
             String message = "You have exceeded the Maximum Heart Rate!\n Please slow down!";
 
-            Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+            Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
                     .setSmallIcon(R.drawable.ic_message)
                     .setContentTitle(title)
                     .setContentText(message)
