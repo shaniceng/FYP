@@ -37,47 +37,30 @@ import java.util.concurrent.TimeUnit;
 public class HeartRateActivity extends WearableActivity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
-    private TextView mTextViewHeart, textViewDate, textViewTime;
-    private static final String TAG = "FitActivity";
-    Calendar calendar;
-    String heartPath = "/heart-rate-path";
-    String maxheartpath = "/max-heart-path";
-    //private int userMaxHeartRate;
+    private TextView mTextViewHeart;
     private String msg;
     private SharedPreferences sharedPreferences;
-
-    private static final String AMBIENT_UPDATE_ACTION = "com.your.package.action.AMBIENT_UPDATE";
-
-    private AlarmManager ambientUpdateAlarmManager;
-    private PendingIntent ambientUpdatePendingIntent;
-    private BroadcastReceiver ambientUpdateBroadcastReceiver;
+    private SensorManager mSensorManager;
+    private static final String TAG = "FitActivity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heart_rate);
-        mTextViewHeart = (TextView) findViewById(R.id.tvHR);
+        mTextViewHeart = findViewById(R.id.tvHR);
         // Enables Always-on
         setAmbientEnabled();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
         sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         getHartRate();
 
-        ambientUpdateAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent ambientUpdateIntent = new Intent(AMBIENT_UPDATE_ACTION);
-        ambientUpdatePendingIntent = PendingIntent.getBroadcast(this, 0, ambientUpdateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        ambientUpdateBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) { refreshDisplayAndSetNextUpdate(); }
-        };
     }
     private void getHartRate() {
-        SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
+        mSensorManager= ((SensorManager)getSystemService(SENSOR_SERVICE));
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        mSensorManager.registerListener(this, mHeartRateSensor, 5000000);
+        mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
         //suggesting android to take data in every 5s, if nth to do, android will auto collect data.
     }
 
@@ -115,123 +98,16 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         Log.d(TAG, "onAccuracyChanged - accuracy: " + accuracy);
     }
 
-    protected void onResume() {
-        super.onResume();
-        //sensorManager.registerListener(this, this.sensor, 1000);
-        IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
-        registerReceiver(ambientUpdateBroadcastReceiver, filter);
-        refreshDisplayAndSetNextUpdate();
-
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
-        //finish();
-        refreshDisplayAndSetNextUpdate();
-        unregisterReceiver(ambientUpdateBroadcastReceiver);
-        ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+        mSensorManager.unregisterListener(this);
     }
-
+//
     @Override
     protected void onStop() {
         super.onStop();
-        //refreshDisplayAndSetNextUpdate();
-    }
-
-    class SendThread extends Thread {
-        String path;
-        String message;
-
-        //constructor
-        SendThread(String p, String msg) {
-            path = p;
-            message = msg;
-        }
-
-        //sends the message via the thread.  this will send to all wearables connected, but
-        //since there is (should only?) be one, so no problem.
-        public void run() {
-            //first get all the nodes, ie connected wearable devices.
-            Task<List<Node>> nodeListTask =
-                    Wearable.getNodeClient(getApplicationContext()).getConnectedNodes();
-            try {
-                // Block on a task and get the result synchronously (because this is on a background
-                // thread).
-                List<Node> nodes = Tasks.await(nodeListTask);
-
-                //Now send the message to each device.
-                for (Node node : nodes) {
-                    Task<Integer> sendMessageTask =
-                            Wearable.getMessageClient(HeartRateActivity.this).sendMessage(node.getId(), path, message.getBytes());
-
-                    try {
-                        // Block on a task and get the result synchronously (because this is on a background
-                        // thread).
-                        Integer result = Tasks.await(sendMessageTask);
-                        Log.v(TAG, "SendThread: message send to " + node.getDisplayName());
-
-                    } catch (ExecutionException exception) {
-                        Log.e(TAG, "Task failed: " + exception);
-
-                    } catch (InterruptedException exception) {
-                        Log.e(TAG, "Interrupt occurred: " + exception);
-                    }
-
-                }
-
-            } catch (ExecutionException exception) {
-                Log.e(TAG, "Task failed: " + exception);
-
-            } catch (InterruptedException exception) {
-                Log.e(TAG, "Interrupt occurred: " + exception);
-            }
-        }
-    }
-
-
-    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(300000);
-    private void refreshDisplayAndSetNextUpdate() {
-        if (isAmbient()) {
-            // Implement data retrieval and update the screen for ambient mode
-            sensorManager.registerListener(this, this.sensor, 5000000);
-            if(msg != null) {
-                new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
-                new HeartRateActivity.SendThread(maxheartpath, sharedPreferences.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
-            }
-        } else {
-            // Implement data retrieval and update the screen for interactive mode
-            sensorManager.registerListener(this, this.sensor, 5000000);
-            if(msg != null) {
-                new HeartRateActivity.SendThread(heartPath, msg + "BPM").start();
-                new HeartRateActivity.SendThread(maxheartpath, sharedPreferences.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
-            }
-        }
-        long timeMs = System.currentTimeMillis();
-        // Schedule a new alarm
-        if (isAmbient()) {
-            // Calculate the next trigger time
-            long delayMs = AMBIENT_INTERVAL_MS - (timeMs % AMBIENT_INTERVAL_MS);
-            long triggerTimeMs = timeMs + delayMs;
-            ambientUpdateAlarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    triggerTimeMs,
-                    ambientUpdatePendingIntent);
-        } else {
-            // Calculate the next trigger time for interactive mode
-        }
-    }
-
-    @Override
-    public void onEnterAmbient(Bundle ambientDetails) {
-        super.onEnterAmbient(ambientDetails);
-        refreshDisplayAndSetNextUpdate();
-    }
-
-    @Override
-    public void onUpdateAmbient() {
-        super.onUpdateAmbient();
-        refreshDisplayAndSetNextUpdate();
+        mSensorManager.unregisterListener(this);
     }
 
 }

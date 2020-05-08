@@ -42,7 +42,7 @@ import static android.provider.CalendarContract.EXTRA_EVENT_ID;
 public class MainActivity extends WearableActivity implements SensorEventListener {
 
     private TextView mTextView, currentTime;
-    private Button trackActivity, heartRate, stepsCount;
+    private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate;
     private Calendar calendar;
     private ScrollView myView;
 
@@ -60,9 +60,15 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private static final String AMBIENT_UPDATE_ACTION = "com.your.package.action.AMBIENT_STEPS_UPDATE";
     private static final String TAG = "BattActivity";
     String battPath = "/batt-life-path";
-
     String stepsPath = "/steps-count-path";
     private SharedPreferences prefs;
+
+    String heartPath = "/heart-rate-path";
+    String maxheartpath = "/max-heart-path";
+    private String msg;
+    private Calendar time;
+
+    private  SensorManager mSensorManager;
 
 
     @Override
@@ -76,6 +82,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         stepsCount = findViewById(R.id.btnWStepsCount);
         currentTime=findViewById(R.id.tvCurrentTime);
         myView= (ScrollView) findViewById(R.id.myview);
+        offHeartRate=findViewById(R.id.btnOffHeartRate);
+        onHeartRate=findViewById(R.id.btnOnHeartRate);
 
         calendar=Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
@@ -89,6 +97,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         trackActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 startActivity(new Intent(MainActivity.this, TrackActivity.class));
             }
         });
@@ -107,17 +116,27 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             }
         });
 
-        sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        getHartRate();
-
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = MainActivity.this.registerReceiver(null, ifilter);
-        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        batteryPct = level * 100 / (float)scale;
+        offHeartRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSensorManager= ((SensorManager) getSystemService(SENSOR_SERVICE));
+                mSensorManager.unregisterListener(MainActivity.this);
+                unregisterReceiver(ambientUpdateBroadcastReceiver);
+                ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+            }
+        });
+        onHeartRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getHartRate();
+                IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
+                registerReceiver(ambientUpdateBroadcastReceiver, filter);
+                refreshDisplayAndSetNextUpdate();
+            }
+        });
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        getHartRate();
 
         ambientUpdateAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent ambientUpdateIntent = new Intent(AMBIENT_UPDATE_ACTION);
@@ -127,48 +146,69 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             public void onReceive(Context context, Intent intent) { refreshDisplayAndSetNextUpdate(); }
         };
 
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = MainActivity.this.registerReceiver(null, ifilter);
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        batteryPct = level * 100 / (float)scale;
+
         Refresh();
         startAlarm();
-
-
     }
     private void getHartRate() {
-        SensorManager mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
-        //heartRate
-       /* Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        mSensorManager.registerListener((SensorEventListener) this, mHeartRateSensor, 5000000);*/
-        //suggesting android to take data in every 5s, if nth to do, android will auto collect data.
+        mSensorManager= ((SensorManager) getSystemService(SENSOR_SERVICE));
+        time = Calendar.getInstance();
 
+        //get time start of listening heart rate and end of lsitening heart rate, change HERE according to how nuh wants!!!
+        //heart rate
+        if((time.get(Calendar.HOUR_OF_DAY)>=6) && (time.get(Calendar.HOUR_OF_DAY)<=22)) {
+            Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+            mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        //stepsCount
-        Sensor mStepCountSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        Sensor mStepDetectSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        mSensorManager.registerListener(this, mStepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mStepDetectSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
+            //stepsCount
+            Sensor mStepCountSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            Sensor mStepDetectSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+            mSensorManager.registerListener(this, mStepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mStepDetectSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else{
+            mSensorManager.unregisterListener(this);
+        }
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-            int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
-            int stepCount = (int) event.values[0] - startingStepCount;
-            SharedPreferences.Editor edit = prefs.edit();
-            edit.putInt("dailyCurrentSteps", stepCount);
-            edit.commit();
-        } else
-            Log.d(TAG, "Unknown sensor type");
+        time = Calendar.getInstance();
+        if ((time.get(Calendar.HOUR_OF_DAY) >= 6) && (time.get(Calendar.HOUR_OF_DAY) < 22)) {
+            if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+                msg = "" + (int) event.values[0];
+                if (msg != null) {
+                    if (!prefs.contains("getMaxcurrentHeartRate")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("getMaxcurrentHeartRate", 0);
+                        editor.commit();
+                    } else if (prefs.getInt("getMaxcurrentHeartRate", -1) < ((int) event.values[0])) {
+                        SharedPreferences.Editor edit = prefs.edit();
+                        edit.putInt("getMaxcurrentHeartRate", (int) event.values[0]);
+                        edit.commit();
+                    }
+                }
+            } else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
+                int stepCount = (int) event.values[0] - startingStepCount;
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.putInt("dailyCurrentSteps", stepCount);
+                edit.commit();
+            } else
+                Log.d(TAG, "Unknown sensor type");
+        }else{
+             mSensorManager.unregisterListener(this);
+        }
     }
-
-
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.d(TAG, "onAccuracyChanged - accuracy: " + accuracy);
     }
-
 
     public void Refresh(){
         Calendar currentTime = Calendar.getInstance();
@@ -177,7 +217,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         mTextView.setText(time);
         runnable(1000);
     }
-
     public void runnable(int milliseconds){
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
@@ -237,17 +276,31 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         }
     }
 
-    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(3600000);
+    private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(60);
     private void refreshDisplayAndSetNextUpdate() {
         if (isAmbient()) {
             // Implement data retrieval and update the screen for ambient mode
-            new MainActivity.SendThread(battPath, String.valueOf(batteryPct)).start();
             if(!prefs.contains("dailyCurrentSteps")){
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt("dailyCurrentSteps", 0);
                 editor.commit();
             }
+            if(!prefs.contains("previousHeartRate")){
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("previousHeartRate", 0);
+                editor.commit();
+            }
             new MainActivity.SendThread(stepsPath, String.valueOf(prefs.getInt("dailyCurrentSteps", -1))).start();
+            new MainActivity.SendThread(battPath, String.valueOf(batteryPct)).start();
+            new MainActivity.SendThread(maxheartpath, prefs.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
+
+            if(msg != null && (String.valueOf(prefs.getInt("previousHeartRate",-1))!=msg.replaceAll("[\\D]",""))) {
+                new MainActivity.SendThread(heartPath, msg + "BPM").start();
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("previousHeartRate", Integer.parseInt(msg.replaceAll("[\\D]","")));
+                editor.commit();
+            }
+
         } else {
             // Implement data retrieval and update the screen for interactive mode
             new MainActivity.SendThread(battPath, String.valueOf(batteryPct)).start();
@@ -271,7 +324,9 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
         refreshDisplayAndSetNextUpdate();
+        //refreshHeartRateDisplayAndSend();
         startAlarm();
+        getHartRate();
 
     }
 
@@ -279,15 +334,25 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
         refreshDisplayAndSetNextUpdate();
+        //refreshHeartRateDisplayAndSend();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getHartRate();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        getHartRate();
         IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
         registerReceiver(ambientUpdateBroadcastReceiver, filter);
         refreshDisplayAndSetNextUpdate();
+        //refreshHeartRateDisplayAndSend();
         startAlarm();
+
     }
 
     @Override
@@ -296,6 +361,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         unregisterReceiver(ambientUpdateBroadcastReceiver);
         ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
         refreshDisplayAndSetNextUpdate();
+        //refreshHeartRateDisplayAndSend();
         startAlarm();
 
     }
@@ -307,6 +373,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         startAlarm();
     }
 
+
     private void startAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
@@ -316,7 +383,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         Calendar currentCal = Calendar.getInstance();
 
         firingCal.set(Calendar.HOUR_OF_DAY, 00); // At the hour you wanna fire
-        firingCal.set(Calendar.MINUTE, 00); // Particular minute
+        firingCal.set(Calendar.MINUTE, 01); // Particular minute
         firingCal.set(Calendar.SECOND, 00); // particular second
 
         long intendedTime = firingCal.getTimeInMillis();
@@ -346,6 +413,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     protected void onDestroy() {
         super.onDestroy();
         startAlarm();
+        mSensorManager.unregisterListener(this);
     }
 
 }

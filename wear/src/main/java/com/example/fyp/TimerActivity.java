@@ -124,6 +124,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         AlertDialog alertDialog = builder.create();
         alertDialog.setTitle("Good Job!");
         alertDialog.show();
+
     }
 
     //This actually sends the message to the wearable device.
