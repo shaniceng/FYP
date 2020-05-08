@@ -475,20 +475,20 @@ public class HomeFragment extends Fragment{
                 if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null)
                         //|| intent.getStringExtra("activityTrackerHeartRate")!=null)
                 {
-                    if (intent.getStringExtra("message") != null) {
+                    if (intent.getStringExtra("timing") != null) {
+                        time = intent.getStringExtra("timing");
+                    }
+                    else if (intent.getStringExtra("message") != null ) {
                         message = intent.getStringExtra("message");
                         Log.v(TAG, "Main activity received message: " + message);
                         insertLockInData();
-                    } else if (intent.getStringExtra("timing") != null) {
-                        time = intent.getStringExtra("timing");
+
                     }
+                    //get heart rate from each activity
 //                    if(intent.getStringExtra("activityTrackerHeartRate")!=null){
 //                        activityTrackheartRate = intent.getStringExtra("activityTrackerHeartRate");
 //                    }
-
                 } else if (intent.getStringExtra("heartRate") != null ){
-//                       if (currentHeartRate!=(prefs.getInt("HeartRateFromWear", -1)))
-//                    {
                         heart = intent.getStringExtra("heartRate");
                         Log.v(TAG, "Main activity received message: " + message);
                         HeartRate.setText(heart);
@@ -496,12 +496,10 @@ public class HomeFragment extends Fragment{
 
                     if(currentHeartRate!=(prefs.getInt("HeartRateFromWear",-1))) {
                         insertData();
-
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("HeartRateFromWear", currentHeartRate);
                         editor.commit();
                     }
-
                     //String.format("Value of a: %.2f", a)
 
                 } else if (intent.getStringExtra("countSteps") != null) {
