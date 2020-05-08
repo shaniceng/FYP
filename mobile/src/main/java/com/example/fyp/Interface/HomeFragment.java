@@ -233,10 +233,10 @@ public class HomeFragment extends Fragment{
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         if(myDataSnapshot.hasChildren()) {
-                            //avrStepsFromCompetitors.add(safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue())); //remember to add back - jovita **
+                            avrStepsFromCompetitors.add(safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue())); //remember to add back - jovita **
                             //String a = messageSnapshot.child("steps").getValue().toString();
                             //stepsFromCompetitors.setText(a);
-                            //stepsFromCompetitors.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrStepsFromCompetitors)) + "/7500 steps"); // remember to add back jovita **
+                            stepsFromCompetitors.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrStepsFromCompetitors)) + "/7500 steps"); // remember to add back jovita **
                         }else{
                             Toast.makeText(getActivity(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
                         }
