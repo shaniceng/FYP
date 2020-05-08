@@ -330,7 +330,10 @@ public class HomeFragment extends Fragment{
                         PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
                         dataVals[index] = new DataPoint(pointValue.getxValue(),pointValue.getyValue());
                         index++;
-                                //.index(new Entry(pointValue.getxValue(), pointValue.getyValue()));
+
+
+                        avrHeartRate.add(pointValue.getyValue());
+                        ratedMaxHR.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
                     }
                     lineGraphSeries.resetData(dataVals);
 
@@ -492,10 +495,7 @@ public class HomeFragment extends Fragment{
                         currentHeartRate = Integer.parseInt(heart.replaceAll("[\\D]", ""));
 
                     if(currentHeartRate!=(prefs.getInt("HeartRateFromWear",-1))) {
-
                         insertData();
-                        avrHeartRate.add(currentHeartRate);
-                        ratedMaxHR.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
 
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("HeartRateFromWear", currentHeartRate);
