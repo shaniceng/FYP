@@ -14,13 +14,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,18 +36,12 @@ import com.example.fyp.HistoryTab.HistoryActivity;
 import com.example.fyp.LockInValue;
 import com.example.fyp.MaxHRPointValue;
 import com.example.fyp.PointValue;
-import com.example.fyp.PopUpActivity;
 import com.example.fyp.R;
 import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
 import com.example.fyp.WeeklyReportPointValue;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -74,8 +73,14 @@ import static com.example.fyp.App.CHANNEL_1_ID;
  */
 public class HomeFragment extends Fragment{
 
+    private Button btnClosePopup;
+    private LinearLayout myPopup, overbox;
+    private ImageView trophy;
+    private TextView showpopupNoti;
+    Animation fromsmall,fromnothing, fortrophy,togo;
+
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV, weeklyStepsCountTV;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -90,7 +95,6 @@ public class HomeFragment extends Fragment{
     private ArrayList<Integer> avrStepsFromCompetitors;
     private ArrayList<Entry> yValues;
     private ArrayList<Float> weeklyModerateMins;
-    private ArrayList<Integer> weeklyStepsCount;
     private String time;
     private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
     private CircularProgressBar circularProgressBar;
@@ -99,15 +103,12 @@ public class HomeFragment extends Fragment{
     private Button stepbtn;
 
     private static final String GET_firebase_steps = "firebaseStepsCount";
+    private static final String GET_firebase_moderatemins = "firebaseWeeklyModerateMins";
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors, weeklymoderateminsdataref;
-    private LineChart lineChart;
-    private LineDataSet lineDataSet = new LineDataSet(null, null);
-   private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
-    private LineData lineData ;
-    private YAxis leftAxis;
+
 
     private SharedPreferences prefs;
 
@@ -146,7 +147,22 @@ public class HomeFragment extends Fragment{
         stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
-        weeklyStepsCountTV=v.findViewById(R.id.tvweeklyStepsCountHome);
+
+        btnClosePopup=v.findViewById(R.id.btnclosePopUp);
+        overbox=v.findViewById(R.id.popUpUI);
+        myPopup=v.findViewById(R.id.myPopUp);
+        showpopupNoti=v.findViewById(R.id.popUpnoti);
+        trophy=v.findViewById(R.id.trophyPopup);
+        fromsmall= AnimationUtils.loadAnimation(getContext(),R.anim.fromsmall);
+        fromnothing= AnimationUtils.loadAnimation(getContext(),R.anim.fromnothing);
+        fortrophy=AnimationUtils.loadAnimation(getContext(),R.anim.fortrophy);
+        togo=AnimationUtils.loadAnimation(getContext(),R.anim.togo);
+        myPopup.setAlpha(0);
+        overbox.setAlpha(0);
+        trophy.setVisibility(View.GONE);
+
+        //display pop up whenever over 7500 steps
+
 
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -218,11 +234,42 @@ public class HomeFragment extends Fragment{
                 startActivity(new Intent(getActivity(), HistoryActivity.class));
             }
         });
-        //display pop up whenever over 7500 steps
+
         if(prefs.getInt(GET_firebase_steps, -1)>=7500){
-            startActivity(new Intent(getActivity(), PopUpActivity.class));
+            trophy.setVisibility(View.VISIBLE);
+            trophy.startAnimation(fortrophy);
+            overbox.setAlpha(1);
+            overbox.startAnimation(fromnothing);
+            myPopup.setAlpha(1);
+            myPopup.startAnimation(fromsmall);
+            showpopupNoti.setText("You have completed 7500 steps today.");
+
+
+        }
+        if(prefs.getFloat(GET_firebase_moderatemins, -1)>=150){
+            trophy.setVisibility(View.VISIBLE);
+            trophy.startAnimation(fortrophy);
+            overbox.setAlpha(1);
+            overbox.startAnimation(fromnothing);
+            myPopup.setAlpha(1);
+            myPopup.startAnimation(fromsmall);
+            showpopupNoti.setText("You have completed 150 mins of moderate exercise this week.");
+
         }
 
+        btnClosePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                overbox.setAlpha(0);
+                myPopup.startAnimation(togo);
+                trophy.startAnimation(togo);
+                trophy.setVisibility(View.GONE);
+
+                ViewCompat.animate(myPopup).setStartDelay(1000).alpha(0).start();
+                ViewCompat.animate(overbox).setStartDelay(1000).alpha(0).start();
+
+            }
+        });
         return v;
     }
 
@@ -245,7 +292,7 @@ public class HomeFragment extends Fragment{
                             avrStepsFromCompetitors.add(safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue()));
                             stepsFromCompetitors.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrStepsFromCompetitors)) + "/7500 steps");
                         }else{
-                            Toast.makeText(getContext(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }else{
@@ -426,7 +473,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertWeeklyModerateMins(){
-        WeeklyReportPointValue weeksPointValue = new WeeklyReportPointValue(String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)),currentStepsCount);
+        WeeklyReportPointValue weeksPointValue = new WeeklyReportPointValue(String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)));
         weeklymoderateminsdataref.child(week).setValue(weeksPointValue);
         retrieveWeeklyModerateMins();
     }
@@ -435,14 +482,21 @@ public class HomeFragment extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 weeklyModerateMins=new ArrayList<>();
-                weeklyStepsCount=new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         WeeklyReportPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeklyReportPointValue.class);
                         weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
                         WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", calculateSumOfWeeklyModerateMins(weeklyModerateMins)) + "mins");
-                        weeklyStepsCount.add(weeksModerateMinsPointValue.getStepsCount());
-                        weeklyStepsCountTV.setText("Sum of weekly steps count: "+String.format("%.1f", calculateSumOfWeeklyStepsCount(weeklyStepsCount)) );
+
+                        if (!prefs.contains(GET_firebase_moderatemins)) {
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putFloat(GET_firebase_moderatemins, 0);
+                            editor.commit();
+                        } else {
+                            SharedPreferences.Editor edit = prefs.edit();
+                            edit.putFloat(GET_firebase_moderatemins, (float) calculateSumOfWeeklyModerateMins(weeklyModerateMins));
+                            edit.commit();
+                        }
                     }
                 }
             }
@@ -570,12 +624,6 @@ public class HomeFragment extends Fragment{
                 sum += weeklymoderatemins.get(i);
             return sum;
         }
-    private double calculateSumOfWeeklyStepsCount(ArrayList<Integer> weeklyStepsCount){
-        double sum = 0;
-        for(int i = 0; i < weeklyStepsCount.size(); i++)
-            sum += weeklyStepsCount.get(i);
-        return sum;
-    }
 
 
 //
