@@ -107,11 +107,11 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         pauseChronometer(v);
         sensorManager.unregisterListener(this);
         chronometertext = chronometer.getText().toString();
-        new TimerActivity.SendThread(chromoPath, chronometertext).start();
+        new TimerActivity.SendActivity(chromoPath, chronometertext).start();
         chronometer.setBase(SystemClock.elapsedRealtime());
-        new TimerActivity.SendThread(activityHeartRatePath, heartRate.getText().toString()).start();
+        new TimerActivity.SendActivity(activityHeartRatePath, heartRate.getText().toString()).start();
         pauseOffset=0;
-        new TimerActivity.SendThread(datapath, TrackText).start();
+        new TimerActivity.SendActivity(datapath, TrackText).start();
         AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
         builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -128,12 +128,12 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
     }
 
     //This actually sends the message to the wearable device.
-    class SendThread extends Thread {
+    class SendActivity extends Thread {
         String path;
         String message;
 
         //constructor
-        SendThread(String p, String msg) {
+        SendActivity(String p, String msg) {
             path = p;
             message = msg;
         }

@@ -1,5 +1,6 @@
 package com.example.fyp.Interface;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -99,7 +100,7 @@ public class HomeFragment extends Fragment{
     private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
-    private int currentHeartRate, MaxHeartRate, currentStepsCount, databaseHeart;
+    private int currentHeartRate=0, MaxHeartRate, currentStepsCount=0, databaseHeart;
     private Button stepbtn;
 
     private static final String GET_firebase_steps = "firebaseStepsCount";
@@ -121,6 +122,8 @@ public class HomeFragment extends Fragment{
     private String date;
     private String week;
 
+    private Activity activity;
+
     FloatingActionButton fab;
     public HomeFragment() {
         // Required empty public constructor
@@ -132,6 +135,9 @@ public class HomeFragment extends Fragment{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        activity=getActivity();
         yValues= new ArrayList<>();
 
         graphView=v.findViewById(R.id.graphView);
@@ -161,22 +167,12 @@ public class HomeFragment extends Fragment{
         overbox.setAlpha(0);
         trophy.setVisibility(View.GONE);
 
-        //display pop up whenever over 7500 steps
-
-
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
         circularProgressBar.setProgressMax(7500);
-
-        notificationManager = NotificationManagerCompat.from(getActivity());
-        getRadioText();
-        Refresh();
-
 
         //lineChart=v.findViewById(R.id.lineChart);
         firebaseDatabase= FirebaseDatabase.getInstance();
@@ -195,6 +191,9 @@ public class HomeFragment extends Fragment{
         weeklymoderateminsdataref=firebaseDatabase.getReference("Weekly Moderate Mins/" + currentuser+"/");
 
 
+        notificationManager = NotificationManagerCompat.from(getActivity());
+        getRadioText();
+        Refresh();
         //getting data from firebase
         getDataRefOfStepsOfCompetitors();
         retrieveStepsData();
@@ -312,7 +311,7 @@ public class HomeFragment extends Fragment{
         graphView.getViewport().setMinX(new Date().getTime()-1000000);
         graphView.getViewport().setMaxX(new Date().getTime());
         graphView.getViewport().setMinY(50);
-        graphView.getViewport().setMaxY(140);
+        graphView.getViewport().setMaxY(170);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setScrollable(true);
@@ -339,7 +338,7 @@ public class HomeFragment extends Fragment{
         lineGraphSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(getActivity(), "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -460,13 +459,13 @@ public class HomeFragment extends Fragment{
                         }
                     }
                 }else{
-                    Toast.makeText(getContext(),"No activity to retrieve", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,"No activity to retrieve", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(),"Error in retrieving activity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity,"Error in retrieving activity", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -541,6 +540,11 @@ public class HomeFragment extends Fragment{
                     editor.putInt("HeartRateFromWear", 0);
                     editor.commit();
                 }
+                if (!prefs.contains("ActivityFromWear")) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("ActivityFromWear", "null");
+                    editor.commit();
+                }
 
                 if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null)
                         //|| intent.getStringExtra("activityTrackerHeartRate")!=null)
@@ -548,10 +552,14 @@ public class HomeFragment extends Fragment{
                     if (intent.getStringExtra("timing") != null) {
                         time = intent.getStringExtra("timing");
                     }
-                    else if (intent.getStringExtra("message") != null ) {
+                    else if ((intent.getStringExtra("message") != null) &&
+                    ((intent.getStringExtra("message")!=prefs.getString("ActivityFromWear","null")))) {
                         message = intent.getStringExtra("message");
                         Log.v(TAG, "Main activity received message: " + message);
                         insertLockInData();
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("ActivityFromWear", message);
+                        editor.commit();
 
                     }
                     //get heart rate from each activity
@@ -625,20 +633,6 @@ public class HomeFragment extends Fragment{
             return sum;
         }
 
-
-//
-//        //calculate sum of moderate activity in a week (NOT DONE)
-//        private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
-//            Integer sum = 0;
-//            if (!avrHeartRate.isEmpty()) {
-//                for (Integer avrHR : avrHeartRate) {
-//                    sum += avrHR;
-//                }
-//                return sum.doubleValue() / avrHeartRate.size();
-//            }
-//            return sum;
-//        }
-
     //getting radio option for either 4pm or 7pm by user
         public void getRadioText() {
 
@@ -666,7 +660,7 @@ public class HomeFragment extends Fragment{
             String title = "Alert!!!";
             String message = "You have exceeded the Maximum Heart Rate!\n Please slow down!";
 
-            if(getContext()!=null) {
+            if(activity!=null) {
                 Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.ic_message)
                         .setContentTitle(title)
@@ -683,7 +677,7 @@ public class HomeFragment extends Fragment{
             String title = "Alert!!!";
             String message = "You have not reached half of the minimum steps today!\n Please exercise!";
 
-            Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+            Notification notification = new NotificationCompat.Builder(activity, CHANNEL_1_ID)
                     .setSmallIcon(R.drawable.ic_message)
                     .setContentTitle(title)
                     .setContentText(message)
@@ -698,7 +692,7 @@ public class HomeFragment extends Fragment{
             String title = "Alert!!!";
             String message = "You have not reached the minimum steps today!\n Please exercise!";
 
-            Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+            Notification notification = new NotificationCompat.Builder(activity, CHANNEL_1_ID)
                     .setSmallIcon(R.drawable.ic_message)
                     .setContentTitle(title)
                     .setContentText(message)
@@ -711,27 +705,30 @@ public class HomeFragment extends Fragment{
 
         public void Refresh() {
             Calendar currentTime = Calendar.getInstance();
-            if (currentHeartRate > MaxHeartRate) {
-                sendOnChannel1(null);
-
-            }
-
-            //insert different timings here for prompt of steps count
-            if ((currentStepsCount < (7500 / 2)) && (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)) {
-                sendOnChannel2(null);
-
-            }
-
-            getRadioText();
-            if ("4pm".equals(notiRadioText)) {
-                if ((currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) && (currentStepsCount < 7500)) {
-                    sendOnChannel3(null);
+            if(currentHeartRate!=0) {
+                if (currentHeartRate > MaxHeartRate) {
+                    sendOnChannel1(null);
 
                 }
-            } else if ("7pm".equals(notiRadioText)) {
-                if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
-                    sendOnChannel3(null);
+            }
+            else if(currentStepsCount!=0) {
+                //insert different timings here for prompt of steps count
+                if ((currentStepsCount < (7500 / 2)) && (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)) {
+                    sendOnChannel2(null);
 
+                }
+
+                getRadioText();
+                if ("4pm".equals(notiRadioText)) {
+                    if ((currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) && (currentStepsCount < 7500)) {
+                        sendOnChannel3(null);
+
+                    }
+                } else if ("7pm".equals(notiRadioText)) {
+                    if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
+                        sendOnChannel3(null);
+
+                    }
                 }
             }
             runnable(60000);
