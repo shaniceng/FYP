@@ -34,7 +34,7 @@ import com.example.fyp.PopUpActivity;
 import com.example.fyp.R;
 import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
-import com.example.fyp.WeeksModerateMinsPointValue;
+import com.example.fyp.WeeklyReportPointValue;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
@@ -74,7 +74,7 @@ import static com.example.fyp.App.CHANNEL_1_ID;
 public class HomeFragment extends Fragment{
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV, weeklyStepsCountTV;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -89,6 +89,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<Integer> avrStepsFromCompetitors;
     private ArrayList<Entry> yValues;
     private ArrayList<Float> weeklyModerateMins;
+    private ArrayList<Integer> weeklyStepsCount;
     private String time;
     private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
     private CircularProgressBar circularProgressBar;
@@ -144,6 +145,7 @@ public class HomeFragment extends Fragment{
         stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
+        weeklyStepsCountTV=v.findViewById(R.id.tvweeklyStepsCountHome);
 
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -335,7 +337,6 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertStepsData() {
-        //String id = stepsDataBaseRef.push().getKey();
         StepsPointValue pointSteps = new StepsPointValue(currentStepsCount);
         stepsDataBaseRef.setValue(pointSteps); //.child(id)
 
@@ -424,7 +425,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertWeeklyModerateMins(){
-        WeeksModerateMinsPointValue weeksPointValue = new WeeksModerateMinsPointValue(String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)));
+        WeeklyReportPointValue weeksPointValue = new WeeklyReportPointValue(String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)),currentStepsCount);
         weeklymoderateminsdataref.child(week).setValue(weeksPointValue);
         retrieveWeeklyModerateMins();
     }
@@ -433,11 +434,14 @@ public class HomeFragment extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 weeklyModerateMins=new ArrayList<>();
+                weeklyStepsCount=new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-                        WeeksModerateMinsPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeksModerateMinsPointValue.class);
+                        WeeklyReportPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeklyReportPointValue.class);
                         weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
                         WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", calculateSumOfWeeklyModerateMins(weeklyModerateMins)) + "mins");
+                        weeklyStepsCount.add(weeksModerateMinsPointValue.getStepsCount());
+                        weeklyStepsCountTV.setText("Sum of weekly steps count: "+String.format("%.1f", calculateSumOfWeeklyStepsCount(weeklyStepsCount)) );
                     }
                 }
             }
@@ -565,6 +569,12 @@ public class HomeFragment extends Fragment{
                 sum += weeklymoderatemins.get(i);
             return sum;
         }
+    private double calculateSumOfWeeklyStepsCount(ArrayList<Integer> weeklyStepsCount){
+        double sum = 0;
+        for(int i = 0; i < weeklyStepsCount.size(); i++)
+            sum += weeklyStepsCount.get(i);
+        return sum;
+    }
 
 
 //

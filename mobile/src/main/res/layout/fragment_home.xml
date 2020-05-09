@@ -528,6 +528,12 @@
                         android:layout_height="wrap_content"
                         android:text="Sum of moderate exercises for the past week: mins" />
 
+                    <TextView
+                        android:id="@+id/tvweeklyStepsCountHome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sum of  steps count for the past week:  steps count" />
+
                     <!--<androidx.constraintlayout.widget.ConstraintLayout
                        android:id="@+id/activity_constraint_layout"
                        android:layout_width="match_parent"
