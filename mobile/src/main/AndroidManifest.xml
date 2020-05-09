@@ -23,12 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Interface.StepActivity"
-            android:label="@string/title_activity_step"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".PopUpActivity"
-            android:theme="@style/AppTheme.CustomTheme" />
+            android:theme="@style/AppTheme.CustomTheme"></activity>
         <activity android:name=".PasswordActivity" />
 
         <meta-data
@@ -38,6 +34,8 @@
         <activity android:name=".Interface.EditProfile" />
         <activity android:name=".Interface.ExerciseFragment" />
         <activity android:name=".MenuActivity" />
+        <activity android:name=".HistoryTab.HistoryActivity"
+            android:label="History"/>
         <activity android:name=".CreateAccActivity" />
         <activity android:name=".Interface.TimerActivity" />
         <activity android:name=".Interface.MapsActivity" />

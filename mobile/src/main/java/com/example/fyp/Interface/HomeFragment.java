@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fyp.CustomAdapter;
+import com.example.fyp.HistoryTab.HistoryActivity;
 import com.example.fyp.LockInValue;
 import com.example.fyp.MaxHRPointValue;
 import com.example.fyp.PointValue;
@@ -214,7 +215,7 @@ public class HomeFragment extends Fragment{
         stepbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(new Intent(getActivity(), StepActivity.class));
+                startActivity(new Intent(getActivity(), HistoryActivity.class));
             }
         });
         //display pop up whenever over 7500 steps
