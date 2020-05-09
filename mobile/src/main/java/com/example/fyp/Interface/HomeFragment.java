@@ -2,12 +2,14 @@ package com.example.fyp.Interface;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -63,7 +65,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static com.example.fyp.App.CHANNEL_1_ID;
 
@@ -124,6 +125,9 @@ public class HomeFragment extends Fragment{
 
     private Activity activity;
 
+    private int duration;
+    private float mins, sec;
+
     FloatingActionButton fab;
     public HomeFragment() {
         // Required empty public constructor
@@ -135,7 +139,13 @@ public class HomeFragment extends Fragment{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //for shared prefs
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        // Register the local broadcast receiver
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
         activity=getActivity();
         yValues= new ArrayList<>();
@@ -154,6 +164,7 @@ public class HomeFragment extends Fragment{
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
 
+        //for pop up
         btnClosePopup=v.findViewById(R.id.btnclosePopUp);
         overbox=v.findViewById(R.id.popUpUI);
         myPopup=v.findViewById(R.id.myPopUp);
@@ -167,14 +178,6 @@ public class HomeFragment extends Fragment{
         overbox.setAlpha(0);
         trophy.setVisibility(View.GONE);
 
-        // Register the local broadcast receiver
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
-
-        circularProgressBar.setProgressMax(7500);
-
-        //lineChart=v.findViewById(R.id.lineChart);
         firebaseDatabase= FirebaseDatabase.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -190,18 +193,11 @@ public class HomeFragment extends Fragment{
         dataRefStepsFromCompetitors = firebaseDatabase.getReference();
         weeklymoderateminsdataref=firebaseDatabase.getReference("Weekly Moderate Mins/" + currentuser+"/");
 
+       new LongRunningTask().execute();
 
-        notificationManager = NotificationManagerCompat.from(getActivity());
-        getRadioText();
-        Refresh();
+        circularProgressBar.setProgressMax(7500);
+
         //getting data from firebase
-        getDataRefOfStepsOfCompetitors();
-        retrieveStepsData();
-        retrieveData();
-        RetrieveLockInData();
-        retrieveMaxHR();
-        showGraph();
-
 
         //get Max heart rate for each individual age
         DatabaseReference mydatabaseRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
@@ -242,8 +238,6 @@ public class HomeFragment extends Fragment{
             myPopup.setAlpha(1);
             myPopup.startAnimation(fromsmall);
             showpopupNoti.setText("You have completed 7500 steps today.");
-
-
         }
         if(prefs.getFloat(GET_firebase_moderatemins, -1)>=150){
             trophy.setVisibility(View.VISIBLE);
@@ -269,6 +263,11 @@ public class HomeFragment extends Fragment{
 
             }
         });
+        notificationManager = NotificationManagerCompat.from(getActivity());
+        getRadioText();
+        Refresh();
+
+
         return v;
     }
 
@@ -365,9 +364,8 @@ public class HomeFragment extends Fragment{
                         dataVals[index] = new DataPoint(pointValue.getxValue(),pointValue.getyValue());
                         index++;
 
-
                         avrHeartRate.add(pointValue.getyValue());
-                        ratedMaxHR.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
+                        ratedMaxHR.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrHeartRate)) + "BPM");
                     }
                     lineGraphSeries.resetData(dataVals);
 
@@ -438,7 +436,6 @@ public class HomeFragment extends Fragment{
                 mTimeSet=new ArrayList<>();
                 image = new ArrayList<>();
                 currentTimeA = new ArrayList<>();
-                activityAvrHeartRate = new ArrayList<>();
                 mModerateMinsArray=new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
@@ -450,14 +447,14 @@ public class HomeFragment extends Fragment{
                         InsertRecyclerView();
 
                         if(lockInValue.getDuration()!=null) {
-                            int duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
-                            float mins = duration / 100;
-                            float sec = duration % 100;
+                            duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
+                             mins = duration / 100;
+                             sec = duration % 100;
                             mModerateMinsArray.add(mins+(sec/60));
-                            moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)) + "mins");
-                            insertWeeklyModerateMins();
                         }
                     }
+                    insertWeeklyModerateMins();
+                    moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)) + "mins");
                 }else{
                     Toast.makeText(activity,"No activity to retrieve", Toast.LENGTH_SHORT).show();
                 }
@@ -485,7 +482,7 @@ public class HomeFragment extends Fragment{
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         WeeklyReportPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeklyReportPointValue.class);
                         weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
-                        WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", calculateSumOfWeeklyModerateMins(weeklyModerateMins)) + "mins");
+                        WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", calculateSumOfModerateMins(weeklyModerateMins)) + "mins");
 
                         if (!prefs.contains(GET_firebase_moderatemins)) {
                             SharedPreferences.Editor editor = prefs.edit();
@@ -493,7 +490,7 @@ public class HomeFragment extends Fragment{
                             editor.commit();
                         } else {
                             SharedPreferences.Editor edit = prefs.edit();
-                            edit.putFloat(GET_firebase_moderatemins, (float) calculateSumOfWeeklyModerateMins(weeklyModerateMins));
+                            edit.putFloat(GET_firebase_moderatemins, (float) calculateSumOfModerateMins(weeklyModerateMins));
                             edit.commit();
                         }
                     }
@@ -602,18 +599,6 @@ public class HomeFragment extends Fragment{
             return sum;
         }
 
-        //calculate avr heart rate per day
-        private double calculateAverage(List<Integer> avrHeartRate) {
-            Integer sum = 0;
-            if (!avrHeartRate.isEmpty()) {
-                for (Integer avrHR : avrHeartRate) {
-                    sum += avrHR;
-                }
-                return sum.doubleValue() / avrHeartRate.size();
-            }
-            return sum;
-        }
-
         //calculate avr steps of other participants
         private double calculateAverageStepsOfCompetitors(ArrayList<Integer> avgStepsFromCompetitors) {
         Integer sum = 0;
@@ -625,13 +610,6 @@ public class HomeFragment extends Fragment{
         }
         return sum;
     }
-
-        private double calculateSumOfWeeklyModerateMins(ArrayList<Float> weeklymoderatemins){
-            double sum = 0;
-            for(int i = 0; i < weeklymoderatemins.size(); i++)
-                sum += weeklymoderatemins.get(i);
-            return sum;
-        }
 
     //getting radio option for either 4pm or 7pm by user
         public void getRadioText() {
@@ -754,11 +732,33 @@ public class HomeFragment extends Fragment{
             mrecyclerView.setAdapter(mAdapter);
         }
 
-         @Override
-         public void onStart() {
-        super.onStart();
-        retrieveData();
-        getDataRefOfStepsOfCompetitors();
-    }
+        private class LongRunningTask extends AsyncTask<Void, Boolean, Boolean> {
+
+         private ProgressDialog progress;
+
+        protected void onPreExecute() {
+             progress = ProgressDialog.show(getContext(), "Title", "Text");
+        }
+
+        @Override
+         protected Boolean doInBackground(Void... params) {
+            getDataRefOfStepsOfCompetitors();
+            retrieveStepsData();
+            retrieveData();
+            RetrieveLockInData();
+            retrieveMaxHR();
+            showGraph();
+              return true;
+        }
+
+         protected void onPostExecute(Boolean result) {
+             if(result) {
+                progress.dismiss();
+         }
+      }
+
 }
+}
+
+
 

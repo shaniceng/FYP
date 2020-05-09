@@ -290,14 +290,24 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 editor.putInt("previousHeartRate", 0);
                 editor.commit();
             }
-            new MainActivity.SendThread(stepsPath, String.valueOf(prefs.getInt("dailyCurrentSteps", -1))).start();
-            new MainActivity.SendThread(battPath, String.valueOf(batteryPct)).start();
-            new MainActivity.SendThread(maxheartpath, prefs.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
+            if(!prefs.contains("previousStepsCount")){
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("previousStepsCount", 0);
+                editor.commit();
+            }
+
 
             if(msg != null && (String.valueOf(prefs.getInt("previousHeartRate",-1))!=msg.replaceAll("[\\D]",""))) {
                 new MainActivity.SendThread(heartPath, msg + "BPM").start();
+                new MainActivity.SendThread(maxheartpath, prefs.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt("previousHeartRate", Integer.parseInt(msg.replaceAll("[\\D]","")));
+                editor.commit();
+            }
+            if((String.valueOf(prefs.getInt("dailyCurrentSteps", -1))!=null) && (prefs.getInt("previousStepsCount",-1))!=prefs.getInt("dailyCurrentSteps", -1)){
+                new MainActivity.SendThread(stepsPath, String.valueOf(prefs.getInt("dailyCurrentSteps", -1))).start();
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("previousStepsCount", prefs.getInt("dailyCurrentSteps", -1));
                 editor.commit();
             }
 
@@ -323,10 +333,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
-        refreshDisplayAndSetNextUpdate();
-        //refreshHeartRateDisplayAndSend();
-        startAlarm();
         getHartRate();
+        refreshDisplayAndSetNextUpdate();
+        startAlarm();
+
 
     }
 
@@ -334,7 +344,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
         refreshDisplayAndSetNextUpdate();
-        //refreshHeartRateDisplayAndSend();
     }
 
     @Override
@@ -350,7 +359,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
         registerReceiver(ambientUpdateBroadcastReceiver, filter);
         refreshDisplayAndSetNextUpdate();
-        //refreshHeartRateDisplayAndSend();
         startAlarm();
 
     }
@@ -361,7 +369,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         unregisterReceiver(ambientUpdateBroadcastReceiver);
         ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
         refreshDisplayAndSetNextUpdate();
-        //refreshHeartRateDisplayAndSend();
         startAlarm();
 
     }
@@ -413,7 +420,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     protected void onDestroy() {
         super.onDestroy();
         startAlarm();
-        mSensorManager.unregisterListener(this);
     }
 
 }

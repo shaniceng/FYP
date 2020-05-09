@@ -1138,5 +1138,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
 
     }
+
+
 }
 
