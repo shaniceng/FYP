@@ -1,12 +1,17 @@
 package com.example.fyp.Interface;
 
+import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -14,35 +19,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fyp.AlertReceiver;
 import com.example.fyp.CustomAdapter;
 import com.example.fyp.HistoryTab.HistoryActivity;
 import com.example.fyp.LockInValue;
 import com.example.fyp.MaxHRPointValue;
 import com.example.fyp.PointValue;
-import com.example.fyp.PopUpActivity;
 import com.example.fyp.R;
 import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
-import com.example.fyp.WeeksModerateMinsPointValue;
+import com.example.fyp.WeeklyReportPointValue;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,7 +68,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static com.example.fyp.App.CHANNEL_1_ID;
 
@@ -73,6 +77,12 @@ import static com.example.fyp.App.CHANNEL_1_ID;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment{
+
+    private Button btnClosePopup;
+    private LinearLayout myPopup, overbox;
+    private ImageView trophy;
+    private TextView showpopupNoti;
+    Animation fromsmall,fromnothing, fortrophy,togo;
 
     private static final String TAG = "LineChartActivity";
     private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV;
@@ -94,19 +104,16 @@ public class HomeFragment extends Fragment{
     private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
-    private int currentHeartRate, MaxHeartRate, currentStepsCount, databaseHeart;
+    private int currentHeartRate=0, MaxHeartRate, currentStepsCount=0, databaseHeart;
     private Button stepbtn;
 
     private static final String GET_firebase_steps = "firebaseStepsCount";
+    private static final String GET_firebase_moderatemins = "firebaseWeeklyModerateMins";
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors, weeklymoderateminsdataref;
-    private LineChart lineChart;
-    private LineDataSet lineDataSet = new LineDataSet(null, null);
-   private ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
-    private LineData lineData ;
-    private YAxis leftAxis;
+
 
     private SharedPreferences prefs;
 
@@ -119,6 +126,11 @@ public class HomeFragment extends Fragment{
     private String date;
     private String week;
 
+    private Activity activity;
+
+    private int duration;
+    private float mins, sec;
+
     FloatingActionButton fab;
     public HomeFragment() {
         // Required empty public constructor
@@ -130,6 +142,16 @@ public class HomeFragment extends Fragment{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        startAlarm();
+        //for shared prefs
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        // Register the local broadcast receiver
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+
+        activity=getActivity();
         yValues= new ArrayList<>();
 
         graphView=v.findViewById(R.id.graphView);
@@ -146,21 +168,20 @@ public class HomeFragment extends Fragment{
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
 
-        // Register the local broadcast receiver
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+        //for pop up
+        btnClosePopup=v.findViewById(R.id.btnclosePopUp);
+        overbox=v.findViewById(R.id.popUpUI);
+        myPopup=v.findViewById(R.id.myPopUp);
+        showpopupNoti=v.findViewById(R.id.popUpnoti);
+        trophy=v.findViewById(R.id.trophyPopup);
+        fromsmall= AnimationUtils.loadAnimation(getContext(),R.anim.fromsmall);
+        fromnothing= AnimationUtils.loadAnimation(getContext(),R.anim.fromnothing);
+        fortrophy=AnimationUtils.loadAnimation(getContext(),R.anim.fortrophy);
+        togo=AnimationUtils.loadAnimation(getContext(),R.anim.togo);
+        myPopup.setAlpha(0);
+        overbox.setAlpha(0);
+        trophy.setVisibility(View.GONE);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        circularProgressBar.setProgressMax(7500);
-
-        notificationManager = NotificationManagerCompat.from(getActivity());
-        getRadioText();
-        Refresh();
-
-
-        //lineChart=v.findViewById(R.id.lineChart);
         firebaseDatabase= FirebaseDatabase.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -176,15 +197,11 @@ public class HomeFragment extends Fragment{
         dataRefStepsFromCompetitors = firebaseDatabase.getReference();
         weeklymoderateminsdataref=firebaseDatabase.getReference("Weekly Moderate Mins/" + currentuser+"/");
 
+       new LongRunningTask().execute();
+
+        circularProgressBar.setProgressMax(7500);
 
         //getting data from firebase
-        getDataRefOfStepsOfCompetitors();
-        retrieveStepsData();
-        retrieveData();
-        RetrieveLockInData();
-        retrieveMaxHR();
-        showGraph();
-
 
         //get Max heart rate for each individual age
         DatabaseReference mydatabaseRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
@@ -216,10 +233,44 @@ public class HomeFragment extends Fragment{
                 startActivity(new Intent(getActivity(), HistoryActivity.class));
             }
         });
-        //display pop up whenever over 7500 steps
+
         if(prefs.getInt(GET_firebase_steps, -1)>=7500){
-            startActivity(new Intent(getActivity(), PopUpActivity.class));
+            trophy.setVisibility(View.VISIBLE);
+            trophy.startAnimation(fortrophy);
+            overbox.setAlpha(1);
+            overbox.startAnimation(fromnothing);
+            myPopup.setAlpha(1);
+            myPopup.startAnimation(fromsmall);
+            showpopupNoti.setText("You have completed 7500 steps today.");
         }
+        if(prefs.getFloat(GET_firebase_moderatemins, -1)>=150){
+            trophy.setVisibility(View.VISIBLE);
+            trophy.startAnimation(fortrophy);
+            overbox.setAlpha(1);
+            overbox.startAnimation(fromnothing);
+            myPopup.setAlpha(1);
+            myPopup.startAnimation(fromsmall);
+            showpopupNoti.setText("You have completed 150 mins of moderate exercise this week.");
+
+        }
+
+        btnClosePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                overbox.setAlpha(0);
+                myPopup.startAnimation(togo);
+                trophy.startAnimation(togo);
+                trophy.setVisibility(View.GONE);
+
+                ViewCompat.animate(myPopup).setStartDelay(1000).alpha(0).start();
+                ViewCompat.animate(overbox).setStartDelay(1000).alpha(0).start();
+
+            }
+        });
+        notificationManager = NotificationManagerCompat.from(getActivity());
+        getRadioText();
+        Refresh();
+
 
         return v;
     }
@@ -243,7 +294,7 @@ public class HomeFragment extends Fragment{
                             avrStepsFromCompetitors.add(safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue()));
                             stepsFromCompetitors.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrStepsFromCompetitors)) + "/7500 steps");
                         }else{
-                            Toast.makeText(getContext(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }else{
@@ -263,7 +314,7 @@ public class HomeFragment extends Fragment{
         graphView.getViewport().setMinX(new Date().getTime()-1000000);
         graphView.getViewport().setMaxX(new Date().getTime());
         graphView.getViewport().setMinY(50);
-        graphView.getViewport().setMaxY(140);
+        graphView.getViewport().setMaxY(170);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setScrollable(true);
@@ -290,7 +341,7 @@ public class HomeFragment extends Fragment{
         lineGraphSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(getActivity(), "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -317,9 +368,8 @@ public class HomeFragment extends Fragment{
                         dataVals[index] = new DataPoint(pointValue.getxValue(),pointValue.getyValue());
                         index++;
 
-
                         avrHeartRate.add(pointValue.getyValue());
-                        ratedMaxHR.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
+                        ratedMaxHR.setText(String.format("%.1f", calculateAverageStepsOfCompetitors(avrHeartRate)) + "BPM");
                     }
                     lineGraphSeries.resetData(dataVals);
 
@@ -336,7 +386,6 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertStepsData() {
-        //String id = stepsDataBaseRef.push().getKey();
         StepsPointValue pointSteps = new StepsPointValue(currentStepsCount);
         stepsDataBaseRef.setValue(pointSteps); //.child(id)
 
@@ -391,7 +440,6 @@ public class HomeFragment extends Fragment{
                 mTimeSet=new ArrayList<>();
                 image = new ArrayList<>();
                 currentTimeA = new ArrayList<>();
-                activityAvrHeartRate = new ArrayList<>();
                 mModerateMinsArray=new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
@@ -403,29 +451,29 @@ public class HomeFragment extends Fragment{
                         InsertRecyclerView();
 
                         if(lockInValue.getDuration()!=null) {
-                            int duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
-                            float mins = duration / 100;
-                            float sec = duration % 100;
+                            duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
+                             mins = duration / 100;
+                             sec = duration % 100;
                             mModerateMinsArray.add(mins+(sec/60));
-                            moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)) + "mins");
-                            insertWeeklyModerateMins();
                         }
                     }
+                    insertWeeklyModerateMins();
+                    moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)) + "mins");
                 }else{
-                    Toast.makeText(getContext(),"No activity to retrieve", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,"No activity to retrieve", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(),"Error in retrieving activity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity,"Error in retrieving activity", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     private void insertWeeklyModerateMins(){
-        WeeksModerateMinsPointValue weeksPointValue = new WeeksModerateMinsPointValue(String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)));
+        WeeklyReportPointValue weeksPointValue = new WeeklyReportPointValue(String.format("%.1f", calculateSumOfModerateMins(mModerateMinsArray)));
         weeklymoderateminsdataref.child(week).setValue(weeksPointValue);
         retrieveWeeklyModerateMins();
     }
@@ -436,9 +484,19 @@ public class HomeFragment extends Fragment{
                 weeklyModerateMins=new ArrayList<>();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-                        WeeksModerateMinsPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeksModerateMinsPointValue.class);
+                        WeeklyReportPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeklyReportPointValue.class);
                         weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
-                        WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", calculateSumOfWeeklyModerateMins(weeklyModerateMins)) + "mins");
+                        WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", calculateSumOfModerateMins(weeklyModerateMins)) + "mins");
+
+                        if (!prefs.contains(GET_firebase_moderatemins)) {
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putFloat(GET_firebase_moderatemins, 0);
+                            editor.commit();
+                        } else {
+                            SharedPreferences.Editor edit = prefs.edit();
+                            edit.putFloat(GET_firebase_moderatemins, (float) calculateSumOfModerateMins(weeklyModerateMins));
+                            edit.commit();
+                        }
                     }
                 }
             }
@@ -483,6 +541,11 @@ public class HomeFragment extends Fragment{
                     editor.putInt("HeartRateFromWear", 0);
                     editor.commit();
                 }
+                if (!prefs.contains("ActivityFromWear")) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("ActivityFromWear", "null");
+                    editor.commit();
+                }
 
                 if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null)
                         //|| intent.getStringExtra("activityTrackerHeartRate")!=null)
@@ -490,10 +553,14 @@ public class HomeFragment extends Fragment{
                     if (intent.getStringExtra("timing") != null) {
                         time = intent.getStringExtra("timing");
                     }
-                    else if (intent.getStringExtra("message") != null ) {
+                    else if ((intent.getStringExtra("message") != null) &&
+                    ((intent.getStringExtra("message")!=prefs.getString("ActivityFromWear","null")))) {
                         message = intent.getStringExtra("message");
                         Log.v(TAG, "Main activity received message: " + message);
                         insertLockInData();
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("ActivityFromWear", message);
+                        editor.commit();
 
                     }
                     //get heart rate from each activity
@@ -536,18 +603,6 @@ public class HomeFragment extends Fragment{
             return sum;
         }
 
-        //calculate avr heart rate per day
-        private double calculateAverage(List<Integer> avrHeartRate) {
-            Integer sum = 0;
-            if (!avrHeartRate.isEmpty()) {
-                for (Integer avrHR : avrHeartRate) {
-                    sum += avrHR;
-                }
-                return sum.doubleValue() / avrHeartRate.size();
-            }
-            return sum;
-        }
-
         //calculate avr steps of other participants
         private double calculateAverageStepsOfCompetitors(ArrayList<Integer> avgStepsFromCompetitors) {
         Integer sum = 0;
@@ -559,27 +614,6 @@ public class HomeFragment extends Fragment{
         }
         return sum;
     }
-
-        private double calculateSumOfWeeklyModerateMins(ArrayList<Float> weeklymoderatemins){
-            double sum = 0;
-            for(int i = 0; i < weeklymoderatemins.size(); i++)
-                sum += weeklymoderatemins.get(i);
-            return sum;
-        }
-
-
-//
-//        //calculate sum of moderate activity in a week (NOT DONE)
-//        private double calculateSumofModerateActivity(List<Integer> avrHeartRate) {
-//            Integer sum = 0;
-//            if (!avrHeartRate.isEmpty()) {
-//                for (Integer avrHR : avrHeartRate) {
-//                    sum += avrHR;
-//                }
-//                return sum.doubleValue() / avrHeartRate.size();
-//            }
-//            return sum;
-//        }
 
     //getting radio option for either 4pm or 7pm by user
         public void getRadioText() {
@@ -608,7 +642,7 @@ public class HomeFragment extends Fragment{
             String title = "Alert!!!";
             String message = "You have exceeded the Maximum Heart Rate!\n Please slow down!";
 
-            if(getContext()!=null) {
+            if(activity!=null) {
                 Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.ic_message)
                         .setContentTitle(title)
@@ -625,7 +659,7 @@ public class HomeFragment extends Fragment{
             String title = "Alert!!!";
             String message = "You have not reached half of the minimum steps today!\n Please exercise!";
 
-            Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+            Notification notification = new NotificationCompat.Builder(activity, CHANNEL_1_ID)
                     .setSmallIcon(R.drawable.ic_message)
                     .setContentTitle(title)
                     .setContentText(message)
@@ -640,7 +674,7 @@ public class HomeFragment extends Fragment{
             String title = "Alert!!!";
             String message = "You have not reached the minimum steps today!\n Please exercise!";
 
-            Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
+            Notification notification = new NotificationCompat.Builder(activity, CHANNEL_1_ID)
                     .setSmallIcon(R.drawable.ic_message)
                     .setContentTitle(title)
                     .setContentText(message)
@@ -653,27 +687,30 @@ public class HomeFragment extends Fragment{
 
         public void Refresh() {
             Calendar currentTime = Calendar.getInstance();
-            if (currentHeartRate > MaxHeartRate) {
-                sendOnChannel1(null);
-
-            }
-
-            //insert different timings here for prompt of steps count
-            if ((currentStepsCount < (7500 / 2)) && (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)) {
-                sendOnChannel2(null);
-
-            }
-
-            getRadioText();
-            if ("4pm".equals(notiRadioText)) {
-                if ((currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) && (currentStepsCount < 7500)) {
-                    sendOnChannel3(null);
+            if(currentHeartRate!=0) {
+                if (currentHeartRate > MaxHeartRate) {
+                    sendOnChannel1(null);
 
                 }
-            } else if ("7pm".equals(notiRadioText)) {
-                if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
-                    sendOnChannel3(null);
+            }
+            else if(currentStepsCount!=0) {
+                //insert different timings here for prompt of steps count
+                if ((currentStepsCount < (7500 / 2)) && (currentTime.get(Calendar.HOUR_OF_DAY) == 12) && (currentTime.get(Calendar.MINUTE) == 00)) {
+                    sendOnChannel2(null);
 
+                }
+
+                getRadioText();
+                if ("4pm".equals(notiRadioText)) {
+                    if ((currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) && (currentStepsCount < 7500)) {
+                        sendOnChannel3(null);
+
+                    }
+                } else if ("7pm".equals(notiRadioText)) {
+                    if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
+                        sendOnChannel3(null);
+
+                    }
                 }
             }
             runnable(60000);
@@ -699,11 +736,80 @@ public class HomeFragment extends Fragment{
             mrecyclerView.setAdapter(mAdapter);
         }
 
-         @Override
-         public void onStart() {
-        super.onStart();
-        retrieveData();
-        getDataRefOfStepsOfCompetitors();
+        private class LongRunningTask extends AsyncTask<Void, Boolean, Boolean> {
+
+         private ProgressDialog progress;
+
+        protected void onPreExecute() {
+             progress = ProgressDialog.show(getContext(), "Title", "Text");
+        }
+
+        @Override
+         protected Boolean doInBackground(Void... params) {
+            getDataRefOfStepsOfCompetitors();
+            retrieveStepsData();
+            retrieveData();
+            RetrieveLockInData();
+            retrieveMaxHR();
+            showGraph();
+              return true;
+        }
+
+         protected void onPostExecute(Boolean result) {
+             if(result) {
+                progress.dismiss();
+         }
+      }
+
+    }
+
+    private void startAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
+
+        Calendar firingCal= Calendar.getInstance();
+        Calendar currentCal = Calendar.getInstance();
+
+        firingCal.set(Calendar.HOUR_OF_DAY, 15); // At the hour you wanna fire
+        firingCal.set(Calendar.MINUTE, 33); // Particular minute
+        firingCal.set(Calendar.SECOND, 00); // particular second
+
+        long intendedTime = firingCal.getTimeInMillis();
+        long currentTime = currentCal.getTimeInMillis();
+
+        if(intendedTime >= currentTime){
+            // you can add buffer time too here to ignore some small differences in milliseconds
+            // set from today
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+        } else{
+            // set from next day
+            // you might consider using calendar.add() for adding one day to the current day
+            firingCal.add(Calendar.DAY_OF_MONTH, 1);
+            intendedTime = firingCal.getTimeInMillis();
+
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        startAlarm();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        startAlarm();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        startAlarm();
     }
 }
+
+
 

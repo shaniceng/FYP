@@ -11,6 +11,78 @@
 
     <!-- Floating Button -->
 
+    <ImageView
+        android:id="@+id/trophyPopup"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginRight="160dp"
+        android:elevation="10dp"
+        android:src="@drawable/ic_trophy"/>
+    <LinearLayout
+        android:outlineAmbientShadowColor="@color/colorPrimaryDark"
+        android:paddingTop="30dp"
+        android:background="@drawable/bgpopup"
+        android:id="@+id/myPopUp"
+        android:layout_width="340dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Congratulations!"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textColor="#000000"/>
+        
+        <TextView
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="4dp"
+            android:id="@+id/popUpnoti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:text="You have completed..."
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"/>
+        
+        <Button
+            android:id="@+id/btnclosePopUp"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@drawable/round"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:text="Close"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+
+        
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/popUpUI"
+        android:background="@drawable/popupbox"
+        android:elevation="8dp"
+        android:orientation="vertical">
+
+
+
+    </LinearLayout>
+
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddActivity"
         android:layout_width="wrap_content"
@@ -526,107 +598,6 @@
                         android:layout_height="wrap_content"
                         android:text="Sum of moderate exercises for the past week: mins" />
 
-                    <!--<androidx.constraintlayout.widget.ConstraintLayout
-                       android:id="@+id/activity_constraint_layout"
-                       android:layout_width="match_parent"
-                       android:layout_height="114dp"
-                       android:layout_gravity="center"
-                       android:layout_margin="20dp"
-                       app:layout_constraintBottom_toBottomOf="parent"
-                       app:layout_constraintEnd_toEndOf="parent"
-                       app:layout_constraintHorizontal_bias="0.6"
-                       app:layout_constraintStart_toStartOf="parent"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintVertical_bias="0.0">
-
-                       <ImageView
-                           android:id="@+id/ActivityImageView"
-                           android:layout_width="100dp"
-                           android:layout_height="100dp"
-                           android:background="@drawable/ic_icon_awesome_jogging"
-                           android:backgroundTint="#1E2947"
-                           android:padding="50dp"
-                           app:layout_constraintBottom_toBottomOf="parent"
-                           app:layout_constraintStart_toStartOf="parent"
-                           app:layout_constraintTop_toTopOf="parent" />
-
-                       <TextView
-                           android:id="@+id/tvActivityName"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginStart="12dp"
-                           android:layout_marginTop="20dp"
-                           android:background="@drawable/round"
-                           android:backgroundTint="#b6bbd8"
-                           android:paddingLeft="10dp"
-                           android:paddingRight="10dp"
-                           android:text="Running"
-                           android:textSize="20sp"
-                           app:layout_constraintEnd_toEndOf="parent"
-                           app:layout_constraintHorizontal_bias="0.0"
-                           app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
-                           app:layout_constraintTop_toTopOf="parent" />
-
-                       <TextView
-                           android:id="@+id/tvDuration"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginStart="12dp"
-                           android:layout_marginTop="2dp"
-                           android:text="Duration:"
-                           android:textSize="15sp"
-                           app:layout_constraintBottom_toBottomOf="parent"
-                           app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
-                           app:layout_constraintTop_toBottomOf="@+id/tvActivityName"
-                           app:layout_constraintVertical_bias="0.06" />
-
-                       <TextView
-                           android:id="@+id/tvStartTimeLabel"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginTop="24dp"
-                           android:layout_marginEnd="20dp"
-                           android:text="Start Time:"
-                           app:layout_constraintEnd_toEndOf="parent"
-                           app:layout_constraintTop_toTopOf="parent" />
-
-                       <TextView
-                           android:id="@+id/BackgroundStartTime"
-                           android:layout_width="70dp"
-                           android:layout_height="19dp"
-                           android:layout_marginTop="5dp"
-                           android:layout_marginEnd="20dp"
-                           android:background="@drawable/round"
-                           android:backgroundTint="#979797"
-                           android:paddingLeft="5dp"
-                           android:paddingRight="5dp"
-                           app:layout_constraintEnd_toEndOf="parent"
-                           app:layout_constraintTop_toBottomOf="@+id/tvStartTimeLabel" />
-
-
-                       <TextView
-                           android:id="@+id/tvStartTime"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:gravity="center"
-                           android:text="1:00pm"
-                           app:layout_constraintBottom_toBottomOf="@+id/BackgroundStartTime"
-                           app:layout_constraintEnd_toEndOf="@+id/BackgroundStartTime"
-                           app:layout_constraintStart_toStartOf="@+id/BackgroundStartTime"
-                           app:layout_constraintTop_toTopOf="@+id/BackgroundStartTime" />
-
-                       <TextView
-                           android:id="@+id/tvInsertDuration"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginStart="4dp"
-                           android:layout_marginTop="4dp"
-                           android:text="45mins"
-                           app:layout_constraintStart_toEndOf="@+id/tvDuration"
-                           app:layout_constraintTop_toBottomOf="@+id/tvActivityName" />
-
-
-                   </androidx.constraintlayout.widget.ConstraintLayout>-->
 
                </LinearLayout>
            </androidx.constraintlayout.widget.ConstraintLayout>

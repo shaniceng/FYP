@@ -1,12 +1,14 @@
 package com.example.fyp;
 
-public class WeeksModerateMinsPointValue {
+public class WeeklyReportPointValue {
     String moderateMins;
 
-    public WeeksModerateMinsPointValue() {
+
+    public WeeklyReportPointValue(){
+
     }
 
-    public WeeksModerateMinsPointValue(String moderateMins){
+    public WeeklyReportPointValue(String moderateMins){
         this.moderateMins=moderateMins;
     }
     public String getModerateMins() {
@@ -16,4 +18,6 @@ public class WeeksModerateMinsPointValue {
     public void setModerateMins(String moderateMins) {
         this.moderateMins = moderateMins;
     }
+
+
 }
