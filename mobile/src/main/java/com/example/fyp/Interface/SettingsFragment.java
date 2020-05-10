@@ -164,8 +164,11 @@ public class SettingsFragment extends Fragment {
         stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
-                dataSteps = stepsPointValue.getSteps();
+
+                if(dataSnapshot.hasChildren()){
+                    StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
+                    dataSteps = stepsPointValue.getSteps();
+
 
                 if ((lastDay == thisDay - 1) && (dataSteps > 100)) { //testing at 100 steps a day first must EDIT HERE
                     // CONSECUTIVE DAYS
@@ -202,6 +205,8 @@ public class SettingsFragment extends Fragment {
                 } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 180) {
                     //change greyscale to colour for 6month streak
                     iv6months.setImageResource(R.drawable.badges_colour);
+                }
+
                 }
 
             }

@@ -1,7 +1,9 @@
 package com.example.fyp.Interface;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,6 +36,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fyp.AlertReceiver;
 import com.example.fyp.CustomAdapter;
 import com.example.fyp.HistoryTab.HistoryActivity;
 import com.example.fyp.LockInValue;
@@ -139,6 +142,7 @@ public class HomeFragment extends Fragment{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        startAlarm();
         //for shared prefs
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -757,7 +761,54 @@ public class HomeFragment extends Fragment{
          }
       }
 
-}
+    }
+
+    private void startAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
+
+        Calendar firingCal= Calendar.getInstance();
+        Calendar currentCal = Calendar.getInstance();
+
+        firingCal.set(Calendar.HOUR_OF_DAY, 15); // At the hour you wanna fire
+        firingCal.set(Calendar.MINUTE, 33); // Particular minute
+        firingCal.set(Calendar.SECOND, 00); // particular second
+
+        long intendedTime = firingCal.getTimeInMillis();
+        long currentTime = currentCal.getTimeInMillis();
+
+        if(intendedTime >= currentTime){
+            // you can add buffer time too here to ignore some small differences in milliseconds
+            // set from today
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+        } else{
+            // set from next day
+            // you might consider using calendar.add() for adding one day to the current day
+            firingCal.add(Calendar.DAY_OF_MONTH, 1);
+            intendedTime = firingCal.getTimeInMillis();
+
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        startAlarm();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        startAlarm();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        startAlarm();
+    }
 }
 
 
