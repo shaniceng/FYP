@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fyp.HistoryActivityAdapter;
+import com.example.fyp.HistoryActivityName;
 import com.example.fyp.R;
 import com.example.fyp.StepsAdapter;
 import com.example.fyp.StepsValue;
@@ -32,19 +35,20 @@ import java.util.Calendar;
 
 public class daily_history_fragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    private String currentdate,selecteddate;
+    private String currentdate,selecteddate,currentuser;
     private String steps;
-    private DatabaseReference stepsDataBaseRef;
+    private DatabaseReference stepsDataBaseRef,actDataBaseRef;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView mRecyclerView,nRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager, nLayoutManager;
+    private RecyclerView.Adapter mAdapter, nAdapter;
     //private ArrayList<String> mDate;
     //private ArrayList<String> mSteps = new ArrayList();
     private String dataDate=null;
     private ArrayList<StepsValue> stepsValue= new ArrayList<>();
-    private TextView dateText,dataText;
+    private ArrayList<HistoryActivityName> HistoryAct= new ArrayList<>();
+    private TextView dateText,actText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +56,9 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
         View v= inflater.inflate(R.layout.history_tab_daily, container, false);
         dateText = v.findViewById(R.id.date_text);
         //dataText = findViewById(R.id.data_text);
+        actText = v.findViewById(R.id.tvAct);
         mRecyclerView = v.findViewById(R.id.steps_value);
+        //nRecyclerView=v.findViewById(R.id.History_Activity);
 
         v.findViewById(R.id.date_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,13 +103,16 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
             Calendar currentDate = Calendar.getInstance();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             currentdate = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]", "");
-            String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
             //stepsDataBaseRef = firebaseDatabase.getReference("Steps Count/" + currentuser + date);
 
 
             stepsValue = new ArrayList<>();
+            HistoryAct= new ArrayList<>();
             mLayoutManager = new LinearLayoutManager(getActivity());
+           // nLayoutManager = new LinearLayoutManager(getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
+            //nRecyclerView.setLayoutManager(nLayoutManager);
 
 
             stepsDataBaseRef = FirebaseDatabase.getInstance().getReference().child("Steps Count").child(currentuser).child(selecteddate);
@@ -113,19 +122,50 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
 
                     if (dataSnapshot.hasChild("steps")) {
                         steps = dataSnapshot.child("steps").getValue().toString();
-                        Toast.makeText(getActivity(), steps, Toast.LENGTH_SHORT).show();
+
+                        //Toast.makeText(getActivity(), steps, Toast.LENGTH_SHORT).show();
                         // stepsValue.add(new StepsValue(steps, selecteddate));
                         //StepsAdapter.notifyDataSetChanged();
+                        stepsValue.add(new StepsValue(steps, datetxt2));
 
 
                     } else {
                         steps = "0";
+                        stepsValue.add(new StepsValue(steps, datetxt2));
                     }
-                    stepsValue.add(new StepsValue(steps, datetxt2));
+                    //stepsValue.add(new StepsValue(steps, datetxt2));
                     mAdapter = new StepsAdapter(stepsValue);
                     mRecyclerView.setAdapter(mAdapter);
                     mRecyclerView.setHasFixedSize(true);
 
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+            actDataBaseRef = FirebaseDatabase.getInstance().getReference().child("Activity Tracker").child(currentuser).child(selecteddate);
+            actDataBaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+
+                        //HistoryAct.add(new HistoryActivityName(actdaily, durdaily));
+                        actText.setText(actdaily);
+                        Log.i("ValueACTT", actdaily);
+
+                    }
+
+                    //nAdapter = new HistoryActivityAdapter(HistoryAct);
+                    //nRecyclerView.setAdapter(nAdapter);
+                    //nRecyclerView.setHasFixedSize(true);
                 }
 
                 @Override
@@ -148,6 +188,10 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
             mAdapter = new StepsAdapter(stepsValue);
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setHasFixedSize(true);
+
+            //nAdapter = new HistoryActivityAdapter(HistoryAct);
+            //nRecyclerView.setAdapter(nAdapter);
+            //nRecyclerView.setHasFixedSize(true);
 
 
         }

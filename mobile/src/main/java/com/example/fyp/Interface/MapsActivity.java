@@ -6,7 +6,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -14,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +20,6 @@ import android.widget.Button;
 
 import com.example.fyp.Common;
 import com.example.fyp.Model.IGoogleAPIService;
-import com.example.fyp.Model.Results;
-import com.example.fyp.ParkAdapter;
-import com.example.fyp.ParkName;
 import com.example.fyp.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,16 +31,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MapsActivity extends Fragment implements OnMapReadyCallback,
@@ -54,7 +44,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         LocationListener {
 
     private static final int MY_PERMISSION_CODE = 1000;
-    private GoogleMap mMap;
+    private GoogleMap mMap,gMap;
     private GoogleApiClient mGoogleApiClient;
 
     ChipNavigationBar bottomNav;
@@ -65,6 +55,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
     private Location mLastLocation;
     private Marker mMarker;
     private LocationRequest mLocationRequest;
+
+    private CameraPosition cameraPosition;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -89,16 +81,14 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
 
         //Init Service
         mService = Common.getGoogleAPIServices();
-
-
-        mRecyclerView=v.findViewById(R.id.recyclerView);
-
+        //mRecyclerView=v.findViewById(R.id.recyclerView);
 
 
         //Request Runtime permission
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
+
 
         Button park = v.findViewById(R.id.parkbutton);
         Button gym = v.findViewById(R.id.gymbutton);
@@ -155,6 +145,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
 
             }
         });
+
 
         return v;
 
@@ -1066,6 +1057,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        gMap = googleMap;
         //googleMap = map;
 
         //Init Google Play Services
@@ -1124,6 +1116,13 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         longitude=location.getLongitude();
 
         LatLng latLng = new LatLng(latitude,longitude);
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
+
+       // mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+        //cameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).build();
+
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
                 .title("Your position")
@@ -1131,8 +1130,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         mMarker =mMap.addMarker(markerOptions);
 
         //Move Camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
         if(mGoogleApiClient!=null)
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);

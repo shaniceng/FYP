@@ -78,6 +78,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvStep" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- TODO! Figure out how to put recyclerview in recyclerview
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/History_Activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_button"
+        android:paddingTop="80dp"/>
+
+    -->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

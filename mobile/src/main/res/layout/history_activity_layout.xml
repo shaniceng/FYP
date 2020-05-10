@@ -17,7 +17,7 @@
             android:padding="2dp"/>
 
         <TextView
-            android:id="@+id/tvPark"
+            android:id="@+id/tvHistoryActivity"
             android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:layout_alignParentTop="true"
@@ -31,7 +31,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvPark2"
+            android:id="@+id/tvHistoryDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
