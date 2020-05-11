@@ -16,6 +16,7 @@ import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.input.RotaryEncoder;
@@ -67,6 +68,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     String maxheartpath = "/max-heart-path";
     private String msg;
     private Calendar time;
+    private int heartrate=0;
 
     private  SensorManager mSensorManager;
 
@@ -97,8 +99,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         trackActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 startActivity(new Intent(MainActivity.this, TrackActivity.class));
+                finish();
             }
         });
 
@@ -154,6 +156,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         Refresh();
         startAlarm();
+
     }
     private void getHartRate() {
         mSensorManager= ((SensorManager) getSystemService(SENSOR_SERVICE));
@@ -182,6 +185,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         if ((time.get(Calendar.HOUR_OF_DAY) >= 6) && (time.get(Calendar.HOUR_OF_DAY) < 22)) {
             if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
                 msg = "" + (int) event.values[0];
+                heartrate =(int) event.values[0];
                 if (msg != null) {
                     if (!prefs.contains("getMaxcurrentHeartRate")) {
                         SharedPreferences.Editor editor = prefs.edit();
@@ -194,6 +198,22 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                     }
                 }
             } else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                //prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                // Initialize if it is the first time use
+                if(!prefs.contains(Initial_Count_Key) || ((int) event.values[0] == 0)){
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt(Initial_Count_Key, (int) event.values[0]);
+                    editor.commit();
+                }
+                if(!prefs.contains("dailyCurrentSteps") || ((int) event.values[0] == 0)){
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("dailyCurrentSteps", (int) event.values[0]);
+                    editor.commit();
+                }
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt(Current_Steps_Now, (int) event.values[0]);
+                editor.commit();
+
                 int startingStepCount = prefs.getInt(Initial_Count_Key, -1);
                 int stepCount = (int) event.values[0] - startingStepCount;
                 SharedPreferences.Editor edit = prefs.edit();
@@ -336,14 +356,13 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         getHartRate();
         refreshDisplayAndSetNextUpdate();
         startAlarm();
-
-
     }
 
     @Override
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
         refreshDisplayAndSetNextUpdate();
+        setRemindertoLockIn();
     }
 
     @Override
@@ -380,6 +399,39 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         startAlarm();
     }
 
+    private void setRemindertoLockIn(){
+        if((heartrate!=0)&&(heartrate>=110)) {
+            vibration();
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder//.setMessage("Are you exercising now?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(MainActivity.this, TrackActivity.class));
+                            finish();
+                        }
+                    })
+                    .setNeutralButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.setTitle("Are you exercising now?");
+            alertDialog.show();
+        }
+    }
+    public Vibrator vibration() {
+
+        Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
+        long[] pattern = { 0, 2000, 2000 };
+
+        v.vibrate(pattern, -1);
+        return v;
+
+    }
 
     private void startAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -389,8 +441,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         Calendar firingCal= Calendar.getInstance();
         Calendar currentCal = Calendar.getInstance();
 
-        firingCal.set(Calendar.HOUR_OF_DAY, 00); // At the hour you wanna fire
-        firingCal.set(Calendar.MINUTE, 01); // Particular minute
+        firingCal.set(Calendar.HOUR_OF_DAY, 0); // At the hour you wanna fire
+        firingCal.set(Calendar.MINUTE, 1); // Particular minute
         firingCal.set(Calendar.SECOND, 00); // particular second
 
         long intendedTime = firingCal.getTimeInMillis();

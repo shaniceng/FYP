@@ -117,8 +117,9 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+
                         startActivity(new Intent(TimerActivity.this, MainActivity.class));
+                        finish();
                     }
                 });
         AlertDialog alertDialog = builder.create();
