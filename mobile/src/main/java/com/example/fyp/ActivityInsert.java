@@ -1,7 +1,7 @@
 package com.example.fyp;
 
 public class ActivityInsert {
-    private String activity,cDuration,cTime;
+    private String activity,duration,cTime;
 
 
     public ActivityInsert(){
@@ -16,12 +16,12 @@ public class ActivityInsert {
         this.activity = activity;
     }
 
-    public String getcDuration() {
-        return cDuration;
+    public String getduration() {
+        return duration;
     }
 
-    public void setcDuration(String cDuration) {
-        this.cDuration = cDuration;
+    public void setduration(String duration) {
+        this.duration = duration;
     }
 
     public String getcTime() {

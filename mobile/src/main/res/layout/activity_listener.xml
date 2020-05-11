@@ -29,10 +29,10 @@
             android:text="Duration:"
             android:textColor="#000000"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvActivityHeartRate"
+            app:layout_constraintEnd_toStartOf="@+id/tvInsertDuration"
             app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
-            app:layout_constraintTop_toBottomOf="@+id/tvActivityName"
-            app:layout_constraintVertical_bias="0.06" />
+            app:layout_constraintTop_toBottomOf="@+id/tvActivityName" />
 
         <TextView
             android:id="@+id/tvStartTimeLabel"
@@ -42,22 +42,28 @@
             android:layout_marginEnd="20dp"
             android:text="End Time:"
             android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/BackgroundStartTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/BackgroundStartTime"
             android:layout_width="88dp"
             android:layout_height="22dp"
+            android:layout_marginStart="72dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/round"
             android:backgroundTint="#979797"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvStartTimeLabel" />
-
+            app:layout_constraintStart_toEndOf="@+id/tvInsertDuration"
+            app:layout_constraintTop_toBottomOf="@+id/tvStartTimeLabel"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/tvStartTime"
@@ -75,12 +81,15 @@
             android:id="@+id/tvInsertDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:text="45mins"
             android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/tvActivityHeartRate"
+            app:layout_constraintEnd_toStartOf="@+id/BackgroundStartTime"
             app:layout_constraintStart_toEndOf="@+id/tvDuration"
-            app:layout_constraintTop_toBottomOf="@+id/tvActivityName" />
+            app:layout_constraintTop_toBottomOf="@+id/tvActivityName"
+            app:layout_constraintVertical_bias="0.461" />
 
         <ImageView
             android:id="@+id/ActivityImageView"
@@ -125,6 +134,20 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvActivityHeartRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="TextView"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/BackgroundStartTime"
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
+            app:layout_constraintTop_toBottomOf="@+id/tvDuration"
+            app:layout_constraintVertical_bias="0.388" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

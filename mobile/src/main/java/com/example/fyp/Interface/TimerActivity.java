@@ -8,6 +8,7 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class TimerActivity extends AppCompatActivity {
     EditText actname;
     ImageView imageAct;
     Button back;
+    private TextView showString;
 
 
 
@@ -46,11 +48,13 @@ public class TimerActivity extends AppCompatActivity {
         actname.setVisibility(View.GONE);
         activity = getIntent().getStringExtra("NAME");
         imageAct =findViewById(R.id.ivActivity);
+        showString=findViewById(R.id.tvGetActivity);
 
+        showString.setText(activity);
         int image = getIntent().getIntExtra("image",R.drawable.ic_icon_awesome_walking);
         imageAct.setImageResource(image);
 
-        if(activity.matches("Others")){
+        if(activity.matches("Others") || activity.matches("Sports")){
             actname.setVisibility(View.VISIBLE);
         }
 
@@ -107,7 +111,7 @@ public class TimerActivity extends AppCompatActivity {
     }
     public void resetChronometer(View v){
 
-        if (getIntent().getStringExtra("NAME").matches("Others")) {
+        if (getIntent().getStringExtra("NAME").matches("Others") || (getIntent().getStringExtra("NAME").matches("Sports"))) {
 
             activity = actname.getText().toString();
 
@@ -122,20 +126,23 @@ public class TimerActivity extends AppCompatActivity {
 
         if(activity!=null && duration!=null) {
 
-            chronometer.setBase(SystemClock.elapsedRealtime());
-            pauseOffset=0;
-            pauseChronometer(v);
+
             playbtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
 
-            SimpleDateFormat currentTime = new SimpleDateFormat("KK:mm:ss a");
+            SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
             saveCurrentTime = currentTime.format(calForDate.getTime());
 
+
             activityInsert.setActivity(activity);
-            activityInsert.setcDuration(duration);
+            activityInsert.setduration(String.valueOf(chronometer.getText()));
             activityInsert.setcTime(saveCurrentTime);
             reff.push().setValue(activityInsert);
             Toast.makeText(TimerActivity.this, "Session has been recorded successfully", Toast.LENGTH_LONG).show();
             actname.setText("");
+
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            pauseOffset=0;
+            pauseChronometer(v);
             super.onBackPressed();
         }
         else if(activity==null){
