@@ -74,6 +74,8 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
         datePickerDialog.show();
     }
 
+
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
@@ -162,56 +164,56 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                     if (dataSnapshot.child(selecteddate).hasChild("steps")) {
                         steps = dataSnapshot.child(selecteddate).child("steps").getValue().toString();
                         totalsteps = totalsteps+ Integer. valueOf(steps);
-                        stepsValue.add(new StepsValue(steps, selecteddate));
+                        //   stepsValue.add(new StepsValue(steps, selecteddate));
                     }
                     else {
                         steps = "0";
-                        stepsValue.add(new StepsValue(steps, selecteddate));
+                        // stepsValue.add(new StepsValue(steps, selecteddate));
                     }
                     if (dataSnapshot.child(selecteddateDay2).hasChild("steps")) {
                         steps2 = dataSnapshot.child(selecteddateDay2).child("steps").getValue().toString();
                         totalsteps = totalsteps+ Integer. valueOf(steps2);
-                        stepsValue.add(new StepsValue(steps2, selecteddateDay2));
+                        // stepsValue.add(new StepsValue(steps2, selecteddateDay2));
                     }
                     else {
                         steps2 = "0";
-                        stepsValue.add(new StepsValue(steps2, selecteddateDay2));
+                        // stepsValue.add(new StepsValue(steps2, selecteddateDay2));
                     }
                     if (dataSnapshot.child(selecteddateDay3).hasChild("steps")) {
                         steps3 = dataSnapshot.child(selecteddateDay3).child("steps").getValue().toString();
                         totalsteps = totalsteps+ Integer. valueOf(steps3);
-                        stepsValue.add(new StepsValue(steps3, selecteddateDay3));
+                        // stepsValue.add(new StepsValue(steps3, selecteddateDay3));
                     }
                     else {
                         steps3 = "0";
-                        stepsValue.add(new StepsValue(steps3, selecteddateDay3));
+                        //stepsValue.add(new StepsValue(steps3, selecteddateDay3));
                     }
                     if (dataSnapshot.child(selecteddateDay4).hasChild("steps")) {
                         steps4 = dataSnapshot.child(selecteddateDay4).child("steps").getValue().toString();
                         totalsteps = totalsteps+ Integer. valueOf(steps4);
-                        stepsValue.add(new StepsValue(steps4, selecteddateDay4));
+                        // stepsValue.add(new StepsValue(steps4, selecteddateDay4));
                     }
                     else {
                         steps4 = "0";
-                        stepsValue.add(new StepsValue(steps4, selecteddateDay4));
+                        //  stepsValue.add(new StepsValue(steps4, selecteddateDay4));
                     }
                     if (dataSnapshot.child(selecteddateDay5).hasChild("steps")) {
                         steps5 = dataSnapshot.child(selecteddateDay5).child("steps").getValue().toString();
                         totalsteps = totalsteps+ Integer. valueOf(steps5);
-                        stepsValue.add(new StepsValue(steps5, selecteddateDay5));
+                        //  stepsValue.add(new StepsValue(steps5, selecteddateDay5));
                     }
                     else {
                         steps5 = "0";
-                        stepsValue.add(new StepsValue(steps5, selecteddateDay5));
+                        //  stepsValue.add(new StepsValue(steps5, selecteddateDay5));
                     }
                     if (dataSnapshot.child(selecteddateDay6).hasChild("steps")) {
                         steps6 = dataSnapshot.child(selecteddateDay6).child("steps").getValue().toString();
                         totalsteps = totalsteps+ Integer. valueOf(steps6);
-                        stepsValue.add(new StepsValue(steps6, selecteddateDay6));
+                        //  stepsValue.add(new StepsValue(steps6, selecteddateDay6));
                     }
                     else {
                         steps6 = "0";
-                        stepsValue.add(new StepsValue(steps6, selecteddateDay6));
+                        // stepsValue.add(new StepsValue(steps6, selecteddateDay6));
                     }
 
                     avgweeksteps = totalsteps/7;

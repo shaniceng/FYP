@@ -6,12 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/activity_constraint_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
@@ -27,11 +35,11 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
             android:text="Steps:"
+
             android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/textView7"
             app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
-            app:layout_constraintTop_toBottomOf="@+id/tvActivityName"
-            app:layout_constraintVertical_bias="0.06" />
+            app:layout_constraintTop_toBottomOf="@+id/tvActivityName" />
 
         <TextView
             android:id="@+id/tvStartTimeLabel"
@@ -72,26 +80,49 @@
             android:id="@+id/tvInsetSteps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="26dp"
             android:text="0"
             android:textSize="30sp"
-            android:layout_marginLeft="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvStep" />
 
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="145dp"
+            android:text="Duration"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- TODO! Figure out how to put recyclerview in recyclerview
+
+
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/History_Activity"
+        android:id="@+id/rvHistory_Activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_button"
-        android:paddingTop="80dp"/>
 
-    -->
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"/>
 
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

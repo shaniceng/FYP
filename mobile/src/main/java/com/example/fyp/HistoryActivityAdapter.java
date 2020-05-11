@@ -10,10 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryActivityAdapter extends RecyclerView.Adapter<HistoryActivityAdapter.HistoryViewHolder> {
 
-    private ArrayList<HistoryActivityName> mHistoryActivity;
+    private List<HistoryActivityName> mHistoryActivity;
+    HistoryActivityAdapter(List<HistoryActivityName> mHistoryActivity){this.mHistoryActivity=mHistoryActivity;}
 
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {
         //public ImageView mImageView;
