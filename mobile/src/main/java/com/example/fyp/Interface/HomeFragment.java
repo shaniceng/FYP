@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment{
     Animation fromsmall,fromnothing, fortrophy,togo;
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV, activityHeartRatetv;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -94,6 +94,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<String> activityAvrHeartRate;
     private ArrayList<Integer> image;
     private ArrayList <Integer> avrHeartRate = new ArrayList();
+    private ArrayList <String> activityHeartRate;
     private ArrayList <Integer> sumOf = new ArrayList();
     private ArrayList<Integer> avrStepsFromCompetitors;
     private ArrayList<Entry> yValues;
@@ -438,7 +439,7 @@ public class HomeFragment extends Fragment{
         SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
         String cTime = format.format(currentTime.getTime());
         String id = lockinDataBaseRef.push().getKey();
-        LockInValue lockInValue = new LockInValue(message,time,cTime);
+        LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
         lockinDataBaseRef.child(id).setValue(lockInValue);
         RetrieveLockInData();
     }
@@ -452,12 +453,19 @@ public class HomeFragment extends Fragment{
                 image = new ArrayList<>();
                 currentTimeA = new ArrayList<>();
                 mModerateMinsArray=new ArrayList<>();
+                activityHeartRate = new ArrayList();
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         LockInValue lockInValue = myDataSnapshot.getValue(LockInValue.class);
                         mTimeSet.add(lockInValue.getDuration());
                         mDataSet.add(lockInValue.getActivity());
                         currentTimeA.add(lockInValue.getcTime());
+                        if(lockInValue.getAvrHeartRate()==null){
+                            activityHeartRate.add("No heart rate detected");
+                        }
+                        else {
+                            activityHeartRate.add("Average heart rate: " +lockInValue.getAvrHeartRate());
+                        }
                         //activityAvrHeartRate.add(lockInValue.getAvrHeartRate());
                         InsertRecyclerView();
 
@@ -561,26 +569,25 @@ public class HomeFragment extends Fragment{
                     editor.commit();
                 }
 
-                if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null)
-                        //|| intent.getStringExtra("activityTrackerHeartRate")!=null)
+                if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null
+                        || intent.getStringExtra("activityTrackerHeartRate")!=null)
                 {
                     if (intent.getStringExtra("timing") != null) {
                         time = intent.getStringExtra("timing");
-                    } else if ((intent.getStringExtra("message") != null) &&
+                    }
+                    else if (intent.getStringExtra("activityTrackerHeartRate") != null) {
+                        activityTrackheartRate = intent.getStringExtra("activityTrackerHeartRate");
+                    }
+                    else if ((intent.getStringExtra("message") != null) &&
                             ((intent.getStringExtra("message") != prefs.getString("ActivityFromWear", "null")))) {
                         message = intent.getStringExtra("message");
                         Log.v(TAG, "Main activity received message: " + message);
-                        insertLockInData();
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("ActivityFromWear", message);
-                        editor.commit();
-
+                            insertLockInData();
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("ActivityFromWear", message);
+                            editor.commit();
                     }
                 }
-                    //get heart rate from each activity
-//                    if(intent.getStringExtra("activityTrackerHeartRate")!=null){
-//                        activityTrackheartRate = intent.getStringExtra("activityTrackerHeartRate");
-//                    }
                 if (intent.getStringExtra("heartRate") != null ){
                         heart = intent.getStringExtra("heartRate");
                         Log.v(TAG, "Main activity received message: " + message);
@@ -744,7 +751,7 @@ public class HomeFragment extends Fragment{
         public void InsertRecyclerView() {
             mlayoutManager = new LinearLayoutManager(getContext());
             mrecyclerView.setHasFixedSize(true);
-            mAdapter = new CustomAdapter(mDataSet, mTimeSet, currentTimeA, image);
+            mAdapter = new CustomAdapter(mDataSet, mTimeSet, currentTimeA, image, activityHeartRate);
             mrecyclerView.setLayoutManager(mlayoutManager);
             mrecyclerView.setAdapter(mAdapter);
         }

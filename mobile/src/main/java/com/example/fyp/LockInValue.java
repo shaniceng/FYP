@@ -6,11 +6,11 @@ public class LockInValue {
     public LockInValue() {
     }
 
-    public LockInValue(String activity, String duration, String cTime) {
+    public LockInValue(String activity, String duration, String cTime, String avrHeartRate) {
         this.activity = activity;
         this.duration = duration;
         this.cTime = cTime;
-        //this.avrHeartRate=avrHeartRate;
+        this.avrHeartRate=avrHeartRate;
     }
 
     public String getActivity() {
@@ -37,11 +37,11 @@ public class LockInValue {
         this.cTime = cTime;
     }
 
-//    public String getAvrHeartRate() {
-//        return avrHeartRate;
-//    }
-//
-//    public void setAvrHeartRate(String avrHeartRate) {
-//        this.avrHeartRate = avrHeartRate;
-//    }
+    public String getAvrHeartRate() {
+        return avrHeartRate;
+    }
+
+    public void setAvrHeartRate(String avrHeartRate) {
+        this.avrHeartRate = avrHeartRate;
+    }
 }

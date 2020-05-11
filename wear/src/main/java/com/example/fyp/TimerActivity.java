@@ -109,8 +109,15 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         chronometertext = chronometer.getText().toString();
         new TimerActivity.SendActivity(chromoPath, chronometertext).start();
         chronometer.setBase(SystemClock.elapsedRealtime());
-        new TimerActivity.SendActivity(activityHeartRatePath, heartRate.getText().toString()).start();
+        String getHR=heartRate.getText().toString();
+        new TimerActivity.SendActivity(activityHeartRatePath, getHR).start();
         pauseOffset=0;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // yourMethod();
+            }
+        }, 500);
         new TimerActivity.SendActivity(datapath, TrackText).start();
         AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
         builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
