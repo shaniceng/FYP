@@ -586,7 +586,7 @@ public class HomeFragment extends Fragment{
                             editor.commit();
                     }
                 }
-                if (intent.getStringExtra("heartRate") != null ){
+                else if (intent.getStringExtra("heartRate") != null ){
                         heart = intent.getStringExtra("heartRate");
                         Log.v(TAG, "Main activity received message: " + message);
                         HeartRate.setText(heart);
@@ -788,6 +788,7 @@ public class HomeFragment extends Fragment{
     public void onDestroy() {
         super.onDestroy();
         startAlarm();
+        Refresh();
         //stopThread();
     }
 
@@ -795,12 +796,14 @@ public class HomeFragment extends Fragment{
     public void onPause() {
         super.onPause();
         startAlarm();
+        Refresh();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         startAlarm();
+        Refresh();
     }
 
 //    public void startThread() {
