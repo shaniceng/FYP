@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment{
     private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
     private CircularProgressBar circularProgressBar;
     private NotificationManagerCompat notificationManager;
-    private int currentHeartRate=0, MaxHeartRate, currentStepsCount=0, databaseHeart;
+    private int currentHeartRate=0, MaxHeartRate=0, currentStepsCount=0, databaseHeart;
     private Button stepbtn;
 
     private static final String GET_firebase_steps = "firebaseStepsCount";
@@ -215,7 +215,8 @@ public class HomeFragment extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                MaxHeartRate= 220 - Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]",""));
+                int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]",""));
+                MaxHeartRate= 220 - maxyHearty;
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -660,7 +661,7 @@ public class HomeFragment extends Fragment{
             String message = "You have exceeded the Maximum Heart Rate!\n Please slow down!";
 
             if(activity!=null) {
-                Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
+                Notification notification = new NotificationCompat.Builder(activity, CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.ic_message)
                         .setContentTitle(title)
                         .setContentText(message)
