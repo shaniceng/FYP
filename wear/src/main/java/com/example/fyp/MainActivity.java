@@ -69,6 +69,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private String msg;
     private Calendar time;
     private int heartrate=0;
+    private Boolean ifalrOff = false;
 
     private  SensorManager mSensorManager;
 
@@ -121,19 +122,22 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         offHeartRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSensorManager= ((SensorManager) getSystemService(SENSOR_SERVICE));
-                mSensorManager.unregisterListener(MainActivity.this);
-                unregisterReceiver(ambientUpdateBroadcastReceiver);
-                ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+                if(ifalrOff==false) {
+                    mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
+                    mSensorManager.unregisterListener(MainActivity.this);
+                    unregisterReceiver(ambientUpdateBroadcastReceiver);
+                    ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+                    ifalrOff=true;
+                }
             }
         });
         onHeartRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getHartRate();
-                IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
-                registerReceiver(ambientUpdateBroadcastReceiver, filter);
-                refreshDisplayAndSetNextUpdate();
+                    getHartRate();
+                    IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
+                    registerReceiver(ambientUpdateBroadcastReceiver, filter);
+                    refreshDisplayAndSetNextUpdate();
             }
         });
 

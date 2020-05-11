@@ -11,150 +11,198 @@
     android:id="@+id/exercise_layout"
     tools:context=".Interface.ExerciseFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="66dp"
+        tools:layout_editor_absoluteY="0dp">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Activity"
-        android:textSize="30sp"
-        android:layout_marginTop="30dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ActivityConstraintLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="54dp"
-        android:background="#E8E8E8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-        <Button
-            android:id="@+id/btnWalking"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_walking"
-            android:padding="10dp"
-            android:text="Walking"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btnJogging"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="40dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_icon_awesome_jogging"
-            android:padding="10dp"
-            android:text="Jogging"
-            app:layout_constraintStart_toEndOf="@+id/btnWalking"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btnRunning"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_awesome_running"
-            android:padding="10dp"
-            android:text="Running"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnWalking" />
-
-        <Button
-            android:id="@+id/btnTaiChi"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_awesome_taichi"
-            android:padding="10dp"
-            android:text="Tai Chi"
-            app:layout_constraintStart_toEndOf="@+id/btnRunning"
-            app:layout_constraintTop_toBottomOf="@+id/btnJogging" />
-
-        <Button
-            android:id="@+id/btnYoga"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_awesome_yoga"
-            android:padding="10dp"
-            android:text="Yoga"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRunning" />
-
-        <Button
-            android:id="@+id/btnZumba"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_awesome_zumba"
-            android:padding="10dp"
-            android:text="Zumba"
-            app:layout_constraintStart_toEndOf="@+id/btnYoga"
-            app:layout_constraintTop_toBottomOf="@+id/btnTaiChi" />
-
-        <Button
-            android:id="@+id/btnStrength"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_awesome_strengthtraining"
-            android:padding="10dp"
-            android:text="Strength-training"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnYoga" />
-
-        <Button
-            android:id="@+id/btnOthers"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#B7BFD5"
-            android:drawableTop="@drawable/ic_awesome_others"
-            android:padding="10dp"
-            android:text="Others"
-            app:layout_constraintStart_toEndOf="@+id/btnStrength"
-            app:layout_constraintTop_toBottomOf="@+id/btnZumba" />
+            <Button
+                android:id="@+id/backbutton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_arrow_back_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Activity"
+                android:textSize="30sp"
+                android:layout_marginLeft="150dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/backbutton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/ic_arrow_back_black_24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ActivityConstraintLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="54dp"
+                android:background="#E8E8E8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
 
+                <Button
+                    android:id="@+id/btnWalking"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_icon_awesome_walking"
+                    android:padding="10dp"
+                    android:text="Brisk Walking"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btnJogging"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_icon_awesome_jogging"
+                    android:padding="10dp"
+                    android:text="Jogging"
+                    app:layout_constraintStart_toEndOf="@+id/btnWalking"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btnRunning"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_awesome_running"
+                    android:padding="10dp"
+                    android:text="Running"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnWalking" />
+
+                <Button
+                    android:id="@+id/btnTaiChi"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_awesome_taichi"
+                    android:padding="10dp"
+                    android:text="Tai Chi"
+                    app:layout_constraintStart_toEndOf="@+id/btnRunning"
+                    app:layout_constraintTop_toBottomOf="@+id/btnJogging" />
+
+                <Button
+                    android:id="@+id/btnYoga"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_awesome_yoga"
+                    android:padding="10dp"
+                    android:text="Yoga"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnRunning" />
+
+                <Button
+                    android:id="@+id/btnZumba"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_awesome_zumba"
+                    android:padding="10dp"
+                    android:text="Zumba"
+                    app:layout_constraintStart_toEndOf="@+id/btnYoga"
+                    app:layout_constraintTop_toBottomOf="@+id/btnTaiChi" />
+
+                <Button
+                    android:id="@+id/btnStrength"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_awesome_strengthtraining"
+                    android:padding="10dp"
+                    android:text="Strength Training"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnYoga" />
+
+                <Button
+                    android:id="@+id/btnSwimming"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_awesome_swimming"
+                    android:padding="10dp"
+                    android:text="Swimming"
+                    app:layout_constraintBottom_toTopOf="@+id/btnOthers"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btnStrength"
+                    app:layout_constraintTop_toBottomOf="@+id/btnZumba" />
+
+                <Button
+                    android:id="@+id/btnSports"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_awesome_others"
+                    android:padding="10dp"
+                    android:text="Sports"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btnOthers"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnStrength"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <Button
+                    android:id="@+id/btnOthers"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="#B7BFD5"
+                    android:drawableTop="@drawable/ic_awesome_others"
+                    android:padding="10dp"
+                    android:text="Others"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btnSports"
+                    app:layout_constraintTop_toBottomOf="@+id/btnSwimming" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

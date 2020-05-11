@@ -12,7 +12,7 @@ import com.example.fyp.R;
 
 public class ExerciseFragment extends AppCompatActivity implements  View.OnClickListener{
 
-    Button back, walking,jogging,running,taichi,yoga,zumba,strength,others;
+    Button back, walking,jogging,running,taichi,yoga,zumba,strength,others, swimming, sports;
     String activityname;
     ActivityInsert activityInsert;
     TimerActivity name;
@@ -53,6 +53,8 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
         zumba=findViewById(R.id.btnZumba);
         strength=findViewById(R.id.btnStrength);
         others=findViewById(R.id.btnOthers);
+        swimming=findViewById(R.id.btnSwimming);
+        sports=findViewById(R.id.btnSports);
 
         walking.setOnClickListener(this);
         jogging.setOnClickListener(this);
@@ -62,6 +64,8 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
         zumba.setOnClickListener(this);
         strength.setOnClickListener(this);
         others.setOnClickListener(this);
+        swimming.setOnClickListener(this);
+        sports.setOnClickListener(this);
         intent = new Intent(ExerciseFragment.this,TimerActivity.class);
 
     }
@@ -70,7 +74,7 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btnWalking:
-                intent.putExtra("NAME","Walking");
+                intent.putExtra("NAME","Brisk Walking");
                 intent.putExtra("image",R.drawable.ic_icon_awesome_walking);
                 startActivity(intent);
                 break;
@@ -100,13 +104,23 @@ public class ExerciseFragment extends AppCompatActivity implements  View.OnClick
                 startActivity(intent);
                 break;
             case R.id.btnStrength:
-                intent.putExtra("NAME","Strength");
+                intent.putExtra("NAME","Strength Training");
                 intent.putExtra("image",R.drawable.ic_awesome_strengthtraining);
                 startActivity(intent);
                 break;
             case R.id.btnOthers:
                 intent.putExtra("NAME","Others");
                 intent.putExtra("image",R.drawable.ic_awesome_others);
+                startActivity(intent);
+                break;
+            case R.id.btnSports:
+                intent.putExtra("NAME","Sports");
+                intent.putExtra("image",R.drawable.ic_awesome_others);
+                startActivity(intent);
+                break;
+            case R.id.btnSwimming:
+                intent.putExtra("NAME","Swimming");
+                intent.putExtra("image",R.drawable.ic_awesome_swimming);
                 startActivity(intent);
                 break;
 

@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment{
     Animation fromsmall,fromnothing, fortrophy,togo;
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV, activityHeartRatetv;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -91,11 +91,9 @@ public class HomeFragment extends Fragment{
     private ArrayList<String> mTimeSet;
     private ArrayList<Float> mModerateMinsArray;
     private ArrayList<String> currentTimeA;
-    private ArrayList<String> activityAvrHeartRate;
     private ArrayList<Integer> image;
     private ArrayList <Integer> avrHeartRate = new ArrayList();
     private ArrayList <String> activityHeartRate;
-    private ArrayList <Integer> sumOf = new ArrayList();
     private ArrayList<Integer> avrStepsFromCompetitors;
     private ArrayList<Entry> yValues;
     private ArrayList<Float> weeklyModerateMins;
