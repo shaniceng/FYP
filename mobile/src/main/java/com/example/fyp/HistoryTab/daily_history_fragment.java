@@ -31,34 +31,34 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class daily_history_fragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    private String currentdate,selecteddate,currentuser;
-    private String steps;
-    private DatabaseReference stepsDataBaseRef,actDataBaseRef;
+    private String currentdate,selecteddate,currentuser,steps;
+    private String dataDate=null;
+
+    private DatabaseReference DataBaseRef;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private RecyclerView mRecyclerView,nRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager, nLayoutManager;
-    private RecyclerView.Adapter mAdapter, nAdapter;
-    //private ArrayList<String> mDate;
-    //private ArrayList<String> mSteps = new ArrayList();
-    private String dataDate=null;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mAdapter;
+
+    private ArrayList<String> activityname,activityduration;
     private ArrayList<StepsValue> stepsValue= new ArrayList<>();
-    private ArrayList<HistoryActivityName> HistoryAct= new ArrayList<>();
-    private TextView dateText,actText;
+    private List<HistoryActivityName> HistoryActivityNameList = new ArrayList<>();
+
+    private TextView dateText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.history_tab_daily, container, false);
         dateText = v.findViewById(R.id.date_text);
-        //dataText = findViewById(R.id.data_text);
-        actText = v.findViewById(R.id.tvAct);
         mRecyclerView = v.findViewById(R.id.steps_value);
-        //nRecyclerView=v.findViewById(R.id.History_Activity);
 
         v.findViewById(R.id.date_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +91,9 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
         selecteddate = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
 
         dateText.setText(datetxt);
-        //HistoryList.clear();
-        //HistoryAdapter.notifyDataSetChanged();
 
 
         if (dataDate != null) {
-
 
             firebaseDatabase = FirebaseDatabase.getInstance();
             firebaseAuth = FirebaseAuth.getInstance();
@@ -104,41 +101,40 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             currentdate = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]", "");
             currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            //stepsDataBaseRef = firebaseDatabase.getReference("Steps Count/" + currentuser + date);
-
 
             stepsValue = new ArrayList<>();
-            HistoryAct= new ArrayList<>();
+            HistoryActivityNameList= new ArrayList<>();
+
             mLayoutManager = new LinearLayoutManager(getActivity());
-           // nLayoutManager = new LinearLayoutManager(getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
-            //nRecyclerView.setLayoutManager(nLayoutManager);
 
 
-            stepsDataBaseRef = FirebaseDatabase.getInstance().getReference().child("Steps Count").child(currentuser).child(selecteddate);
-            stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
+            DataBaseRef=FirebaseDatabase.getInstance().getReference();
+            DataBaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    if (dataSnapshot.hasChild("steps")) {
-                        steps = dataSnapshot.child("steps").getValue().toString();
+                    activityname = new ArrayList<>();
+                    activityduration= new ArrayList<>();
 
-                        //Toast.makeText(getActivity(), steps, Toast.LENGTH_SHORT).show();
-                        // stepsValue.add(new StepsValue(steps, selecteddate));
-                        //StepsAdapter.notifyDataSetChanged();
-                        stepsValue.add(new StepsValue(steps, datetxt2));
+                    if(dataSnapshot.child("Steps Count").child(currentuser).child(selecteddate).hasChild("steps")){
+                        steps = dataSnapshot.child("Steps Count").child(currentuser).child(selecteddate).child("steps").getValue().toString(); }
+                    else {
+                        steps = "0"; }
 
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddate).getChildren()){
 
-                    } else {
-                        steps = "0";
-                        stepsValue.add(new StepsValue(steps, datetxt2));
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        activityname.add(actdaily);
+                        activityduration.add(durdaily);
+
                     }
-                    //stepsValue.add(new StepsValue(steps, datetxt2));
+                    stepsValue.add(new StepsValue(steps, datetxt2,buildHistoryActivityName(activityname,activityduration)));
+
                     mAdapter = new StepsAdapter(stepsValue);
                     mRecyclerView.setAdapter(mAdapter);
                     mRecyclerView.setHasFixedSize(true);
-
-
                 }
 
                 @Override
@@ -146,55 +142,22 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
 
                 }
             });
-
-
-            actDataBaseRef = FirebaseDatabase.getInstance().getReference().child("Activity Tracker").child(currentuser).child(selecteddate);
-            actDataBaseRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
-
-                        //HistoryAct.add(new HistoryActivityName(actdaily, durdaily));
-                        actText.setText(actdaily);
-                        Log.i("ValueACTT", actdaily);
-
-                    }
-
-                    //nAdapter = new HistoryActivityAdapter(HistoryAct);
-                    //nRecyclerView.setAdapter(nAdapter);
-                    //nRecyclerView.setHasFixedSize(true);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-
-            //stepsDataBaseRef = firebaseDatabase.getReference("Steps Count/" + "NDnXWC4MHfYFBaayGPcJ2SghYVF2");
-        /*Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
-        String cTime = format.format(currentTime.getTime());
-        String id = stepsDataBaseRef.push().getKey();
-        StepsValue stepsvalue = new StepsValue(steps);
-       stepsDataBaseRef.child(id).setValue(stepsvalue);
-        //mSteps = new ArrayList<>();
-        */
 
             mAdapter = new StepsAdapter(stepsValue);
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setHasFixedSize(true);
 
-            //nAdapter = new HistoryActivityAdapter(HistoryAct);
-            //nRecyclerView.setAdapter(nAdapter);
-            //nRecyclerView.setHasFixedSize(true);
-
-
         }
+    }
+
+    private List<HistoryActivityName> buildHistoryActivityName(ArrayList<String> mactivityname,ArrayList<String> mactivityduration) {
+
+        for (int i = 0; i < mactivityname.size(); i++) {
+            //Log.i("ValueDCTT", mactivityname.get(i)+","+mactivityduration.get(i));
+            HistoryActivityNameList.add(new HistoryActivityName( mactivityname.get(i), mactivityduration.get(i)));
+        }
+
+        return HistoryActivityNameList;
     }
 
     public daily_history_fragment() {

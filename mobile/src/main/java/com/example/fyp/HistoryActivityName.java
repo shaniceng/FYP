@@ -1,5 +1,7 @@
 package com.example.fyp;
 
+import java.util.List;
+
 public class HistoryActivityName {
 
     //private int mImageResource;
@@ -29,4 +31,5 @@ public class HistoryActivityName {
     public void setmDuration(String duration) {
         mDuration = duration;
     }
+
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fyp.HistoryActivityName;
 import com.example.fyp.R;
 import com.example.fyp.StepsAdapter;
 import com.example.fyp.StepsValue;
@@ -28,25 +30,31 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class weekly_history_fragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    private String selecteddate, selecteddateDay2,selecteddateDay3,selecteddateDay4,selecteddateDay5,selecteddateDay6;
-    private String steps,steps2,steps3,steps4,steps5,steps6;
-    private String currentuser;
-    private DatabaseReference stepsDataBaseRef;
+    private String selecteddate, selecteddateDay2,selecteddateDay3,selecteddateDay4,selecteddateDay5,selecteddateDay6,selecteddateDay7;
+    private String steps,steps2,steps3,steps4,steps5,steps6,steps7;
+    private String currentuser,avgWeekSteps;
+    private String dataDate=null;
+    private int maxday,maxmonth,totalsteps;
+    private float avgweeksteps;
+
+    private DatabaseReference DataBaseRef;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
-    private String dataDate=null;
-    private ArrayList<StepsValue> stepsValue= new ArrayList<>();
+
     private TextView dateText,avgText;
-    private int maxday,maxmonth,totalsteps;
-    private float avgweeksteps;
-    String avgWeekSteps;
+
+    private ArrayList<StepsValue> stepsValue= new ArrayList<>();
+    private ArrayList<String> activityname,activityduration;
+    private List<HistoryActivityName> HistoryActivityNameList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,6 +151,16 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
             }
         }
         selecteddateDay6 = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        dayOfMonth = dayOfMonth+1;
+        if (dayOfMonth==maxday) {
+            dayOfMonth=1;
+            month=month+1;
+            if(month == maxmonth){
+                month=1;
+                year = year+1;
+            }
+        }
+        selecteddateDay7 = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
 
         dateText.setText(dataDate);
 
@@ -153,68 +171,138 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
             currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             stepsValue = new ArrayList<>();
+            HistoryActivityNameList= new ArrayList<>();
+
             mLayoutManager = new LinearLayoutManager(getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
 
-            stepsDataBaseRef = FirebaseDatabase.getInstance().getReference().child("Steps Count").child(currentuser);
-            stepsDataBaseRef.addValueEventListener(new ValueEventListener() {
+            DataBaseRef = FirebaseDatabase.getInstance().getReference();
+            DataBaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    if (dataSnapshot.child(selecteddate).hasChild("steps")) {
-                        steps = dataSnapshot.child(selecteddate).child("steps").getValue().toString();
-                        totalsteps = totalsteps+ Integer. valueOf(steps);
-                        stepsValue.add(new StepsValue(steps, selecteddate));
+                    activityname = new ArrayList<>();
+                    activityduration= new ArrayList<>();
+
+                    if (dataSnapshot.child("Steps Count").child(currentuser).child(selecteddate).hasChild("steps")) {
+                        steps = dataSnapshot.child("Steps Count").child(currentuser).child(selecteddate).child("steps").getValue().toString();
+                        totalsteps = totalsteps+ Integer. valueOf(steps); }
+                    else {steps = "0"; }
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddate).getChildren()){
+
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        activityname.add(actdaily);
+                        activityduration.add(durdaily);
+                        Log.i("Day1",actdaily);
                     }
-                    else {
-                        steps = "0";
-                        stepsValue.add(new StepsValue(steps, selecteddate));
+                    stepsValue.add(new StepsValue(steps, selecteddate,buildHistoryActivityName(activityname,activityduration)));
+
+
+
+
+
+                    if (dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay2).hasChild("steps")) {
+                        steps2 = dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay2).child("steps").getValue().toString();
+                        totalsteps = totalsteps+ Integer. valueOf(steps2); }
+                    else { steps2 = "0"; }
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay2).getChildren()){
+
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        activityname.add(actdaily);
+                        activityduration.add(durdaily);
+                        Log.i("Day2",actdaily);
+
                     }
-                    if (dataSnapshot.child(selecteddateDay2).hasChild("steps")) {
-                        steps2 = dataSnapshot.child(selecteddateDay2).child("steps").getValue().toString();
-                        totalsteps = totalsteps+ Integer. valueOf(steps2);
-                        stepsValue.add(new StepsValue(steps2, selecteddateDay2));
+                    stepsValue.add(new StepsValue(steps2, selecteddateDay2,buildHistoryActivityName(activityname,activityduration)));
+
+
+
+                    if (dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay3).hasChild("steps")) {
+                        steps3 = dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay3).child("steps").getValue().toString();
+                        totalsteps = totalsteps+ Integer. valueOf(steps3); }
+                    else { steps3 = "0"; }
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay3).getChildren()){
+
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        activityname.add(actdaily);
+                        activityduration.add(durdaily);
+                        Log.i("Day3",actdaily);
+
                     }
-                    else {
-                        steps2 = "0";
-                        stepsValue.add(new StepsValue(steps2, selecteddateDay2));
+                    stepsValue.add(new StepsValue(steps3, selecteddateDay3,buildHistoryActivityName(activityname,activityduration)));
+
+
+
+                    if (dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay4).hasChild("steps")) {
+                        steps4 = dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay4).child("steps").getValue().toString();
+                        totalsteps = totalsteps+ Integer. valueOf(steps4); }
+                    else { steps4 = "0"; }
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay4).getChildren()){
+
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        activityname.add(actdaily);
+                        activityduration.add(durdaily);
+                        Log.i("Day4",actdaily);
+
                     }
-                    if (dataSnapshot.child(selecteddateDay3).hasChild("steps")) {
-                        steps3 = dataSnapshot.child(selecteddateDay3).child("steps").getValue().toString();
-                        totalsteps = totalsteps+ Integer. valueOf(steps3);
-                        stepsValue.add(new StepsValue(steps3, selecteddateDay3));
+                    stepsValue.add(new StepsValue(steps4, selecteddateDay4,buildHistoryActivityName(activityname,activityduration)));
+
+
+
+                    if (dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay5).hasChild("steps")) {
+                        steps5 = dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay5).child("steps").getValue().toString();
+                        totalsteps = totalsteps+ Integer. valueOf(steps5); }
+                    else { steps5 = "0"; }
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay5).getChildren()){
+
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        activityname.add(actdaily);
+                        activityduration.add(durdaily);
+                        Log.i("Day5",actdaily);
+
                     }
-                    else {
-                        steps3 = "0";
-                        stepsValue.add(new StepsValue(steps3, selecteddateDay3));
+                    stepsValue.add(new StepsValue(steps5, selecteddateDay5,buildHistoryActivityName(activityname,activityduration)));
+
+
+
+                    if (dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay6).hasChild("steps")) {
+                        steps6 = dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay6).child("steps").getValue().toString();
+                        totalsteps = totalsteps+ Integer. valueOf(steps6); }
+                    else { steps6 = "0"; }
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay6).getChildren()){
+
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        activityname.add(actdaily);
+                        activityduration.add(durdaily);
+                        Log.i("Day6",actdaily);
+
                     }
-                    if (dataSnapshot.child(selecteddateDay4).hasChild("steps")) {
-                        steps4 = dataSnapshot.child(selecteddateDay4).child("steps").getValue().toString();
-                        totalsteps = totalsteps+ Integer. valueOf(steps4);
-                        stepsValue.add(new StepsValue(steps4, selecteddateDay4));
+                    stepsValue.add(new StepsValue(steps6, selecteddateDay6,buildHistoryActivityName(activityname,activityduration)));
+
+
+
+                    if (dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay7).hasChild("steps")) {
+                        steps7 = dataSnapshot.child("Steps Count").child(currentuser).child(selecteddateDay7).child("steps").getValue().toString();
+                        totalsteps = totalsteps+ Integer. valueOf(steps7); }
+                    else { steps7 = "0"; }
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay7).getChildren()){
+
+                        String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        activityname.add(actdaily);
+                        activityduration.add(durdaily);
+                        Log.i("Day6",actdaily);
+
                     }
-                    else {
-                        steps4 = "0";
-                        stepsValue.add(new StepsValue(steps4, selecteddateDay4));
-                    }
-                    if (dataSnapshot.child(selecteddateDay5).hasChild("steps")) {
-                        steps5 = dataSnapshot.child(selecteddateDay5).child("steps").getValue().toString();
-                        totalsteps = totalsteps+ Integer. valueOf(steps5);
-                        stepsValue.add(new StepsValue(steps5, selecteddateDay5));
-                    }
-                    else {
-                        steps5 = "0";
-                        stepsValue.add(new StepsValue(steps5, selecteddateDay5));
-                    }
-                    if (dataSnapshot.child(selecteddateDay6).hasChild("steps")) {
-                        steps6 = dataSnapshot.child(selecteddateDay6).child("steps").getValue().toString();
-                        totalsteps = totalsteps+ Integer. valueOf(steps6);
-                        stepsValue.add(new StepsValue(steps6, selecteddateDay6));
-                    }
-                    else {
-                        steps6 = "0";
-                        stepsValue.add(new StepsValue(steps6, selecteddateDay6));
-                    }
+                    stepsValue.add(new StepsValue(steps7, selecteddateDay7,buildHistoryActivityName(activityname,activityduration)));
+
+
 
                     avgweeksteps = totalsteps/7;
                     avgWeekSteps = String.format("%.2f", avgweeksteps);
@@ -222,6 +310,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
 
                     totalsteps=0;
                     avgweeksteps=0;
+
                     mAdapter = new StepsAdapter(stepsValue);
                     mRecyclerView.setAdapter(mAdapter);
                     mRecyclerView.setHasFixedSize(true);
@@ -238,6 +327,22 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
             mRecyclerView.setHasFixedSize(true);
 
         }
+    }
+
+    private List<HistoryActivityName> buildHistoryActivityName(ArrayList<String> mactivityname,ArrayList<String> mactivityduration) {
+        HistoryActivityNameList = new ArrayList<>();
+
+        for (int i = 0; i < mactivityname.size(); i++) {
+            Log.i("ValueDCTT", mactivityname.get(i)+","+mactivityduration.get(i) + "position"+i);
+            HistoryActivityNameList.add(new HistoryActivityName( mactivityname.get(i), mactivityduration.get(i)));
+
+        }
+
+        activityname.clear();
+        activityduration.clear();
+
+        return HistoryActivityNameList;
+
     }
 
     public weekly_history_fragment() {
