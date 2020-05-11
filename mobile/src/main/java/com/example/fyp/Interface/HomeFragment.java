@@ -361,7 +361,7 @@ public class HomeFragment extends Fragment{
         int y=currentHeartRate;
         PointValue pointValue = new PointValue(x,y);
         databaseReference.child(id).setValue(pointValue);
-        //retrieveData();
+        retrieveData();
     }
 
     private void retrieveData() {
@@ -542,7 +542,7 @@ public class HomeFragment extends Fragment{
                     MaxHRPointValue maxHRPointValue = dataSnapshot.getValue(MaxHRPointValue.class);
                     if (maxHRPointValue.getHr() != 0) {
                         databaseHeart = maxHRPointValue.getHr();
-                        maxHeartrate.setText(databaseHeart + "BPM");
+                        maxHeartrate.setText(String.valueOf(databaseHeart) + "BPM");
                     }
                 }
             }

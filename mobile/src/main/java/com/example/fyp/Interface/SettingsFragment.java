@@ -183,7 +183,7 @@ public class SettingsFragment extends Fragment {
                     dataSteps = stepsPointValue.getSteps();
 
 
-                if ((lastDay == thisDay - 1) && (dataSteps >= 7500)) { //testing at 100 steps a day first must EDIT HERE
+                if ((lastDay == thisDay -1) && (dataSteps >= 7500)) { //testing at 100 steps a day first must EDIT HERE
                     // CONSECUTIVE DAYS
                     //if today hit >7500, count up
                     counterOfConsecutiveDays = counterOfConsecutiveDays + 1;
@@ -195,12 +195,12 @@ public class SettingsFragment extends Fragment {
                 } else {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("YOUR DATE PREF KEY", thisDay);
-                    editor.putInt("YOUR COUNTER PREF KEY", 1);
+                    editor.putInt("YOUR COUNTER PREF KEY", 0);
                     editor.commit();
                 }
 
 
-                if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 2) {
+                if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 3) {
                     //change greyscale to colour for 3days streak
                     iv3days.setImageResource(R.drawable.badges_colour);
                 } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 7) {
