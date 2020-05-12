@@ -52,18 +52,20 @@ public class EditProfile extends AppCompatActivity {
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseDatabase= FirebaseDatabase.getInstance();
 
-        final DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+        final DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+firebaseAuth.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                newUserName.setText(userProfile.getUserName());
-                userEmail.setText(userProfile.getUserEmail());
-                newUserAge.setText(userProfile.getUserAge());
-                newUserGender.setText(userProfile.getUserGender());
-                newUserHeight.setText(userProfile.getUserHeight());
-                newUserWeight.setText(userProfile.getUserWeight());
-                newUserBirthday.setText(userProfile.getUserBirthday());
+                if(dataSnapshot.getChildren()!=null) {
+                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                    newUserName.setText(userProfile.getUserName());
+                    userEmail.setText(userProfile.getUserEmail());
+                    newUserAge.setText(userProfile.getUserAge());
+                    newUserGender.setText(userProfile.getUserGender());
+                    newUserHeight.setText(userProfile.getUserHeight());
+                    newUserWeight.setText(userProfile.getUserWeight());
+                    newUserBirthday.setText(userProfile.getUserBirthday());
+                }
             }
 
             @Override

@@ -2,10 +2,12 @@ package com.example.fyp.Interface;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -38,6 +40,7 @@ import com.example.fyp.AlertReceiver;
 import com.example.fyp.CustomAdapter;
 import com.example.fyp.HistoryTab.HistoryActivity;
 import com.example.fyp.LockInValue;
+import com.example.fyp.MainActivity;
 import com.example.fyp.MaxHRPointValue;
 import com.example.fyp.PointValue;
 import com.example.fyp.R;
@@ -131,7 +134,8 @@ public class HomeFragment extends Fragment{
     private Activity activity;
 
     private int duration;
-    private float mins, sec;
+    private float mins, sec, activity_heartRate=0;
+    private String activity_heart_ratey;
 
     FloatingActionButton fab;
     private boolean stopThread;
@@ -208,13 +212,14 @@ public class HomeFragment extends Fragment{
 
         getMaxHR();
 //       new LongRunningTask().execute();
-        //startThread();
-        getDataRefOfStepsOfCompetitors();
-        retrieveStepsData();
-        retrieveData();
-        RetrieveLockInData();
-        retrieveMaxHR();
-        showGraph();
+        startThread();
+//        getDataRefOfStepsOfCompetitors();
+//        retrieveStepsData();
+//        retrieveData();
+//
+//        retrieveMaxHR();
+//        showGraph();
+//        RetrieveLockInData();
 
         circularProgressBar.setProgressMax(7500);
 
@@ -305,6 +310,17 @@ public class HomeFragment extends Fragment{
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                 int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]",""));
                 MaxHeartRate= 220 - maxyHearty;
+                if (!prefs.contains("GET_MAX_HEART_RATE_FROM_AGE")) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                    editor.commit();
+                }
+                else{
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                    editor.commit();
+                }
+                //HeartRate.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)));
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -407,17 +423,6 @@ public class HomeFragment extends Fragment{
         lineGraphWeekly.setDataPointsRadius(15);
         lineGraphWeekly.setThickness(10);
         graphView.getGridLabelRenderer().setNumHorizontalLabels(3);
-//        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
-//            @Override
-//            public String formatLabel(double value, boolean isValueX) {
-//                if(isValueX) {
-//                    return simpleWeekFormat.format(new Date((long) value));
-//                }else {
-//                    return super.formatLabel(value, isValueX);
-//                }
-//
-//            }
-//        });
         graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
@@ -425,6 +430,7 @@ public class HomeFragment extends Fragment{
                     Calendar calendar = Calendar.getInstance();
                     //Monday==1, sunday==7;
                     int day = calendar.get(Calendar.DAY_OF_WEEK)-1;
+                    String printDay;
                     switch ((int) value) {
                         case 0:
                             // get 7days ago
@@ -456,8 +462,73 @@ public class HomeFragment extends Fragment{
 
                             break;
                     }
+                    switch (day) {
+                        case 1:
+                            // get 7days ago
+                            printDay="Monday";
+                            break;
+                        case 2:
+                            // get 6 days ago
+                            printDay="Tuesday";
+                            break;
+                        case 3:
+                            //
+                            printDay="Wednesday";
+                            break;
+                        case 4:
+                            // get 6 days ago
+                            printDay="Thursday";
+                            break;
+                        case 5:
+                            // get 6 days ago
+                            printDay="Friday";
+                            break;
+                        case 6:
+                            // get 6 days ago
+                            printDay="Saturday";
+                            break;
+                        case 7:
+                            // get 6 days ago
+                            printDay="Sunday";
 
-                    return String.valueOf(day);
+                            break;
+                        case 0:
+                            // get 6 days ago
+                            printDay="Sunday";
+                            break;
+                        case -1:
+                            //
+                            printDay="Saturday";
+                            break;
+                        case -2:
+                            // get 6 days ago
+                            printDay="Friday";
+                            break;
+                        case -3:
+                            // get 6 days ago
+                            printDay="Thursday";
+                            break;
+                        case -4:
+                            // get 6 days ago
+                            printDay="Wednesday";
+                            break;
+                        case -5:
+                            // get 6 days ago
+                            printDay="Tuesday";
+
+                            break;
+                        case -6:
+                            // get 6 days ago
+                            printDay="Monday";
+
+                            break;
+
+                        default:
+                            printDay="none";
+                            break;
+                    }
+
+                    return printDay;
                 }
                 return super.formatLabel(value, isValueX);
             }
@@ -534,7 +605,7 @@ public class HomeFragment extends Fragment{
                         }
                         lineGraphWeekly.resetData(dataVals);
                     }else{
-                        Toast.makeText(activity, "hello", Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "Retrieve heart rate failed", Toast.LENGTH_LONG).show();
                     }
                 }
                 @Override
@@ -613,9 +684,12 @@ public class HomeFragment extends Fragment{
                         }
                         else {
                             activityHeartRate.add("Average heart rate: " +lockInValue.getAvrHeartRate());
+                            activity_heart_ratey=lockInValue.getActivity();
+                            activity_heartRate=Float.parseFloat(lockInValue.getAvrHeartRate().replaceAll("[^0-9.]", ""));
+                            ShowAlertDialogWhenCompleteActivity();
                         }
-                        //activityAvrHeartRate.add(lockInValue.getAvrHeartRate());
                         InsertRecyclerView();
+
 
                         if(lockInValue.getDuration()!=null) {
                             duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
@@ -627,6 +701,8 @@ public class HomeFragment extends Fragment{
                     insertWeeklyModerateMins();
                     double mmarray=calculateSumOfModerateMins(mModerateMinsArray);
                     moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f",mmarray ) + "mins");
+
+
                 }else{
                     Toast.makeText(activity,"No activity to retrieve", Toast.LENGTH_SHORT).show();
                 }
@@ -637,6 +713,39 @@ public class HomeFragment extends Fragment{
                 Toast.makeText(activity,"Error in retrieving activity", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    private void ShowAlertDialogWhenCompleteActivity(){
+        MaxHeartRate= prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+        if((activity_heartRate!=0)&&(MaxHeartRate!=0)) {
+            if (activity_heartRate>= MaxHeartRate) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage("Your average heart rate for " + activity_heart_ratey + " is: " + activity_heartRate + "BPM.\nPlease slow down as your average heart rate is very high.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.setTitle("Congratulations on completing a workout!");
+                alertDialog.show();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage("Your average heart rate for " + activity_heart_ratey + " is: " + activity_heartRate
+                        + "BPM.\nThis is a moderate intensity workout" + "\nYou are doing great!\nKeep it up! ")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.setTitle("Congratulations on completing a workout!");
+                alertDialog.show();
+            }
+        }
 
     }
 
@@ -780,16 +889,6 @@ public class HomeFragment extends Fragment{
                 sum += avrStepsFromCompet;
             }
             return sum.doubleValue() / avgStepsFromCompetitors.size();
-        }
-        return sum;
-    }
-    private double calculateAvrHeartRate(ArrayList<Double> avgHeartRate) {
-        int sum = 0;
-        if (!avgHeartRate.isEmpty() && avgHeartRate!=null) {
-            for (Double avgHeartRate2 : avgHeartRate) {
-                sum += avgHeartRate2;
-            }
-            return sum / avgHeartRate.size();
         }
         return sum;
     }
@@ -966,41 +1065,41 @@ public class HomeFragment extends Fragment{
         Refresh();
     }
 
-//    public void startThread() {
-//        stopThread = false;
-//        ExampleRunnable runnable = new ExampleRunnable(10);
-//        new Thread(runnable).start();
-//    }
-//    public void stopThread() {
-//        stopThread = true;
-//    }
-//    class ExampleRunnable implements Runnable {
-//        int seconds;
-//        ExampleRunnable(int seconds) {
-//            this.seconds = seconds;
-//        }
-//        @Override
-//        public void run() {
-//                    activity.runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            getDataRefOfStepsOfCompetitors();
-//                            retrieveStepsData();
-//                            retrieveData();
-//                            RetrieveLockInData();
-//                            retrieveMaxHR();
-//                            showGraph();
-//                        }
-//                    });
-////                }
-////                Log.d(TAG, "startThread: " + i);
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
+    public void startThread() {
+        stopThread = false;
+        ExampleRunnable runnable = new ExampleRunnable(10);
+        new Thread(runnable).start();
+    }
+    public void stopThread() {
+        stopThread = true;
+    }
+    class ExampleRunnable implements Runnable {
+        int seconds;
+        ExampleRunnable(int seconds) {
+            this.seconds = seconds;
+        }
+        @Override
+        public void run() {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getDataRefOfStepsOfCompetitors();
+                            retrieveStepsData();
+                            retrieveData();
+                            RetrieveLockInData();
+                            retrieveMaxHR();
+                            showGraph();
+                        }
+                    });
 //                }
-//            }
-//        }
+//                Log.d(TAG, "startThread: " + i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
