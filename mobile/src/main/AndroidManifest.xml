@@ -33,7 +33,11 @@
         <activity android:name=".Interface.ExerciseFragment" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".HistoryTab.HistoryActivity"
-            android:label="History"/>
+            android:screenOrientation="portrait"
+            android:label="History"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
         <activity android:name=".CreateAccActivity" />
         <activity android:name=".Interface.TimerActivity" />
         <activity android:name=".Interface.MapsActivity" />

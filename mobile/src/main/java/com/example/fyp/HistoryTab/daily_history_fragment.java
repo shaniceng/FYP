@@ -125,7 +125,7 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
                     for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddate).getChildren()){
 
                         String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
 
