@@ -42,7 +42,7 @@
             android:textStyle="bold"
             android:textSize="30dp"
             android:textColor="#000000"/>
-        
+
         <TextView
             android:layout_marginTop="10dp"
             android:lineSpacingExtra="4dp"
@@ -55,7 +55,7 @@
             android:text="You have completed..."
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"/>
-        
+
         <Button
             android:id="@+id/btnclosePopUp"
             android:layout_width="200dp"
@@ -69,7 +69,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"/>
 
-        
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -403,6 +403,35 @@
 
                     <!-- Heart rate BPM values section -->
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/btnDailyHeartRate"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="64dp"
+                            android:text="Daily"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/btnWeeklyHeartRate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Button
+                            android:id="@+id/btnWeeklyHeartRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="64dp"
+                            android:text="Weekly"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/btnDailyHeartRate"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -514,11 +543,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="500dp"
                         android:id="@+id/graphView" />
-
-
-
-
-
 
 
                 </LinearLayout>

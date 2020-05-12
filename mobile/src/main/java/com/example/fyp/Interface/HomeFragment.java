@@ -41,6 +41,7 @@ import com.example.fyp.LockInValue;
 import com.example.fyp.MaxHRPointValue;
 import com.example.fyp.PointValue;
 import com.example.fyp.R;
+import com.example.fyp.RetriveWeeklyHeartRatePointValue;
 import com.example.fyp.StepsPointValue;
 import com.example.fyp.UserProfile;
 import com.example.fyp.WeeklyReportPointValue;
@@ -51,9 +52,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -62,6 +65,7 @@ import com.jjoe64.graphview.series.Series;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,7 +80,7 @@ import static com.example.fyp.App.CHANNEL_1_ID;
  */
 public class HomeFragment extends Fragment{
 
-    private Button btnClosePopup;
+    private Button btnClosePopup, btnShowDaily, btnShowWeekly;
     private LinearLayout myPopup, overbox;
     private ImageView trophy;
     private TextView showpopupNoti;
@@ -111,12 +115,13 @@ public class HomeFragment extends Fragment{
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors, weeklymoderateminsdataref;
 
-
+    private String currentuser;
     private SharedPreferences prefs;
 
     private SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
+    private SimpleDateFormat simpleWeekFormat = new SimpleDateFormat("u");
     private GraphView graphView;
-    private LineGraphSeries lineGraphSeries;
+    private LineGraphSeries lineGraphSeries, lineGraphWeekly;
 
     //private Activity activity = getActivity();
 
@@ -130,6 +135,8 @@ public class HomeFragment extends Fragment{
 
     FloatingActionButton fab;
     private boolean stopThread;
+    private ArrayList<Integer> weeklyAvrHeartRate;
+    private ArrayList<Double> calculateWeeklyAvrHeartRate;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -155,7 +162,7 @@ public class HomeFragment extends Fragment{
 
         graphView=v.findViewById(R.id.graphView);
         lineGraphSeries=new LineGraphSeries();
-        graphView.addSeries(lineGraphSeries);
+        lineGraphWeekly=new LineGraphSeries();
 
         mrecyclerView = v.findViewById(R.id.activity_RV);
         stepsCount=v.findViewById(R.id.tvStepsCount);
@@ -166,6 +173,9 @@ public class HomeFragment extends Fragment{
         stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
+
+        btnShowDaily=v.findViewById(R.id.btnDailyHeartRate);
+        btnShowWeekly=v.findViewById(R.id.btnWeeklyHeartRate);
 
         //for pop up
         btnClosePopup=v.findViewById(R.id.btnclosePopUp);
@@ -183,19 +193,20 @@ public class HomeFragment extends Fragment{
 
         firebaseDatabase= FirebaseDatabase.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
-        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat weekFormat = new SimpleDateFormat("u");
         week = weekFormat.format(currentDate.getTime());
         date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
-        databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/" + date);
+        databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/");
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
         dataRefStepsFromCompetitors = firebaseDatabase.getReference();
         weeklymoderateminsdataref=firebaseDatabase.getReference("Weekly Moderate Mins/" + currentuser+"/");
 
+        getMaxHR();
 //       new LongRunningTask().execute();
         //startThread();
         getDataRefOfStepsOfCompetitors();
@@ -209,20 +220,7 @@ public class HomeFragment extends Fragment{
 
         //getting data from firebase
 
-        //get Max heart rate for each individual age
-        DatabaseReference mydatabaseRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
-        mydatabaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]",""));
-                MaxHeartRate= 220 - maxyHearty;
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
         ExpandableTextView expTv1 = v.findViewById(R.id.expand_text_view).findViewById(R.id.expand_text_view);
         circularProgressBar.setRoundBorder(true);
         expTv1.setText(getString(R.string.intensity_workout_details));
@@ -278,11 +276,43 @@ public class HomeFragment extends Fragment{
         getRadioText();
         Refresh();
 
+        btnShowDaily.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retrieveData();
+                showGraph();
+            }
+        });
+        btnShowWeekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retriveWeeklyData();
+                showWeeklyGraph();
+            }
+        });
+
 
         return v;
     }
 
-//    //for getDataRefOfStepsOfCompetitors to convert long to int
+
+    public void getMaxHR(){
+        //get Max heart rate for each individual age
+        DatabaseReference mydatabaseRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid());
+        mydatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]",""));
+                MaxHeartRate= 220 - maxyHearty;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    //    //for getDataRefOfStepsOfCompetitors to convert long to int
     public static int safeLongToInt(long l) {
         if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
             throw new IllegalArgumentException
@@ -319,6 +349,8 @@ public class HomeFragment extends Fragment{
     }
 
     private void showGraph() {
+        graphView.addSeries(lineGraphSeries);
+        graphView.removeSeries(lineGraphWeekly);
         graphView.setTitle("Heart Rate(BPM)");
         graphView.getViewport().setMinX(new Date().getTime()-1000000);
         graphView.getViewport().setMaxX(new Date().getTime());
@@ -355,17 +387,100 @@ public class HomeFragment extends Fragment{
         });
     }
 
+    private void showWeeklyGraph() {
+        graphView.addSeries(lineGraphWeekly);
+        graphView.removeSeries(lineGraphSeries);
+        graphView.setTitle("Heart Rate(BPM)");
+        graphView.getViewport().setMinX(0);
+        graphView.getViewport().setMaxX(6);
+        graphView.getViewport().setMinY(50);
+        graphView.getViewport().setMaxY(170);
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setScalable(true);
+
+        lineGraphWeekly.setDrawBackground(true);
+        lineGraphWeekly.setBackgroundColor(R.drawable.fade_red);
+        lineGraphWeekly.setColor(Color.BLACK);
+        lineGraphWeekly.setDrawDataPoints(true);
+        lineGraphWeekly.setDataPointsRadius(15);
+        lineGraphWeekly.setThickness(10);
+        graphView.getGridLabelRenderer().setNumHorizontalLabels(3);
+//        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+//            @Override
+//            public String formatLabel(double value, boolean isValueX) {
+//                if(isValueX) {
+//                    return simpleWeekFormat.format(new Date((long) value));
+//                }else {
+//                    return super.formatLabel(value, isValueX);
+//                }
+//
+//            }
+//        });
+        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    Calendar calendar = Calendar.getInstance();
+                    //Monday==1, sunday==7;
+                    int day = calendar.get(Calendar.DAY_OF_WEEK)-1;
+                    switch ((int) value) {
+                        case 0:
+                            // get 7days ago
+                            day=day-6;
+                            break;
+                        case 1:
+                            // get 6 days ago
+                            day=day-5;
+                            break;
+                        case 2:
+                            //
+                            day=day-4;
+                            break;
+                        case 3:
+                            // get 6 days ago
+                            day=day-3;
+                            break;
+                        case 4:
+                            // get 6 days ago
+                            day=day-2;
+                            break;
+                        case 5:
+                            // get 6 days ago
+                            day=day-1;
+                            break;
+                        case 6:
+                            // get 6 days ago
+                            day=day;
+
+                            break;
+                    }
+
+                    return String.valueOf(day);
+                }
+                return super.formatLabel(value, isValueX);
+            }
+        });
+        lineGraphSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(activity, "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void insertData() {
-        String id = databaseReference.push().getKey();
+        String id = databaseReference.child(date).push().getKey();
         long x=new Date().getTime();
         int y=currentHeartRate;
         PointValue pointValue = new PointValue(x,y);
-        databaseReference.child(id).setValue(pointValue);
+        databaseReference.child(date).child(id).setValue(pointValue);
         retrieveData();
     }
 
     private void retrieveData() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.child(date).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
@@ -390,9 +505,43 @@ public class HomeFragment extends Fragment{
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
+    }
+
+    private void retriveWeeklyData() {
+            Query chatQuery = databaseReference.orderByChild(currentuser).limitToLast(7);
+            chatQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    weeklyAvrHeartRate = new ArrayList<>();
+                    double heartRate=0;
+                    if (dataSnapshot.hasChildren()) {
+                        DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
+                        int indexWeekly = 0;
+                        for (DataSnapshot myDataSnapshot : dataSnapshot.getChildren()) {
+                            if (myDataSnapshot.hasChildren()) {
+                                //to get all daily values
+                                for (DataSnapshot lastdataSnapshot : myDataSnapshot.getChildren()) {
+                                    RetriveWeeklyHeartRatePointValue pointValue = lastdataSnapshot.getValue(RetriveWeeklyHeartRatePointValue.class);
+                                    weeklyAvrHeartRate.add(pointValue.getyValue());
+                                    //avr of each day
+                                    heartRate= calculateAverageStepsOfCompetitors(weeklyAvrHeartRate);
+                                }
+                            }
+                            dataVals[indexWeekly] = new DataPoint(indexWeekly,heartRate);
+                            indexWeekly++;
+                        }
+                        lineGraphWeekly.resetData(dataVals);
+                    }else{
+                        Toast.makeText(activity, "hello", Toast.LENGTH_LONG).show();
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
     }
 
     private void insertStepsData() {
@@ -634,6 +783,16 @@ public class HomeFragment extends Fragment{
         }
         return sum;
     }
+    private double calculateAvrHeartRate(ArrayList<Double> avgHeartRate) {
+        int sum = 0;
+        if (!avgHeartRate.isEmpty() && avgHeartRate!=null) {
+            for (Double avgHeartRate2 : avgHeartRate) {
+                sum += avgHeartRate2;
+            }
+            return sum / avgHeartRate.size();
+        }
+        return sum;
+    }
 
     //getting radio option for either 4pm or 7pm by user
         public void getRadioText() {
@@ -705,7 +864,7 @@ public class HomeFragment extends Fragment{
 
         public void Refresh() {
             Calendar currentTime = Calendar.getInstance();
-            if(currentHeartRate!=0) {
+            if(currentHeartRate!=0 && (MaxHeartRate!=0)) {
                 if (currentHeartRate > MaxHeartRate) {
                     sendOnChannel1(null);
 
@@ -720,12 +879,12 @@ public class HomeFragment extends Fragment{
                 }
 
                 getRadioText();
-                if (notiRadioText.equals("4pm")) {
+                if ((notiRadioText!=null)&& (notiRadioText.equals("4pm") )) {
                     if ((currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) && (currentStepsCount < 7500))  {
                         sendOnChannel3(null);
 
                     }
-                } else if (notiRadioText.equals("7pm")) {
+                } else if ( (notiRadioText!=null)&&(notiRadioText.equals("7pm"))) {
                     if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
                         sendOnChannel3(null);
 
