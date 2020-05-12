@@ -34,6 +34,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager=findViewById(R.id.view_pager);
         tabLayout=findViewById(R.id.tab_layout);

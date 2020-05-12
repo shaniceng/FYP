@@ -37,10 +37,11 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
 
     private String selecteddate, selecteddateDay2,selecteddateDay3,selecteddateDay4,selecteddateDay5,selecteddateDay6,selecteddateDay7;
     private String steps,steps2,steps3,steps4,steps5,steps6,steps7;
-    private String currentuser,avgWeekSteps;
+    private int duration, totalduration,TotalHoursDuration,TotalMinutesDuration,TotalSecondsDuration,totalsteps;
+    private float avgdurationmin,avgduration,avgweeksteps;
+    private String currentuser;
     private String dataDate=null;
-    private int maxday,maxmonth,totalsteps;
-    private float avgweeksteps;
+    private int maxday,maxmonth;
 
     private DatabaseReference DataBaseRef;
     private FirebaseAuth firebaseAuth;
@@ -50,7 +51,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
 
-    private TextView dateText,avgText;
+    private TextView dateText,avgText,totalstepText,avgDText,totaldurationText;
 
     private ArrayList<StepsValue> stepsValue= new ArrayList<>();
     private ArrayList<String> activityname,activityduration;
@@ -61,7 +62,13 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.history_tab_weekly, container, false);
         dateText = v.findViewById(R.id.date_text);
+
+        totalstepText = v.findViewById(R.id.tvTotalSteps);
         avgText=v.findViewById(R.id.tvAvgSteps);
+        avgDText = v.findViewById(R.id.tvAvgDur);
+        totaldurationText=v.findViewById(R.id.tvTotalDuration);
+
+
         mRecyclerView = v.findViewById(R.id.steps_value);
 
         v.findViewById(R.id.date_button).setOnClickListener(new View.OnClickListener() {
@@ -191,10 +198,12 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                     for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddate).getChildren()){
 
                         String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        Log.i("Day1",actdaily);
+                        duration =Integer. valueOf( getSecondsFromDurationString(durdaily));
+                        totalduration = totalduration + duration;
+
                     }
                     stepsValue.add(new StepsValue(steps, selecteddate,buildHistoryActivityName(activityname,activityduration)));
 
@@ -209,10 +218,11 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                     for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay2).getChildren()){
 
                         String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        Log.i("Day2",actdaily);
+                        duration =Integer. valueOf( getSecondsFromDurationString(durdaily));
+                        totalduration = totalduration + duration;
 
                     }
                     stepsValue.add(new StepsValue(steps2, selecteddateDay2,buildHistoryActivityName(activityname,activityduration)));
@@ -226,10 +236,11 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                     for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay3).getChildren()){
 
                         String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        Log.i("Day3",actdaily);
+                        duration =Integer. valueOf( getSecondsFromDurationString(durdaily));
+                        totalduration = totalduration + duration;
 
                     }
                     stepsValue.add(new StepsValue(steps3, selecteddateDay3,buildHistoryActivityName(activityname,activityduration)));
@@ -243,10 +254,11 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                     for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay4).getChildren()){
 
                         String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        Log.i("Day4",actdaily);
+                        duration =Integer. valueOf( getSecondsFromDurationString(durdaily));
+                        totalduration = totalduration + duration;
 
                     }
                     stepsValue.add(new StepsValue(steps4, selecteddateDay4,buildHistoryActivityName(activityname,activityduration)));
@@ -260,10 +272,11 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                     for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay5).getChildren()){
 
                         String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        Log.i("Day5",actdaily);
+                        duration =Integer. valueOf( getSecondsFromDurationString(durdaily));
+                        totalduration = totalduration + duration;
 
                     }
                     stepsValue.add(new StepsValue(steps5, selecteddateDay5,buildHistoryActivityName(activityname,activityduration)));
@@ -277,10 +290,11 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                     for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay6).getChildren()){
 
                         String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        Log.i("Day6",actdaily);
+                        duration =Integer. valueOf( getSecondsFromDurationString(durdaily));
+                        totalduration = totalduration + duration;
 
                     }
                     stepsValue.add(new StepsValue(steps6, selecteddateDay6,buildHistoryActivityName(activityname,activityduration)));
@@ -294,22 +308,41 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                     for(DataSnapshot myDataSnapshot : dataSnapshot.child("Activity Tracker").child(currentuser).child(selecteddateDay7).getChildren()){
 
                         String actdaily = String.valueOf(myDataSnapshot.child("activity").getValue());
-                        String durdaily = String.valueOf(myDataSnapshot.child("cDuration").getValue());
+                        String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        Log.i("Day6",actdaily);
+                        duration =Integer. valueOf( getSecondsFromDurationString(durdaily));
+                        totalduration = totalduration + duration;
 
                     }
                     stepsValue.add(new StepsValue(steps7, selecteddateDay7,buildHistoryActivityName(activityname,activityduration)));
 
 
+                    totalstepText.setText("Total steps: " +totalsteps);
+                    avgweeksteps = (float)totalsteps/7;
+                    avgText.setText("Average steps: "+String.format("%.2f", avgweeksteps) + " steps/day");
 
-                    avgweeksteps = totalsteps/7;
-                    avgWeekSteps = String.format("%.2f", avgweeksteps);
-                    avgText.setText("Average steps in selected week: "+avgWeekSteps + " steps");
+                    TotalHoursDuration = totalduration / 3600;
+                    if (TotalHoursDuration>1 || TotalHoursDuration==1){
+                        TotalMinutesDuration = (totalduration % 3600) / 60;
+                        TotalSecondsDuration = totalduration % 60;
+                        totaldurationText.setText("Total duration: "+String.format("%02d", TotalHoursDuration)+ ":" + String.format("%02d", TotalMinutesDuration) + ":" + String.format("%02d", TotalSecondsDuration)  + " (hh:mm:ss)");
+                    }
+                    else {
+                        TotalMinutesDuration = (totalduration % 3600) / 60;
+                        TotalSecondsDuration = totalduration % 60;
+                        totaldurationText.setText("Total duration: " + TotalMinutesDuration + ":" + TotalSecondsDuration+ " (mm:ss)");
+                    }
+
+                    avgduration = totalduration / 7;
+                    avgdurationmin = avgduration/60;
+                    avgDText.setText("Average duration: "+String.format("%.2f", avgdurationmin)+"minutes/day");
 
                     totalsteps=0;
                     avgweeksteps=0;
+                    totalduration=0;
+                    avgduration=0;
+
 
                     mAdapter = new StepsAdapter(stepsValue);
                     mRecyclerView.setAdapter(mAdapter);
@@ -353,5 +386,28 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    public String getSecondsFromDurationString(String value) {
+
+        String[] parts = value.split(":");
+
+        // Wrong format, no value for you.
+        if (parts.length < 2 || parts.length > 3)
+            return null;
+
+        int seconds = 0, minutes = 0, hours = 0;
+
+        if (parts.length == 2) {
+            seconds = Integer.parseInt(parts[1]);
+            minutes = Integer.parseInt(parts[0]);
+        } else if (parts.length == 3) {
+            seconds = Integer.parseInt(parts[2]);
+            minutes = Integer.parseInt(parts[1]);
+            hours = Integer.parseInt(parts[0]);
+        }
+
+        seconds = seconds + (minutes * 60) + (hours * 3600);
+        return String.valueOf(seconds);
     }
 }
