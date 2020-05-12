@@ -60,6 +60,8 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_settings, container, false);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+
         name=v.findViewById(R.id.tvName);
         email=v.findViewById(R.id.tvEmail);
         age=v.findViewById(R.id.tvAge);
@@ -101,6 +103,7 @@ public class SettingsFragment extends Fragment {
 
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
+        retrieveStepsCount();
 
         DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+firebaseAuth.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -115,6 +118,7 @@ public class SettingsFragment extends Fragment {
                 weight.setText("Weight: " +userProfile.getUserWeight() +" kg");
                 birthday.setText("Birthday: " +userProfile.getUserBirthday());
                 radioButton.setText("Preferred prompt at: " + userProfile.getRadiotext());
+                //age.setText(String.valueOf(prefs.getInt("YOUR COUNTER PREF KEY", 0)));
             }
 
             @Override
@@ -122,8 +126,6 @@ public class SettingsFragment extends Fragment {
                 Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        retrieveStepsCount();
 
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         SettingsFragment.MessageReceiver messageReceiver = new SettingsFragment.MessageReceiver();
@@ -151,13 +153,24 @@ public class SettingsFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
-        prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("YOUR PREF KEY", Context.MODE_PRIVATE);
+
+        if (!prefs.contains("YOUR DATE PREF KEY")) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("YOUR DATE PREF KEY", 0);
+            editor.commit();
+        }
+        if (!prefs.contains("YOUR COUNTER PREF KEY")) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("YOUR COUNTER PREF KEY", 0);
+            editor.commit();
+        }
+
+        //SharedPreferences sharedPreferences = getContext().getSharedPreferences("YOUR PREF KEY", Context.MODE_PRIVATE);
         Calendar c = Calendar.getInstance();
         thisDay = c.get(Calendar.DAY_OF_YEAR); // GET THE CURRENT DAY OF THE YEAR
-        lastDay = sharedPreferences.getInt("YOUR DATE PREF KEY", 0); //If we don't have a saved value, use 0.
-        counterOfConsecutiveDays = sharedPreferences.getInt("YOUR COUNTER PREF KEY", 0); //If we don't have a saved value, use 0.
+        lastDay = prefs.getInt("YOUR DATE PREF KEY", 0); //If we don't have a saved value, use 0.
+        counterOfConsecutiveDays = prefs.getInt("YOUR COUNTER PREF KEY", 0); //If we don't have a saved value, use 0.
 
         // Initialize if it is the first time use
 
@@ -170,7 +183,7 @@ public class SettingsFragment extends Fragment {
                     dataSteps = stepsPointValue.getSteps();
 
 
-                if ((lastDay == thisDay - 1) && (dataSteps > 100)) { //testing at 100 steps a day first must EDIT HERE
+                if ((lastDay == thisDay -1) && (dataSteps >= 7500)) { //testing at 100 steps a day first must EDIT HERE
                     // CONSECUTIVE DAYS
                     //if today hit >7500, count up
                     counterOfConsecutiveDays = counterOfConsecutiveDays + 1;
@@ -182,27 +195,27 @@ public class SettingsFragment extends Fragment {
                 } else {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("YOUR DATE PREF KEY", thisDay);
-                    editor.putInt("YOUR COUNTER PREF KEY", 1);
+                    editor.putInt("YOUR COUNTER PREF KEY", 0);
                     editor.commit();
                 }
 
 
-                if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 3) {
+                if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 3) {
                     //change greyscale to colour for 3days streak
                     iv3days.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 7) {
+                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 7) {
                     //change greyscale to colour for 7days streak
                     iv1week.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 21) {
+                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 21) {
                     //change greyscale to colour for 3 weeks streak
                     iv3weeks.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 30) {
+                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 30) {
                     //change greyscale to colour for 1month streak
                     iv1month.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 90) {
+                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 90) {
                     //change greyscale to colour for 3month streak
                     iv3months.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", -1) >= 180) {
+                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 180) {
                     //change greyscale to colour for 6month streak
                     iv6months.setImageResource(R.drawable.badges_colour);
                 }

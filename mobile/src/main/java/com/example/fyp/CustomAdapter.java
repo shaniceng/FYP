@@ -1,6 +1,8 @@
 package com.example.fyp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +53,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.stopTime.setText(currentTime.get(position));
         if(heartRateAvr.get(position)!=null) {
             holder.activityHeartRatetv.setText(heartRateAvr.get(position));
-        }
 
+        }
             if (mDataSet != null) {
                 switch (String.valueOf(mDataSet.get(position))) {
                     case "Brisk Walking":

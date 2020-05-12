@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="TextView"
+            android:text="Average Heart Rate: "
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/BackgroundStartTime"
@@ -148,7 +148,6 @@
             app:layout_constraintStart_toEndOf="@+id/ActivityImageView"
             app:layout_constraintTop_toBottomOf="@+id/tvDuration"
             app:layout_constraintVertical_bias="0.388" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
