@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -32,15 +33,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class TimerActivity extends WearableActivity implements SensorEventListener, CircularProgressLayout.OnTimerFinishedListener, View.OnClickListener {
+public class TimerActivity extends WearableActivity implements SensorEventListener{//, CircularProgressLayout.OnTimerFinishedListener, View.OnClickListener {
 
     private final static String TAG = "Wear MainActivity";
+    private ImageButton pauseBtn;
     private TextView trackName, heartRate;
     private  Chronometer chronometer;
     private ImageButton startTimer, stopTimer, pauseTimer;
     String datapath = "/message_path";
     String chromoPath = "/chromo-path";
     String activityHeartRatePath = "/activity_tracking_heart_rate_path";
+
+    private static final String Initial_Count_Key = "FootStepInitialCount";
+    private static final String Current_Steps_Now = "CurrentStepsCount";
 
     private boolean isResume;
     Handler handler;
@@ -79,9 +84,24 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
-        circularProgress = (CircularProgressLayout) findViewById(R.id.circular_progress_Timer);
-        circularProgress.setOnTimerFinishedListener(this);
-        circularProgress.setOnClickListener(this);
+
+        pauseTimer.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(running){
+            chronometer.stop();
+            pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
+            running=false;
+            startTimer.setVisibility(View.VISIBLE);
+            stopTimer.setVisibility(View.VISIBLE);
+            pauseTimer.setVisibility(View.GONE);
+        }
+                return false;
+            }
+        });
+//        circularProgress = (CircularProgressLayout) findViewById(R.id.circular_progress_Timer);
+//        circularProgress.setOnTimerFinishedListener(this);
+//        circularProgress.setOnClickListener(this);
 
         handler = new Handler();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -100,19 +120,27 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
             getHartRate();
         }
     }
-    public void pauseChronometer(View v){
-        circularProgress.setOnTimerFinishedListener(this);
-        circularProgress.setOnClickListener(this);
-        circularProgress.setTotalTime(2000);// Start the timer
-        circularProgress.startTimer();
-        while(circularProgress.isTimerRunning()){
-
+    public void pauseChronometer(){ //View v
+//        circularProgress.setTotalTime(2000);// Start the timer
+//        circularProgress.startTimer();
+//        while(circularProgress.isTimerRunning()){
+//
+//        }
+        if(running){
+            chronometer.stop();
+            pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
+            running=false;
+            startTimer.setVisibility(View.VISIBLE);
+            stopTimer.setVisibility(View.VISIBLE);
+            pauseTimer.setVisibility(View.GONE);
         }
 
 
     }
+
+
     public void resetChronometer(View v){
-        pauseChronometer(v);
+        pauseChronometer();
         sensorManager.unregisterListener(this);
         chronometertext = chronometer.getText().toString();
         new TimerActivity.SendActivity(chromoPath, chronometertext).start();
@@ -142,29 +170,22 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         alertDialog.show();
 
     }
-
-    @Override
-    public void onClick(View v) {
-        circularProgress.setTotalTime(2000);// Start the timer
-        circularProgress.startTimer();
-        if (v.equals(circularProgress)) {
-            // User canceled, abort the action
-            circularProgress.stopTimer();
-        }
-
-    }
-
-    @Override
-    public void onTimerFinished(CircularProgressLayout layout) {
-        if(running){
-            chronometer.stop();
-            pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
-            running=false;
-            startTimer.setVisibility(View.VISIBLE);
-            stopTimer.setVisibility(View.VISIBLE);
-            pauseTimer.setVisibility(View.GONE);
-        }
-    }
+//
+//    @Override
+//    public void onClick(View v) {
+////        circularProgress.setTotalTime(2000);// Start the timer
+////        circularProgress.startTimer();
+//        if (v.equals(circularProgress)==false) {
+//            // User canceled, abort the action
+//            circularProgress.stopTimer();
+//        }
+//
+//    }
+//
+//    @Override
+//    public void onTimerFinished(CircularProgressLayout layout) {
+//
+//    }
 
     //This actually sends the message to the wearable device.
     class SendActivity extends Thread {
@@ -221,6 +242,11 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         mSensorManager.registerListener((SensorEventListener) this, mHeartRateSensor, 5000000);
+
+        Sensor mStepCountSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        Sensor mStepDetectSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        mSensorManager.registerListener(this, mStepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mStepDetectSensor, SensorManager.SENSOR_DELAY_NORMAL);
         //suggesting android to take data in every 5s, if nth to do, android will auto collect data.
     }
 
@@ -246,6 +272,30 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
                 avrHeartRate.add((int) event.values[0]);
                 heartRate.setText(String.format("%.1f", calculateAverage(avrHeartRate)) + "BPM");
             }
+
+        }
+        else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+            //prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            // Initialize if it is the first time use
+            if (!sharedPreferences.contains(Initial_Count_Key) || ((int) event.values[0] == 0)) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(Initial_Count_Key, (int) event.values[0]);
+                editor.commit();
+            }
+            if (!sharedPreferences.contains("dailyCurrentSteps") || ((int) event.values[0] == 0)) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("dailyCurrentSteps", (int) event.values[0]);
+                editor.commit();
+            }
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(Current_Steps_Now, (int) event.values[0]);
+            editor.commit();
+
+            int startingStepCount = sharedPreferences.getInt(Initial_Count_Key, -1);
+            int stepCount = (int) event.values[0] - startingStepCount;
+            SharedPreferences.Editor edit = sharedPreferences.edit();
+            edit.putInt("dailyCurrentSteps", stepCount);
+            edit.commit();
         }
 
         else

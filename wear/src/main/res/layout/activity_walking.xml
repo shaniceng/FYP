@@ -94,36 +94,49 @@
             app:layout_constraintTop_toBottomOf="@+id/chronometer"
             app:layout_constraintVertical_bias="0.0" />
 
-        <androidx.wear.widget.CircularProgressLayout
-            android:id="@+id/circular_progress_Timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="70dp"
-            android:padding="8dp"
-            app:backgroundColor="@color/colorPrimaryDark"
-            app:colorSchemeColors="@color/dark_blue"
-            app:layout_constraintBottom_toTopOf="@+id/hrTV"
+<!--        <androidx.wear.widget.CircularProgressLayout-->
+<!--            android:id="@+id/circular_progress_Timer"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="70dp"-->
+<!--            android:padding="8dp"-->
+<!--            app:backgroundColor="@color/colorPrimaryDark"-->
+<!--            app:colorSchemeColors="@color/dark_blue"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/hrTV"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/chronometer"-->
+<!--            app:strokeWidth="8dp">-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/pauseBtn"-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:background="@drawable/timerbtn_back"-->
+<!--                android:src="@drawable/ic_pause_black_24dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.496"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/chronometer"-->
+<!--                app:layout_constraintVertical_bias="0.063"-->
+<!--                android:onClick="pauseChronometer"/>-->
+<!--        </androidx.wear.widget.CircularProgressLayout>-->
+
+        <ImageButton
+            android:id="@+id/pauseBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/timerbtn_back"
+            android:src="@drawable/ic_pause_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chronometer"
-            app:strokeWidth="8dp"
-            android:elevation="1dp">
+            app:layout_constraintVertical_bias="0.063"
+            android:longClickable="true" />
 
-            <ImageButton
-                android:id="@+id/pauseBtn"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/timerbtn_back"
-                android:src="@drawable/ic_pause_black_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chronometer"
-                app:layout_constraintVertical_bias="0.063"
-                android:elevation="3dp"/>
-        </androidx.wear.widget.CircularProgressLayout>
-<!--        android:onClick="pauseChronometer"-->
 
 
         <ImageButton
@@ -146,6 +159,7 @@
             android:id="@+id/hrTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
             android:layout_marginBottom="80dp"
             android:background="@drawable/round"
             android:backgroundTint="@color/babyPink"
@@ -160,7 +174,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.46"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circular_progress_Timer" />
+            app:layout_constraintTop_toBottomOf="@+id/chronometer" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
