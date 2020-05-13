@@ -605,6 +605,7 @@ public class HomeFragment extends Fragment{
                         DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
                         int indexWeekly = 0;
                         for (DataSnapshot myDataSnapshot : dataSnapshot.getChildren()) {
+                            weeklyAvrHeartRate = new ArrayList<>();
                             if (myDataSnapshot.hasChildren()) {
                                 //to get all daily values
                                 for (DataSnapshot lastdataSnapshot : myDataSnapshot.getChildren()) {
