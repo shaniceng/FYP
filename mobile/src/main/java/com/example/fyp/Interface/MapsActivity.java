@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.fyp.Common;
 import com.example.fyp.Model.IGoogleAPIService;
@@ -62,6 +63,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private ImageButton park,gym,stadium;
+
     private MapView mapView;
     private GoogleMap googleMap;
 
@@ -71,7 +74,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_map, container, false);
+        View v= inflater.inflate(R.layout.fragment_map_2, container, false);
 
 
         mapView = (MapView) v.findViewById(R.id.map);
@@ -90,9 +93,14 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         }
 
 
-        Button park = v.findViewById(R.id.parkbutton);
-        Button gym = v.findViewById(R.id.gymbutton);
-        Button stadium =v.findViewById(R.id.stadiumbutton);
+        park = v.findViewById(R.id.parkbutton);
+        gym = v.findViewById(R.id.gymbutton);
+        stadium =v.findViewById(R.id.stadiumbutton);
+
+        park.setEnabled(false);
+        gym.setEnabled(false);
+        stadium.setEnabled(false);
+
         park.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -889,45 +897,45 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
     private void SingaporeStadium(){
 
         LatLng Stadium_Woodlands= new LatLng(1.434573, 103.780822);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Woodlands).title("Woodlands Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Woodlands).title("Woodlands Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Sports_Centre_Woodlands= new LatLng(1.434118, 103.779801);
-        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Woodlands).title("Woodlands ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Woodlands).title("Woodlands ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Yio_Chu_Kang= new LatLng(1.382958, 103.846586);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Yio_Chu_Kang).title("Yio Chu Kang Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Yio_Chu_Kang).title("Yio Chu Kang Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Sports_Centre_Yio_Chu_Kang= new LatLng(1.381832, 103.845008);
-        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Yio_Chu_Kang).title("Yio Chu Kang ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Yio_Chu_Kang).title("Yio Chu Kang ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Sports_Centre_Sengkang= new LatLng(1.396528, 103.886842);
-        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Sengkang).title("Sengkang Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Sengkang).title("Sengkang Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Bishan= new LatLng(1.354501, 103.851566);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Bishan).title("Bishan ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Bishan).title("Bishan ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Sports_Hall_Bishan= new LatLng(1.355330, 103.850899);
-        mMap.addMarker(new MarkerOptions().position(Sports_Hall_Bishan).title("Bishan Sports Hall").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Sports_Hall_Bishan).title("Bishan Sports Hall").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Serangoon= new LatLng(1.355977, 103.874897);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Serangoon).title("Serangoon Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Serangoon).title("Serangoon Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Sports_Centre_Hougang= new LatLng(1.370874, 103.888147);
-        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Hougang).title("Hougang ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Hougang).title("Hougang ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Hougang= new LatLng(1.369689, 103.887101);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Hougang).title("Hougang ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Hougang).title("Hougang ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Bedok= new LatLng(1.326547, 103.939376);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Bedok).title("Bedok ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Bedok).title("Bedok ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Field_Kallang= new LatLng(1.304224, 103.880911);
-        mMap.addMarker(new MarkerOptions().position(Field_Kallang).title("Kallang ActiveSG Field").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Field_Kallang).title("Kallang ActiveSG Field").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Queenstown= new LatLng(1.295858, 103.802460);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Queenstown).title("Queenstown ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Queenstown).title("Queenstown ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Clementi= new LatLng(1.310137, 103.762699);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Clementi).title("Clementi ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Clementi).title("Clementi ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_MOE_PESEB= new LatLng(1.320489, 103.819856);
-        mMap.addMarker(new MarkerOptions().position(Stadium_MOE_PESEB).title("MOE PESEB Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_MOE_PESEB).title("MOE PESEB Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Toa_Payoh= new LatLng(1.330365, 103.852983);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Toa_Payoh).title("Toa Payoh Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Toa_Payoh).title("Toa Payoh Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Jurong_East= new LatLng(1.346743, 103.729946);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Jurong_East).title("Jurong East Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Jurong_East).title("Jurong East Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Jurong_West= new LatLng(1.338414, 103.694975);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Jurong_West).title("Jurong West ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Jurong_West).title("Jurong West ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Stadium_Bukit_Gombak= new LatLng(1.358339, 103.753617);
-        mMap.addMarker(new MarkerOptions().position(Stadium_Bukit_Gombak).title("Bukit Gombak ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Stadium_Bukit_Gombak).title("Bukit Gombak ActiveSG Stadium").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         LatLng Sports_Centre_Choa_Chu_Kang= new LatLng(1.391084, 103.748157);
-        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Choa_Chu_Kang).title("Choa Chu Kang ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
+        mMap.addMarker(new MarkerOptions().position(Sports_Centre_Choa_Chu_Kang).title("Choa Chu Kang ActiveSG Sports Centre").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_stadium_marker)));
         //LatLng gym= new LatLng();
         //mMap.addMarker(new MarkerOptions().position().title("").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
     }
@@ -1112,14 +1120,15 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         if(mMarker !=null)
             mMarker.remove();
 
+
         latitude=location.getLatitude();
         longitude=location.getLongitude();
 
         LatLng latLng = new LatLng(latitude,longitude);
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
 
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
         //cameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).build();
 
@@ -1132,9 +1141,14 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback,
         //Move Camera
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
-        if(mGoogleApiClient!=null)
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
+        if(mGoogleApiClient!=null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
 
+
+        park.setEnabled(true);
+        gym.setEnabled(true);
+        stadium.setEnabled(true);
     }
 
 

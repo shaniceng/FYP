@@ -31,14 +31,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="3"
+            android:gravity="bottom">
 
             <Button
                 android:id="@+id/parkbutton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/ic_park_marker"
                 android:text="Park" />
@@ -46,7 +47,7 @@
             <Button
                 android:id="@+id/gymbutton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/ic_gym_marker_2"
                 android:text="Gym" />
@@ -54,7 +55,7 @@
             <Button
                 android:id="@+id/stadiumbutton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/ic_gym_marker_2"
                 android:text="Stadium" />
