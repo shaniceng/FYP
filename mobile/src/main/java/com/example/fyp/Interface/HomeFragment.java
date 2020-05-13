@@ -695,7 +695,7 @@ public class HomeFragment extends Fragment{
                         mTimeSet.add(lockInValue.getDuration());
                         mDataSet.add(lockInValue.getActivity());
                         currentTimeA.add(lockInValue.getcTime());
-                        if(lockInValue.getAvrHeartRate()==null){
+                        if((lockInValue.getAvrHeartRate()==null) ){
                             activityHeartRate.add("No heart rate detected");
                         }
                         else {

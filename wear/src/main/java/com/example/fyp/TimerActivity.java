@@ -116,7 +116,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         // Enables Always-on
         setAmbientEnabled();
     }
-    
+
 
     public void startChronometer(View v){
         if(!running){
