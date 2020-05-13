@@ -244,39 +244,53 @@ public class HomeFragment extends Fragment{
             }
         });
 
-        if(prefs.getInt(GET_firebase_steps, -1)>=7500){
-            trophy.setVisibility(View.VISIBLE);
-            trophy.startAnimation(fortrophy);
-            overbox.setAlpha(1);
-            overbox.startAnimation(fromnothing);
-            myPopup.setAlpha(1);
-            myPopup.startAnimation(fromsmall);
-            showpopupNoti.setText("You have completed 7500 steps today.");
+        if (!prefs.contains("GET_TODAY_DATE")) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("GET_TODAY_DATE", currentDate.get(Calendar.DAY_OF_YEAR)-1);
+            editor.commit();
         }
-        if(prefs.getFloat(GET_firebase_moderatemins, -1)>=150){
-            trophy.setVisibility(View.VISIBLE);
-            trophy.startAnimation(fortrophy);
-            overbox.setAlpha(1);
-            overbox.startAnimation(fromnothing);
-            myPopup.setAlpha(1);
-            myPopup.startAnimation(fromsmall);
-            showpopupNoti.setText("You have completed 150 mins of moderate exercise this week.");
-
-        }
-
-        btnClosePopup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                overbox.setAlpha(0);
-                myPopup.startAnimation(togo);
-                trophy.startAnimation(togo);
-                trophy.setVisibility(View.GONE);
-
-                ViewCompat.animate(myPopup).setStartDelay(1000).alpha(0).start();
-                ViewCompat.animate(overbox).setStartDelay(1000).alpha(0).start();
+        if(prefs.getInt("GET_TODAY_DATE",currentDate.get(Calendar.DAY_OF_YEAR))!=currentDate.get(Calendar.DAY_OF_YEAR)) {
+            if (prefs.getInt(GET_firebase_steps, -1) >= 7500) {
+                trophy.setVisibility(View.VISIBLE);
+                trophy.startAnimation(fortrophy);
+                overbox.setAlpha(1);
+                overbox.startAnimation(fromnothing);
+                myPopup.setAlpha(1);
+                myPopup.startAnimation(fromsmall);
+                showpopupNoti.setText("You have completed 7500 steps today.");
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("GET_TODAY_DATE", currentDate.get(Calendar.DAY_OF_YEAR));
+                editor.commit();
+            }
+            if (prefs.getFloat(GET_firebase_moderatemins, -1) >= 150) {
+                trophy.setVisibility(View.VISIBLE);
+                trophy.startAnimation(fortrophy);
+                overbox.setAlpha(1);
+                overbox.startAnimation(fromnothing);
+                myPopup.setAlpha(1);
+                myPopup.startAnimation(fromsmall);
+                showpopupNoti.setText("You have completed 150 mins of moderate exercise this week.");
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("GET_TODAY_DATE", currentDate.get(Calendar.DAY_OF_YEAR));
+                editor.commit();
 
             }
-        });
+            btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    overbox.setAlpha(0);
+                    myPopup.startAnimation(togo);
+                    trophy.startAnimation(togo);
+                    trophy.setVisibility(View.GONE);
+
+                    ViewCompat.animate(myPopup).setStartDelay(1000).alpha(0).start();
+                    ViewCompat.animate(overbox).setStartDelay(1000).alpha(0).start();
+
+                }
+            });
+
+        }
+
         notificationManager = NotificationManagerCompat.from(getActivity());
         getRadioText();
         Refresh();
@@ -295,7 +309,6 @@ public class HomeFragment extends Fragment{
                 showWeeklyGraph();
             }
         });
-
 
         return v;
     }
@@ -667,6 +680,7 @@ public class HomeFragment extends Fragment{
         lockinDataBaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Long count = dataSnapshot.getChildrenCount();
                 mDataSet = new ArrayList<>();
                 mTimeSet=new ArrayList<>();
                 image = new ArrayList<>();
@@ -686,10 +700,8 @@ public class HomeFragment extends Fragment{
                             activityHeartRate.add("Average heart rate: " +lockInValue.getAvrHeartRate());
                             activity_heart_ratey=lockInValue.getActivity();
                             activity_heartRate=Float.parseFloat(lockInValue.getAvrHeartRate().replaceAll("[^0-9.]", ""));
-                            ShowAlertDialogWhenCompleteActivity();
                         }
                         InsertRecyclerView();
-
 
                         if(lockInValue.getDuration()!=null) {
                             duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
@@ -697,6 +709,17 @@ public class HomeFragment extends Fragment{
                              sec = duration % 100;
                             mModerateMinsArray.add(mins+(sec/60));
                         }
+                    }
+                    if (!prefs.contains("CHECK_IF_DISPLAYED_DIALOG")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putLong("CHECK_IF_DISPLAYED_DIALOG", count-1);
+                        editor.commit();
+                    }
+                    if(prefs.getLong("CHECK_IF_DISPLAYED_DIALOG",count-1)!=count) {
+                        ShowAlertDialogWhenCompleteActivity();
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putLong("CHECK_IF_DISPLAYED_DIALOG", count);
+                        editor.commit();
                     }
                     insertWeeklyModerateMins();
                     double mmarray=calculateSumOfModerateMins(mModerateMinsArray);
