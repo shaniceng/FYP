@@ -101,7 +101,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, TrackActivity.class));
-                finish();
+                //finish();
             }
         });
 

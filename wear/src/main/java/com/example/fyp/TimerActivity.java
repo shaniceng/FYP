@@ -13,11 +13,16 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
+import android.support.wearable.input.RotaryEncoder;
 import android.util.Log;
+import android.view.InputDevice;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 
@@ -37,7 +42,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
 
     private final static String TAG = "Wear MainActivity";
     private ImageButton pauseBtn;
-    private TextView trackName, heartRate;
+    private TextView trackName, heartRate, tvHold, tvScroll;
     private  Chronometer chronometer;
     private ImageButton startTimer, stopTimer, pauseTimer;
     String datapath = "/message_path";
@@ -47,6 +52,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
     private static final String Initial_Count_Key = "FootStepInitialCount";
     private static final String Current_Steps_Now = "CurrentStepsCount";
 
+    private ScrollView myview;
     private boolean isResume;
     Handler handler;
     long tMilliSec, tStart, tBuff, tUpdate = 0L;
@@ -78,12 +84,15 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         stopTimer = findViewById(R.id.stopBtn);
         trackName = findViewById(R.id.tvTrackName);
         chronometer = findViewById(R.id.chronometer);
+        myview=findViewById(R.id.myScrollView);
         heartRate=findViewById(R.id.hrTV);
         trackName.setText(TrackText);
         pauseTimer.setVisibility(View.GONE);
+        tvHold=findViewById(R.id.tv_hold);
+        tvHold.setVisibility(View.GONE);
+        tvScroll=findViewById(R.id.tv_scroll);
         sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-
 
         pauseTimer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -95,19 +104,19 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
             startTimer.setVisibility(View.VISIBLE);
             stopTimer.setVisibility(View.VISIBLE);
             pauseTimer.setVisibility(View.GONE);
+            tvHold.setVisibility(View.GONE);
+            tvScroll.setVisibility(View.VISIBLE);
         }
                 return false;
             }
         });
-//        circularProgress = (CircularProgressLayout) findViewById(R.id.circular_progress_Timer);
-//        circularProgress.setOnTimerFinishedListener(this);
-//        circularProgress.setOnClickListener(this);
 
         handler = new Handler();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         // Enables Always-on
         setAmbientEnabled();
     }
+    
 
     public void startChronometer(View v){
         if(!running){
@@ -116,23 +125,23 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
             running = true;
             startTimer.setVisibility(View.GONE);
             stopTimer.setVisibility(View.GONE);
+            tvScroll.setVisibility(View.GONE);
             pauseTimer.setVisibility(View.VISIBLE);
+            tvHold.setVisibility(View.VISIBLE);
             getHartRate();
         }
     }
     public void pauseChronometer(){ //View v
-//        circularProgress.setTotalTime(2000);// Start the timer
-//        circularProgress.startTimer();
-//        while(circularProgress.isTimerRunning()){
 //
-//        }
         if(running){
             chronometer.stop();
             pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
             running=false;
             startTimer.setVisibility(View.VISIBLE);
             stopTimer.setVisibility(View.VISIBLE);
+            tvScroll.setVisibility(View.VISIBLE);
             pauseTimer.setVisibility(View.GONE);
+            tvHold.setVisibility(View.GONE);
         }
 
 
@@ -160,8 +169,8 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        startActivity(new Intent(TimerActivity.this, MainActivity.class));
+                        onBackPressed();
+                        //startActivity(new Intent(TimerActivity.this, MainActivity.class));
                         finish();
                     }
                 });
@@ -170,22 +179,6 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         alertDialog.show();
 
     }
-//
-//    @Override
-//    public void onClick(View v) {
-////        circularProgress.setTotalTime(2000);// Start the timer
-////        circularProgress.startTimer();
-//        if (v.equals(circularProgress)==false) {
-//            // User canceled, abort the action
-//            circularProgress.stopTimer();
-//        }
-//
-//    }
-//
-//    @Override
-//    public void onTimerFinished(CircularProgressLayout layout) {
-//
-//    }
 
     //This actually sends the message to the wearable device.
     class SendActivity extends Thread {
@@ -316,6 +309,69 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
             return sum.doubleValue() / avrHeartRate.size();
         }
         return sum;
+    }
+
+    @Override
+// Activity
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if (event.getRepeatCount() == 0) {
+            if (keyCode == KeyEvent.KEYCODE_STEM_1) {
+                // Do stuff
+                if(!running){
+                    chronometer.setBase(SystemClock.elapsedRealtime()- pauseOffset);
+                    chronometer.start();
+                    running = true;
+                    startTimer.setVisibility(View.GONE);
+                    stopTimer.setVisibility(View.GONE);
+                    tvScroll.setVisibility(View.GONE);
+                    pauseTimer.setVisibility(View.VISIBLE);
+                    tvHold.setVisibility(View.VISIBLE);
+                    getHartRate();
+                }else{
+                    chronometer.stop();
+                    pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
+                    running=false;
+                    startTimer.setVisibility(View.VISIBLE);
+                    stopTimer.setVisibility(View.VISIBLE);
+                    tvScroll.setVisibility(View.VISIBLE);
+                    pauseTimer.setVisibility(View.GONE);
+                    tvHold.setVisibility(View.GONE);
+                }
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_STEM_2) {
+                // Do stuff
+                pauseChronometer();
+                sensorManager.unregisterListener(this);
+                chronometertext = chronometer.getText().toString();
+                new TimerActivity.SendActivity(chromoPath, chronometertext).start();
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                String getHR=heartRate.getText().toString();
+                new TimerActivity.SendActivity(activityHeartRatePath, getHR).start();
+                pauseOffset=0;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        // yourMethod();
+                    }
+                }, 500);
+                new TimerActivity.SendActivity(datapath, TrackText).start();
+                AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
+                builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                onBackPressed();
+                                //startActivity(new Intent(TimerActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.setTitle("Good Job!");
+                alertDialog.show();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }
