@@ -163,7 +163,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
                 // yourMethod();
             }
         }, 500);
-        new TimerActivity.SendActivity(datapath, TrackText).start();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
         builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -177,6 +177,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         AlertDialog alertDialog = builder.create();
         alertDialog.setTitle("Good Job!");
         alertDialog.show();
+        new TimerActivity.SendActivity(datapath, TrackText).start();
 
     }
 
@@ -354,7 +355,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
                         // yourMethod();
                     }
                 }, 500);
-                new TimerActivity.SendActivity(datapath, TrackText).start();
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
                 builder.setMessage("Activity Saved, you have been doing " + TrackText + " for " + chronometertext )
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -368,6 +369,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
                 AlertDialog alertDialog = builder.create();
                 alertDialog.setTitle("Good Job!");
                 alertDialog.show();
+                new TimerActivity.SendActivity(datapath, TrackText).start();
                 return true;
             }
         }
