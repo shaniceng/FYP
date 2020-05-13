@@ -1,69 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MapFragment"
-    android:layout_marginBottom="60dp"
-    android:background="#fff"
-    android:backgroundTint="@color/lightBlue"
-    android:id="@+id/fragment_map">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="630dp">
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/map"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="60dp"
+        android:weightSum="3">
 
-        </FrameLayout>
+        <ImageButton
+            android:id="@+id/parkbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_park_marker"
+            android:layout_marginLeft="5dp"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            android:gravity="bottom">
+            android:background="@drawable/border_outline"
+            android:backgroundTint="#C6E1E7F2"
+            android:text="Park" />
 
-            <Button
-                android:id="@+id/parkbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_park_marker"
-                android:text="Park" />
+        <ImageButton
+            android:id="@+id/gymbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_gym_marker_2"
+            android:background="@drawable/border_outline"
+            android:backgroundTint="#C6E1E7F2"
+            android:text="Gym" />
 
-            <Button
-                android:id="@+id/gymbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_gym_marker_2"
-                android:text="Gym" />
+        <ImageButton
+            android:id="@+id/stadiumbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="1"
 
-            <Button
-                android:id="@+id/stadiumbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_gym_marker_2"
-                android:text="Stadium" />
-
-        </LinearLayout>
-
-
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_stadium_marker"
+            android:background="@drawable/border_outline"
+            android:backgroundTint="#C6E1E7F2"
+            android:text="Stadium" />
     </LinearLayout>
 
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
