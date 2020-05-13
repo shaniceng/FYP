@@ -326,6 +326,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                     if (TotalHoursDuration>1 || TotalHoursDuration==1){
                         TotalMinutesDuration = (totalduration % 3600) / 60;
                         TotalSecondsDuration = totalduration % 60;
+                        Log.i("test","test");
                         totaldurationText.setText("Total duration: "+TotalHoursDuration+ ":" + String.format("%02d", TotalMinutesDuration) + ":" + String.format("%02d", TotalSecondsDuration)  + " (hh:mm:ss)");
                     }
                     else {
