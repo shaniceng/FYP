@@ -338,6 +338,12 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         } else {
             // Implement data retrieval and update the screen for interactive mode
             new MainActivity.SendThread(battPath, String.valueOf(batteryPct)).start();
+            if((String.valueOf(prefs.getInt("dailyCurrentSteps", -1))!=null) && (prefs.getInt("previousStepsCount",-1))!=prefs.getInt("dailyCurrentSteps", -1)){
+                new MainActivity.SendThread(stepsPath, String.valueOf(prefs.getInt("dailyCurrentSteps", -1))).start();
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("previousStepsCount", prefs.getInt("dailyCurrentSteps", -1));
+                editor.commit();
+            }
         }
         long timeMs = System.currentTimeMillis();
         // Schedule a new alarm

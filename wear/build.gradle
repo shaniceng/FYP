@@ -33,5 +33,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-fitness:18.0.0'
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     implementation 'androidx.core:core:1.2.0'
+    implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
+    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
 
 }

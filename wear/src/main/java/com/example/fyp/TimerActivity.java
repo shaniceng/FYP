@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
+import androidx.wear.widget.CircularProgressLayout;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
@@ -30,7 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class TimerActivity extends WearableActivity implements SensorEventListener{
+public class TimerActivity extends WearableActivity implements SensorEventListener, CircularProgressLayout.OnTimerFinishedListener, View.OnClickListener {
 
     private final static String TAG = "Wear MainActivity";
     private TextView trackName, heartRate;
@@ -57,6 +59,8 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
     //private int avrHeartRate;
     private ArrayList<Integer> avrHeartRate = new ArrayList();
 
+    private CircularProgressLayout circularProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,10 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         pauseTimer.setVisibility(View.GONE);
         sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+
+        circularProgress = (CircularProgressLayout) findViewById(R.id.circular_progress_Timer);
+        circularProgress.setOnTimerFinishedListener(this);
+        circularProgress.setOnClickListener(this);
 
         handler = new Handler();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -93,14 +101,12 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         }
     }
     public void pauseChronometer(View v){
-        if(running){
-            chronometer.stop();
-            pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
-            running=false;
-            startTimer.setVisibility(View.VISIBLE);
-            stopTimer.setVisibility(View.VISIBLE);
-            pauseTimer.setVisibility(View.GONE);
+        circularProgress.setTotalTime(2000);// Start the timer
+        circularProgress.startTimer();
+        while(circularProgress.isTimerRunning()){
+
         }
+
 
     }
     public void resetChronometer(View v){
@@ -133,6 +139,27 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         alertDialog.setTitle("Good Job!");
         alertDialog.show();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(circularProgress)) {
+            // User canceled, abort the action
+            circularProgress.stopTimer();
+        }
+
+    }
+
+    @Override
+    public void onTimerFinished(CircularProgressLayout layout) {
+        if(running){
+            chronometer.stop();
+            pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
+            running=false;
+            startTimer.setVisibility(View.VISIBLE);
+            stopTimer.setVisibility(View.VISIBLE);
+            pauseTimer.setVisibility(View.GONE);
+        }
     }
 
     //This actually sends the message to the wearable device.
