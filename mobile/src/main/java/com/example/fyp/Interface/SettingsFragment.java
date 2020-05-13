@@ -165,6 +165,11 @@ public class SettingsFragment extends Fragment {
             editor.putInt("YOUR COUNTER PREF KEY", 0);
             editor.commit();
         }
+        if (!prefs.contains("3DAY STREAK")) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("3DAY STREAK", 0);
+            editor.commit();
+        }
 
         //SharedPreferences sharedPreferences = getContext().getSharedPreferences("YOUR PREF KEY", Context.MODE_PRIVATE);
         Calendar c = Calendar.getInstance();

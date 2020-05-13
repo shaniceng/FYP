@@ -101,6 +101,8 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         }
     }
     public void pauseChronometer(View v){
+        circularProgress.setOnTimerFinishedListener(this);
+        circularProgress.setOnClickListener(this);
         circularProgress.setTotalTime(2000);// Start the timer
         circularProgress.startTimer();
         while(circularProgress.isTimerRunning()){
@@ -143,6 +145,8 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
 
     @Override
     public void onClick(View v) {
+        circularProgress.setTotalTime(2000);// Start the timer
+        circularProgress.startTimer();
         if (v.equals(circularProgress)) {
             // User canceled, abort the action
             circularProgress.stopTimer();

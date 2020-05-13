@@ -106,7 +106,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chronometer"
-            app:strokeWidth="8dp">
+            app:strokeWidth="8dp"
+            android:elevation="1dp">
 
             <ImageButton
                 android:id="@+id/pauseBtn"
@@ -119,7 +120,8 @@
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chronometer"
-                app:layout_constraintVertical_bias="0.063" />
+                app:layout_constraintVertical_bias="0.063"
+                android:elevation="3dp"/>
         </androidx.wear.widget.CircularProgressLayout>
 <!--        android:onClick="pauseChronometer"-->
 
