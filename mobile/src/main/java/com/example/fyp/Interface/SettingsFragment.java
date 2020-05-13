@@ -204,9 +204,7 @@ public class SettingsFragment extends Fragment {
                     editor.commit();
                 }
 
-                   // SharedPreferences.Editor editor = prefs.edit();
-                  //  editor.putInt("3DAY STREAK", 1);
-                   // editor.commit();
+
 
                 if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 3 || prefs.getInt("3DAY STREAK", 0) ==1) {
                     //change greyscale to colour for 3days streak
@@ -214,31 +212,36 @@ public class SettingsFragment extends Fragment {
                     editor.putInt("3DAY STREAK", 1);
                     editor.commit();
                     iv3days.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 7 || prefs.getInt("1WEEK STREAK", 0) ==1) {
+                }
+                if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 7 || prefs.getInt("1WEEK STREAK", 0) ==1) {
                     //change greyscale to colour for 7days streak
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("1WEEK STREAK", 1);
                     editor.commit();
                     iv1week.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 21 || prefs.getInt("3WEEK STREAK", 0) ==1) {
+                }
+                if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 21 || prefs.getInt("3WEEK STREAK", 0) ==1) {
                     //change greyscale to colour for 3 weeks streak
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("3WEEK STREAK", 1);
                     editor.commit();
                     iv3weeks.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 30|| prefs.getInt("1MONTH STREAK", 0) ==1) {
+                }
+                if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 30|| prefs.getInt("1MONTH STREAK", 0) ==1) {
                     //change greyscale to colour for 1month streak
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("1MONTH STREAK", 1);
                     editor.commit();
                     iv1month.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 90|| prefs.getInt("3MONTH STREAK", 0) ==1) {
+                }
+                if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 90|| prefs.getInt("3MONTH STREAK", 0) ==1) {
                     //change greyscale to colour for 3month streak
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("3MONTH STREAK", 1);
                     editor.commit();
                     iv3months.setImageResource(R.drawable.badges_colour);
-                } else if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 180|| prefs.getInt("6MONTH STREAK", 0) ==1) {
+                }
+                if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 180|| prefs.getInt("6MONTH STREAK", 0) ==1) {
                     //change greyscale to colour for 6month streak
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("6MONTH STREAK", 1);
