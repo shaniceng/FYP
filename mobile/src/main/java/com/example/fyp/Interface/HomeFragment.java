@@ -151,18 +151,9 @@ public class HomeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
-
-        startAlarm();
-        //for shared prefs
-        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        // Register the local broadcast receiver
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
-
         activity=getActivity();
         yValues= new ArrayList<>();
+        startAlarm();
 
         graphView=v.findViewById(R.id.graphView);
         lineGraphSeries=new LineGraphSeries();
@@ -195,6 +186,9 @@ public class HomeFragment extends Fragment{
         overbox.setAlpha(0);
         trophy.setVisibility(View.GONE);
 
+        //for shared prefs
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
         firebaseDatabase= FirebaseDatabase.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
         currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -209,6 +203,13 @@ public class HomeFragment extends Fragment{
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
         dataRefStepsFromCompetitors = firebaseDatabase.getReference();
         weeklymoderateminsdataref=firebaseDatabase.getReference("Weekly Moderate Mins/" + currentuser+"/");
+
+        // Register the local broadcast receiver
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+
+
 
         getMaxHR();
 //       new LongRunningTask().execute();
@@ -604,17 +605,18 @@ public class HomeFragment extends Fragment{
                         DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
                         int indexWeekly = 0;
                         for (DataSnapshot myDataSnapshot : dataSnapshot.getChildren()) {
+                            weeklyAvrHeartRate = new ArrayList<>();
                             if (myDataSnapshot.hasChildren()) {
                                 //to get all daily values
                                 for (DataSnapshot lastdataSnapshot : myDataSnapshot.getChildren()) {
                                     RetriveWeeklyHeartRatePointValue pointValue = lastdataSnapshot.getValue(RetriveWeeklyHeartRatePointValue.class);
-                                    weeklyAvrHeartRate.add(pointValue.getyValue());
                                     //avr of each day
-                                    heartRate= calculateAverageStepsOfCompetitors(weeklyAvrHeartRate);
+                                    weeklyAvrHeartRate.add(pointValue.getyValue());
                                 }
+                                heartRate= calculateAverageStepsOfCompetitors(weeklyAvrHeartRate);
+                                dataVals[indexWeekly] = new DataPoint(indexWeekly,heartRate);
+                                indexWeekly++;
                             }
-                            dataVals[indexWeekly] = new DataPoint(indexWeekly,heartRate);
-                            indexWeekly++;
                         }
                         lineGraphWeekly.resetData(dataVals);
                     }else{

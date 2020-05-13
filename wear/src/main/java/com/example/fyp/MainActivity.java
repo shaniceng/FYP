@@ -404,7 +404,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     }
 
     private void setRemindertoLockIn(){
-        if((heartrate!=0)&&(heartrate>=110)) {
+        if((heartrate!=0)&&(heartrate>=120)) {
             vibration();
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder//.setMessage("Are you exercising now?")

@@ -202,6 +202,7 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                     activityname = new ArrayList<>();
                     activityduration= new ArrayList<>();
 
+
                     if (dataSnapshot.child("Steps Count").child(currentuser).child(daymonth01).hasChild("steps")) {
                         steps = dataSnapshot.child("Steps Count").child(currentuser).child(daymonth01).child("steps").getValue().toString();
                         totalsteps = totalsteps+ Integer. valueOf(steps); }
@@ -212,7 +213,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth01,buildHistoryActivityName(activityname,activityduration)));
@@ -231,7 +234,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
 
                     }
@@ -249,7 +254,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
 
                     }
@@ -267,7 +274,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
 
                     }
@@ -285,7 +294,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
 
                     }
@@ -303,7 +314,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
 
 
@@ -322,7 +335,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
 
                     }
@@ -340,7 +355,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth08,buildHistoryActivityName(activityname,activityduration)));
@@ -357,7 +374,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth09,buildHistoryActivityName(activityname,activityduration)));
@@ -374,7 +393,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth10,buildHistoryActivityName(activityname,activityduration)));
@@ -390,7 +411,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth11,buildHistoryActivityName(activityname,activityduration)));
@@ -406,7 +429,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth12,buildHistoryActivityName(activityname,activityduration)));
@@ -421,7 +446,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth13,buildHistoryActivityName(activityname,activityduration)));
@@ -436,7 +463,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth14,buildHistoryActivityName(activityname,activityduration)));
@@ -451,7 +480,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth15,buildHistoryActivityName(activityname,activityduration)));
@@ -466,7 +497,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth16,buildHistoryActivityName(activityname,activityduration)));
@@ -481,7 +514,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth17,buildHistoryActivityName(activityname,activityduration)));
@@ -496,7 +531,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth18,buildHistoryActivityName(activityname,activityduration)));
@@ -511,7 +548,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth19,buildHistoryActivityName(activityname,activityduration)));
@@ -526,7 +565,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth20,buildHistoryActivityName(activityname,activityduration)));
@@ -541,7 +582,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth21,buildHistoryActivityName(activityname,activityduration)));
@@ -556,7 +599,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth22,buildHistoryActivityName(activityname,activityduration)));
@@ -571,7 +616,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth23,buildHistoryActivityName(activityname,activityduration)));
@@ -586,7 +633,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth24,buildHistoryActivityName(activityname,activityduration)));
@@ -601,7 +650,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth25,buildHistoryActivityName(activityname,activityduration)));
@@ -616,7 +667,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth26,buildHistoryActivityName(activityname,activityduration)));
@@ -631,7 +684,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth27,buildHistoryActivityName(activityname,activityduration)));
@@ -646,7 +701,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                         String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                         activityname.add(actdaily);
                         activityduration.add(durdaily);
-                        duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                        if(getSecondsFromDurationString(durdaily)!=null) {
+                            duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                        }
                         totalduration = totalduration + duration;
                     }
                     stepsValue.add(new StepsValue(steps, daymonth28,buildHistoryActivityName(activityname,activityduration)));
@@ -664,7 +721,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                             String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                             activityname.add(actdaily);
                             activityduration.add(durdaily);
-                            duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                            if(getSecondsFromDurationString(durdaily)!=null) {
+                                duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                            }
                             totalduration = totalduration + duration;
                         }
                         stepsValue.add(new StepsValue(steps, daymonth29, buildHistoryActivityName(activityname, activityduration)));
@@ -683,7 +742,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                             String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                             activityname.add(actdaily);
                             activityduration.add(durdaily);
-                            duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                            if(getSecondsFromDurationString(durdaily)!=null) {
+                                duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                            }
                             totalduration = totalduration + duration;
                         }
                         stepsValue.add(new StepsValue(steps, daymonth30, buildHistoryActivityName(activityname, activityduration)));
@@ -702,7 +763,9 @@ public class monthly_history_fragment extends Fragment implements DatePickerDial
                             String durdaily = String.valueOf(myDataSnapshot.child("duration").getValue());
                             activityname.add(actdaily);
                             activityduration.add(durdaily);
-                            duration =Integer. valueOf(getSecondsFromDurationString(durdaily));
+                            if(getSecondsFromDurationString(durdaily)!=null) {
+                                duration = Integer.valueOf(getSecondsFromDurationString(durdaily));
+                            }
                             totalduration = totalduration + duration;
 
                         }
