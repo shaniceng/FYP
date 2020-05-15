@@ -302,25 +302,24 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(60);
     private void refreshDisplayAndSetNextUpdate() {
+        if(!prefs.contains("dailyCurrentSteps")){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("dailyCurrentSteps", 0);
+            editor.commit();
+        }
+        if(!prefs.contains("previousHeartRate")){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("previousHeartRate", 0);
+            editor.commit();
+        }
+        if(!prefs.contains("previousStepsCount")){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("previousStepsCount", 0);
+            editor.commit();
+        }
+
         if (isAmbient()) {
             // Implement data retrieval and update the screen for ambient mode
-            if(!prefs.contains("dailyCurrentSteps")){
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("dailyCurrentSteps", 0);
-                editor.commit();
-            }
-            if(!prefs.contains("previousHeartRate")){
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("previousHeartRate", 0);
-                editor.commit();
-            }
-            if(!prefs.contains("previousStepsCount")){
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("previousStepsCount", 0);
-                editor.commit();
-            }
-
-
             if(msg != null && (String.valueOf(prefs.getInt("previousHeartRate",-1))!=msg.replaceAll("[\\D]",""))) {
                 new MainActivity.SendThread(heartPath, msg + "BPM").start();
                 new MainActivity.SendThread(maxheartpath, prefs.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
@@ -342,6 +341,13 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 new MainActivity.SendThread(stepsPath, String.valueOf(prefs.getInt("dailyCurrentSteps", -1))).start();
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt("previousStepsCount", prefs.getInt("dailyCurrentSteps", -1));
+                editor.commit();
+            }
+            if(msg != null && (String.valueOf(prefs.getInt("previousHeartRate",-1))!=msg.replaceAll("[\\D]",""))) {
+                new MainActivity.SendThread(heartPath, msg + "BPM").start();
+                new MainActivity.SendThread(maxheartpath, prefs.getInt("getMaxcurrentHeartRate", -1) + "BPM").start();
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("previousHeartRate", Integer.parseInt(msg.replaceAll("[\\D]","")));
                 editor.commit();
             }
         }

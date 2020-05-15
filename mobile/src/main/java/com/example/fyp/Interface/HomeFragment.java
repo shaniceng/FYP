@@ -556,6 +556,10 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertData() {
+        Calendar currentDate = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
+        databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/");
         String id = databaseReference.child(date).push().getKey();
         long x=new Date().getTime();
         int y=currentHeartRate;
@@ -631,6 +635,10 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertStepsData() {
+        Calendar currentDate = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
+        stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         StepsPointValue pointSteps = new StepsPointValue(currentStepsCount);
         stepsDataBaseRef.setValue(pointSteps); //.child(id)
 
@@ -670,6 +678,10 @@ public class HomeFragment extends Fragment{
 
     private void insertLockInData() {
         Calendar currentTime = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        date = dateFormat.format(currentTime.getTime()).replaceAll("[\\D]","");
+        lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
+
         SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
         String cTime = format.format(currentTime.getTime());
         String id = lockinDataBaseRef.push().getKey();
@@ -812,6 +824,12 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertMaxHR() {
+        Calendar currentDate = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
+
+        maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
+
          MaxHRPointValue maxHRPointValue2 = new MaxHRPointValue(Integer.parseInt(max_HeartRate.replaceAll("[\\D]", "")));
          maxHRDataref.setValue(maxHRPointValue2);
          retrieveMaxHR();
