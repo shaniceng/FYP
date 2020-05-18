@@ -10,7 +10,8 @@
     tools:deviceIds="wear"
     android:paddingTop="32dp"
     android:paddingBottom="32dp"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:id="@+id/trackScrollView">
 
     <LinearLayout
         android:layout_width="match_parent"

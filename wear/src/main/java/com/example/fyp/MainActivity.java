@@ -42,10 +42,10 @@ import static android.provider.CalendarContract.EXTRA_EVENT_ID;
 
 public class MainActivity extends WearableActivity implements SensorEventListener {
 
-    private TextView mTextView, currentTime;
-    private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate;
-    private Calendar calendar;
     private ScrollView myView;
+    private TextView mTextView, currentTime;
+    private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate, googleMap;
+    private Calendar calendar;
 
     private AlarmManager ambientUpdateAlarmManager;
     private PendingIntent ambientUpdatePendingIntent;
@@ -79,14 +79,35 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        myView= (ScrollView) findViewById(R.id.myview);
+        myView.requestFocus();
+        myView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
+            @Override
+            public boolean onGenericMotion(View v, MotionEvent ev) {
+                if (ev.getAction() == MotionEvent.ACTION_SCROLL && RotaryEncoder.isFromRotaryEncoder(ev)) {
+                    // Don't forget the negation here
+                    float delta = -RotaryEncoder.getRotaryAxisValue(ev) * RotaryEncoder.getScaledScrollFactor(
+                            MainActivity.this);
+
+                    // Swap these axes if you want to do horizontal scrolling instead
+                    v.scrollBy(0, Math.round(delta));
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
         mTextView = findViewById(R.id.textView_);
         trackActivity = findViewById(R.id.btnWTrackActivity);
         heartRate = findViewById(R.id.btnWHeartRate);
         stepsCount = findViewById(R.id.btnWStepsCount);
         currentTime=findViewById(R.id.tvCurrentTime);
-        myView= (ScrollView) findViewById(R.id.myview);
+
         offHeartRate=findViewById(R.id.btnOffHeartRate);
         onHeartRate=findViewById(R.id.btnOnHeartRate);
+
+        googleMap=findViewById(R.id.btnGoogleMap);
 
         calendar=Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
@@ -138,6 +159,12 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                     IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
                     registerReceiver(ambientUpdateBroadcastReceiver, filter);
                     refreshDisplayAndSetNextUpdate();
+            }
+        });
+        googleMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GoogleMapsActivity.class));
             }
         });
 

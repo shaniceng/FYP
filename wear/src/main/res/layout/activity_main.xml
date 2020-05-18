@@ -47,17 +47,17 @@
                     android:id="@+id/btnWTrackActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="#4E6A88"
+                    android:layout_marginTop="10dp"
+                    android:background="#96BBE3"
                     android:text="Track Activity"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/btnWHeartRate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="15dp"
                     android:background="@color/babyPink"
                     android:text="Heart Rate"
                     android:textColor="#000000"
@@ -67,10 +67,20 @@
                     android:id="@+id/btnWStepsCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="15dp"
                     android:background="#CDDC39"
                     android:text="Steps Count"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/btnGoogleMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="#8AD38B"
+                    android:text="Google Map"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
