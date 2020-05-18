@@ -25,7 +25,7 @@
             android:layout_marginLeft="45dp"
             android:layout_marginTop="32dp"
             android:fontFamily="sans-serif"
-            android:text="Start Workout"
+            android:text="Start Exercise"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
@@ -34,81 +34,90 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Brisk Walking"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWJogging"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Jogging"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWRunning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Running"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWTaichi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Tai Chi"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWYoga"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Yoga"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWZumba"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Zumba"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWSwimming"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Swimming"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWSports"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
-            android:text="Sports (Please Specify)"
-            android:textSize="18sp" />
+            android:background="@color/mainBlue"
+            android:text="Sports \n(Please Specify)"
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWStrength"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Strength Training"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnWOthers"
@@ -116,8 +125,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="50dp"
-            android:background="#4E6A88"
+            android:background="@color/mainBlue"
             android:text="Others (Please Specify)"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000"/>
     </LinearLayout>
         </ScrollView>

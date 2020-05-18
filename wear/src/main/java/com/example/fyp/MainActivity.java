@@ -113,7 +113,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
         currentTime.setText(currentDate);
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-        String time = "Current Time:" + format.format(calendar.getTime());
+        String time = format.format(calendar.getTime());
         mTextView.setText(time);
 
         // Enables Always-on
@@ -264,7 +264,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void Refresh(){
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
-        String time = "Current Time:" + format.format(currentTime.getTime());
+        String time = format.format(currentTime.getTime());
         mTextView.setText(time);
         runnable(1000);
     }

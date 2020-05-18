@@ -107,8 +107,8 @@ public class GoogleMapsActivity extends WearableActivity
                     }
 
                 }
-                //else
-                //Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
+                else
+                Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
             }
             break;
         }
@@ -207,6 +207,8 @@ public class GoogleMapsActivity extends WearableActivity
 
         if(mGoogleApiClient!=null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }else{
+            Toast.makeText(this, "Please ensure you have wifi connection", Toast.LENGTH_LONG).show();
         }
     }
 
