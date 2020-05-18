@@ -83,6 +83,8 @@
 
     </LinearLayout>
 
+
+
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddActivity"
         android:layout_width="wrap_content"
@@ -101,6 +103,10 @@
         app:elevation="6dp"
         android:elevation="6dp"/>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/refreshLayout">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -629,5 +635,7 @@
        </LinearLayout>
 
 </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-   </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

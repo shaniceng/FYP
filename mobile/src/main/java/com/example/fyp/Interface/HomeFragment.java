@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fyp.AlertReceiver;
 import com.example.fyp.CustomAdapter;
@@ -142,6 +143,8 @@ public class HomeFragment extends Fragment{
     private ArrayList<Integer> weeklyAvrHeartRate;
     private ArrayList<Double> calculateWeeklyAvrHeartRate;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -158,6 +161,8 @@ public class HomeFragment extends Fragment{
         graphView=v.findViewById(R.id.graphView);
         lineGraphSeries=new LineGraphSeries();
         lineGraphWeekly=new LineGraphSeries();
+
+        swipeRefreshLayout=v.findViewById(R.id.refreshLayout);
 
         mrecyclerView = v.findViewById(R.id.activity_RV);
         stepsCount=v.findViewById(R.id.tvStepsCount);
@@ -308,6 +313,19 @@ public class HomeFragment extends Fragment{
             public void onClick(View v) {
                 retriveWeeklyData();
                 showWeeklyGraph();
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataRefOfStepsOfCompetitors();
+                retrieveStepsData();
+                retrieveData();
+                RetrieveLockInData();
+                retrieveMaxHR();
+                showGraph();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 

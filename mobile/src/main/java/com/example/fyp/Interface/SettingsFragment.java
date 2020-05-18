@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fyp.MainActivity;
 import com.example.fyp.R;
@@ -78,7 +79,6 @@ public class SettingsFragment extends Fragment {
         iv1month=v.findViewById(R.id.iV_1_month);
         iv3months=v.findViewById(R.id.iV3_months);
         iv6months=v.findViewById(R.id.iV6_months);
-
 
         logout=v.findViewById(R.id.btnLogout);
         firebaseAuth=FirebaseAuth.getInstance();
