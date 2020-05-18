@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.wearable.activity.WearableActivity;
+import android.support.wearable.input.RotaryEncoder;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.List;
 
 public class TrackActivity extends WearableActivity {
 
+    private ScrollView scrollView;
     private TextView mTextView;
     private Button walk, jog, run, swim, taichi, yoga,zumba,sports,strength_training,others;
     public static final String EXTRA_TEXT = "com.example.application.fyp.EXTRA_TEXT";
@@ -20,6 +24,26 @@ public class TrackActivity extends WearableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
+
+        scrollView=findViewById(R.id.trackScrollView);
+        scrollView.requestFocus();
+        scrollView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
+            @Override
+            public boolean onGenericMotion(View v, MotionEvent ev) {
+                if (ev.getAction() == MotionEvent.ACTION_SCROLL && RotaryEncoder.isFromRotaryEncoder(ev)) {
+                    // Don't forget the negation here
+                    float delta = -RotaryEncoder.getRotaryAxisValue(ev) * RotaryEncoder.getScaledScrollFactor(
+                            TrackActivity.this);
+
+                    // Swap these axes if you want to do horizontal scrolling instead
+                    v.scrollBy(0, Math.round(delta));
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         mTextView = (TextView) findViewById(R.id.text);
         walk=findViewById(R.id.btnWBriskWalking);

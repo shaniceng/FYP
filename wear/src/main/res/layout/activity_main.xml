@@ -24,9 +24,9 @@
                     android:id="@+id/textView_"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="50dp"
                     android:text="TextView"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
@@ -36,57 +36,89 @@
                     android:id="@+id/tvCurrentTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="20dp"
                     android:text="TextView"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/btnWTrackActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="#4E6A88"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/mainBlue"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     android:text="Track Activity"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:drawableLeft="@drawable/directional"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"/>
 
                 <Button
                     android:id="@+id/btnWHeartRate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="8dp"
                     android:background="@color/babyPink"
                     android:text="Heart Rate"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:drawableLeft="@drawable/heart"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
 
                 <Button
                     android:id="@+id/btnWStepsCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="8dp"
                     android:background="#CDDC39"
                     android:text="Steps Count"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:drawableLeft="@drawable/foot_steps"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
+
+                <Button
+                    android:id="@+id/btnGoogleMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="60dp"
+                    android:background="#8AD38B"
+                    android:text="Google Map"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:drawableLeft="@drawable/map"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"/>
 
                 <Button
                     android:id="@+id/btnOffHeartRate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="Off heart rate listener" />
+                    android:background="#850000"
+                    android:text="Off sensor" />
 
                 <Button
                     android:id="@+id/btnOnHeartRate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
-                    android:text="On heart rate listener" />
+                    android:layout_marginBottom="42dp"
+                    android:background="#004E01"
+                    android:text="on sensor" />
 
             </LinearLayout>
         </ScrollView>

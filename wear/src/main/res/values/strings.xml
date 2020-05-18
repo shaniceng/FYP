@@ -11,4 +11,6 @@
     <string name="title_activity_walking">WalkingActivity</string>
     <string name="title_activity_sender">ActivitySender</string>
     <string name="title_activity_dummy">DummyActivity</string>
+    <string name="title_activity_google_maps">GoogleMapsActivity</string>
+
 </resources>

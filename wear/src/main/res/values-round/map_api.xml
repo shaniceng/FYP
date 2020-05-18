@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="map_key" translatable="false" tools:ignore="ExtraTranslation">
+       AIzaSyAXrgX_3uoTzEl8pNQWtcVJStDCgg0Pipc
+    </string>
+
+</resources>

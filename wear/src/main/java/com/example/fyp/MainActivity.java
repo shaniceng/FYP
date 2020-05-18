@@ -42,10 +42,10 @@ import static android.provider.CalendarContract.EXTRA_EVENT_ID;
 
 public class MainActivity extends WearableActivity implements SensorEventListener {
 
-    private TextView mTextView, currentTime;
-    private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate;
-    private Calendar calendar;
     private ScrollView myView;
+    private TextView mTextView, currentTime;
+    private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate, googleMap;
+    private Calendar calendar;
 
     private AlarmManager ambientUpdateAlarmManager;
     private PendingIntent ambientUpdatePendingIntent;
@@ -79,20 +79,41 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        myView= (ScrollView) findViewById(R.id.myview);
+        myView.requestFocus();
+        myView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
+            @Override
+            public boolean onGenericMotion(View v, MotionEvent ev) {
+                if (ev.getAction() == MotionEvent.ACTION_SCROLL && RotaryEncoder.isFromRotaryEncoder(ev)) {
+                    // Don't forget the negation here
+                    float delta = -RotaryEncoder.getRotaryAxisValue(ev) * RotaryEncoder.getScaledScrollFactor(
+                            MainActivity.this);
+
+                    // Swap these axes if you want to do horizontal scrolling instead
+                    v.scrollBy(0, Math.round(delta));
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
         mTextView = findViewById(R.id.textView_);
         trackActivity = findViewById(R.id.btnWTrackActivity);
         heartRate = findViewById(R.id.btnWHeartRate);
         stepsCount = findViewById(R.id.btnWStepsCount);
         currentTime=findViewById(R.id.tvCurrentTime);
-        myView= (ScrollView) findViewById(R.id.myview);
+
         offHeartRate=findViewById(R.id.btnOffHeartRate);
         onHeartRate=findViewById(R.id.btnOnHeartRate);
+
+        googleMap=findViewById(R.id.btnGoogleMap);
 
         calendar=Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
         currentTime.setText(currentDate);
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-        String time = "Current Time:" + format.format(calendar.getTime());
+        String time = format.format(calendar.getTime());
         mTextView.setText(time);
 
         // Enables Always-on
@@ -138,6 +159,12 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                     IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
                     registerReceiver(ambientUpdateBroadcastReceiver, filter);
                     refreshDisplayAndSetNextUpdate();
+            }
+        });
+        googleMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GoogleMapsActivity.class));
             }
         });
 
@@ -200,6 +227,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                         edit.putInt("getMaxcurrentHeartRate", (int) event.values[0]);
                         edit.commit();
                     }
+                    //heartRate.setText(msg);
                 }
             } else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
                 //prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -222,6 +250,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 int stepCount = (int) event.values[0] - startingStepCount;
                 SharedPreferences.Editor edit = prefs.edit();
                 edit.putInt("dailyCurrentSteps", stepCount);
+                //stepsCount.setText(String.valueOf(prefs.getInt("dailyCurrentSteps",(int) event.values[0])));
                 edit.commit();
             } else
                 Log.d(TAG, "Unknown sensor type");
@@ -237,7 +266,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void Refresh(){
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
-        String time = "Current Time:" + format.format(currentTime.getTime());
+        String time = format.format(currentTime.getTime());
         mTextView.setText(time);
         runnable(1000);
     }

@@ -77,6 +77,27 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
+
+        myview=findViewById(R.id.myScrollView);
+        myview.requestFocus();
+        myview.setOnGenericMotionListener(new View.OnGenericMotionListener() {
+            @Override
+            public boolean onGenericMotion(View v, MotionEvent ev) {
+                if (ev.getAction() == MotionEvent.ACTION_SCROLL && RotaryEncoder.isFromRotaryEncoder(ev)) {
+                    // Don't forget the negation here
+                    float delta = -RotaryEncoder.getRotaryAxisValue(ev) * RotaryEncoder.getScaledScrollFactor(
+                            TimerActivity.this);
+
+                    // Swap these axes if you want to do horizontal scrolling instead
+                    v.scrollBy(0, Math.round(delta));
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         Intent intent = getIntent();
         TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
         startTimer = findViewById(R.id.startBtn);
@@ -84,7 +105,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         stopTimer = findViewById(R.id.stopBtn);
         trackName = findViewById(R.id.tvTrackName);
         chronometer = findViewById(R.id.chronometer);
-        myview=findViewById(R.id.myScrollView);
+
         heartRate=findViewById(R.id.hrTV);
         trackName.setText(TrackText);
         pauseTimer.setVisibility(View.GONE);
