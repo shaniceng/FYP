@@ -227,6 +227,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                         edit.putInt("getMaxcurrentHeartRate", (int) event.values[0]);
                         edit.commit();
                     }
+                    //heartRate.setText(msg);
                 }
             } else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
                 //prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -249,6 +250,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 int stepCount = (int) event.values[0] - startingStepCount;
                 SharedPreferences.Editor edit = prefs.edit();
                 edit.putInt("dailyCurrentSteps", stepCount);
+                //stepsCount.setText(String.valueOf(prefs.getInt("dailyCurrentSteps",(int) event.values[0])));
                 edit.commit();
             } else
                 Log.d(TAG, "Unknown sensor type");

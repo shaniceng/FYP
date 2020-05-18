@@ -13,7 +13,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
+        >
+
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+            android:id="@+id/circularProgressBarHeart"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:padding="16dp"
+            app:cpb_background_progressbar_color="#3C1717"
+            app:cpb_background_progressbar_width="5dp"
+            app:cpb_progress_direction="to_right"
+            app:cpb_progressbar_color="@color/babyPink"
+            app:cpb_progressbar_width="10dp"
+            app:cpb_round_border="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.454"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.454" />
 
         <TextView
             android:id="@+id/textView"
@@ -25,15 +43,34 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/tvHR"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.266" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="36dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="98dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/heart"
+            android:backgroundTint="@color/babyPink"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.285"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.145" />
 
         <TextView
             android:id="@+id/tvHR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="70dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="60dp"
             android:fontFamily="sans-serif"
             android:paddingTop="16dp"
             android:textColor="@color/babyPink"
@@ -41,8 +78,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.718" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

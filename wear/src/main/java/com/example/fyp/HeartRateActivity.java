@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,6 +44,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
     private SharedPreferences sharedPreferences;
     private SensorManager mSensorManager;
     private static final String TAG = "FitActivity";
+    private CircularProgressBar circularProgressBar;
 
 
     @Override
@@ -55,6 +58,13 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
         sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         getHartRate();
+
+        circularProgressBar= findViewById(R.id.circularProgressBarHeart);
+        circularProgressBar.setProgressMax(200);
+        circularProgressBar.setProgressBarWidth(7f); // in DP
+        circularProgressBar.setBackgroundProgressBarWidth(3f); // in DP
+        circularProgressBar.setRoundBorder(true);
+        circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
 
     }
     private void getHartRate() {
@@ -72,6 +82,7 @@ public class HeartRateActivity extends WearableActivity implements SensorEventLi
                 msg = "" + (int) event.values[0];
             if(msg != null) {
                 mTextViewHeart.setText(msg + "BPM");
+                circularProgressBar.setProgressWithAnimation(Float.parseFloat(msg));
                 Log.d(TAG, msg);
 
                 if(!sharedPreferences.contains("getMaxcurrentHeartRate")){
