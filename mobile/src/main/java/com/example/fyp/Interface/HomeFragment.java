@@ -202,7 +202,7 @@ public class HomeFragment extends Fragment{
         SimpleDateFormat weekFormat = new SimpleDateFormat("u");
         week = weekFormat.format(currentDate.getTime());
         date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
-        databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/");
+        databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/"); //"NDnXWC4MHfYFBaayGPcJ2SghYVF2" for jovita
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );

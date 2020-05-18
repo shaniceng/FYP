@@ -9,9 +9,7 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        android:layout_height="500dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,47 +20,95 @@
         android:layout_height="wrap_content"
         android:gravity="bottom"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:weightSum="3"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="60dp"
-        android:weightSum="3">
+        app:layout_constraintTop_toBottomOf="@+id/map">
 
         <ImageButton
             android:id="@+id/parkbutton"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_park_marker"
             android:layout_marginLeft="5dp"
-
+            android:layout_weight="1"
             android:background="@drawable/border_outline"
+
             android:backgroundTint="#C6E1E7F2"
+            android:src="@drawable/ic_park_marker"
             android:text="Park" />
 
         <ImageButton
             android:id="@+id/gymbutton"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_weight="1"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:src="@drawable/ic_gym_marker_2"
+            android:layout_weight="1"
             android:background="@drawable/border_outline"
             android:backgroundTint="#C6E1E7F2"
+            android:src="@drawable/ic_gym_marker_2"
             android:text="Gym" />
 
         <ImageButton
             android:id="@+id/stadiumbutton"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_weight="1"
-
             android:layout_marginRight="5dp"
-            android:src="@drawable/ic_stadium_marker"
+
+            android:layout_weight="1"
             android:background="@drawable/border_outline"
             android:backgroundTint="#C6E1E7F2"
+            android:src="@drawable/ic_stadium_marker"
             android:text="Stadium" />
+
+
     </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        android:layout_marginTop="580dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:layout_marginTop="5dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ParkDetails"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
