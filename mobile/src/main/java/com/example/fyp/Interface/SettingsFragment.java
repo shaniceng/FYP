@@ -110,14 +110,16 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                name.setText(userProfile.getUserName());
+                name.setText("Hello, "+userProfile.getUserName());
                 email.setText(userProfile.getUserEmail());
-                age.setText("Age: " + userProfile.getUserAge() + " years old");
-                gender.setText("Gender: "+ userProfile.getUserGender());
-                height.setText("Height: " + userProfile.getUserHeight() + " cm");
-                weight.setText("Weight: " +userProfile.getUserWeight() +" kg");
-                birthday.setText("Birthday: " +userProfile.getUserBirthday());
-                radioButton.setText("Preferred prompt at: " + userProfile.getRadiotext());
+                age.setText(userProfile.getUserAge() + " years old");
+                if(userProfile.getUserGender() ==  "F"){gender.setText("Female"); }
+                else if(userProfile.getUserGender() ==  "M"){gender.setText("Male"); }
+                else {gender.setText(userProfile.getUserGender());}
+                height.setText( userProfile.getUserHeight() + " cm");
+                weight.setText(userProfile.getUserWeight() +" kg");
+                birthday.setText(userProfile.getUserBirthday());
+                radioButton.setText(userProfile.getRadiotext());
                 //age.setText(String.valueOf(prefs.getInt("YOUR COUNTER PREF KEY", 0)));
             }
 
