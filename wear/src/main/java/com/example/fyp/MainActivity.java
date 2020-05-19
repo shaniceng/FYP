@@ -143,13 +143,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         offHeartRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ifalrOff==false) {
-                    mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
-                    mSensorManager.unregisterListener(MainActivity.this);
-                    unregisterReceiver(ambientUpdateBroadcastReceiver);
-                    ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
-                    ifalrOff=true;
-                }
+                 mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
+                 mSensorManager.unregisterListener(MainActivity.this);
+                 unregisterReceiver(ambientUpdateBroadcastReceiver);
+                 ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+
             }
         });
         onHeartRate.setOnClickListener(new View.OnClickListener() {
