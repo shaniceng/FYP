@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Interface.HomeFragment"
     android:id="@+id/home_layout"
-    android:background="#E8E8E8">
+    android:background="@color/lightgrey">
 
     <!-- Floating Button -->
 
@@ -93,7 +93,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_gravity="right"
-        app:fab_colorNormal="#314B7E"
+        app:fab_colorNormal="@color/azure"
         app:fab_colorPressed="#143981"
         app:fab_icon="@drawable/ic_add_black_24dp"
 
@@ -357,6 +357,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Moderate intensity activity"
                     android:textSize="18sp"
+                    android:textColor="#000000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -377,6 +378,7 @@
                         android:layout_height="wrap_content"
                         android:padding="9dp"
                         android:text="test"
+                        android:textColor="#000000"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -663,7 +665,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:text="Minutes of moderate exercise today: mins"
+                            android:text="Moderate exercise today: mins"
+                            android:textAlignment="textStart"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/tvWeeklyModerateMins"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                        <TextView
+                            android:id="@+id/tvWeeklyModerateMins"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:text="Moderate exercise this week: mins"
                             android:textAlignment="textStart"
                             android:textColor="#000000"
                             android:textSize="16sp"
@@ -671,7 +688,9 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvModerateMinsToday" />
+
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -699,12 +718,6 @@
                         android:id="@+id/activity_RV">
 
                     </androidx.recyclerview.widget.RecyclerView>
-
-                    <TextView
-                        android:id="@+id/tvWeeklyModerateMins"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sum of moderate exercises for the past week: mins" />
 
 
                </LinearLayout>

@@ -758,7 +758,7 @@ public class HomeFragment extends Fragment{
                     }
                     insertWeeklyModerateMins();
                     double mmarray=calculateSumOfModerateMins(mModerateMinsArray);
-                    moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f",mmarray ) + "mins");
+                    moderateMins.setText("Moderate exercise today: " + String.format("%.1f",mmarray ) + "mins");
 
 
                 }else{
@@ -823,7 +823,7 @@ public class HomeFragment extends Fragment{
                         WeeklyReportPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeklyReportPointValue.class);
                         weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
                         double smmarray=calculateSumOfModerateMins(weeklyModerateMins);
-                        WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", smmarray) + "mins");
+                        WeeklyModerateMinsTV.setText("Moderate exerecise this week: " + String.format("%.1f", smmarray) + "mins");
 
                         if (!prefs.contains(GET_firebase_moderatemins)) {
                             SharedPreferences.Editor editor = prefs.edit();
