@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment{
     Animation fromsmall,fromnothing, fortrophy,togo;
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV, MaxFirebaseHR;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -173,6 +173,7 @@ public class HomeFragment extends Fragment{
         stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
+        MaxFirebaseHR=v.findViewById(R.id.tvMaxHR_fromAge);
 
         btnShowDaily=v.findViewById(R.id.btnDailyHeartRate);
         btnShowWeekly=v.findViewById(R.id.btnWeeklyHeartRate);
@@ -352,7 +353,7 @@ public class HomeFragment extends Fragment{
                     editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
                     editor.commit();
                 }
-                //HeartRate.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)));
+                MaxFirebaseHR.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)) + "BPM");
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
