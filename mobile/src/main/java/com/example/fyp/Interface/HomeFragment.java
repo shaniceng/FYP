@@ -397,6 +397,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void showGraph() {
+        graphView.removeAllSeries();
         graphView.addSeries(lineGraphSeries);
         graphView.removeSeries(lineGraphWeekly);
         graphView.setTitle("Heart Rate(BPM)");
@@ -410,8 +411,9 @@ public class HomeFragment extends Fragment{
         graphView.getViewport().setScalable(true);
 
         lineGraphSeries.setDrawBackground(true);
-        lineGraphSeries.setBackgroundColor(R.drawable.fade_red);
-        lineGraphSeries.setColor(Color.BLACK);
+
+        lineGraphSeries.setBackgroundColor(Color.argb(80, 17, 128, 255));
+        lineGraphSeries.setColor(Color.argb(255, 0, 51, 102));
         lineGraphSeries.setDrawDataPoints(true);
         lineGraphSeries.setDataPointsRadius(15);
         lineGraphSeries.setThickness(10);
@@ -436,6 +438,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void showWeeklyGraph() {
+        graphView.removeAllSeries();
         graphView.addSeries(lineGraphWeekly);
         graphView.removeSeries(lineGraphSeries);
         graphView.setTitle("Heart Rate(BPM)");
@@ -449,8 +452,8 @@ public class HomeFragment extends Fragment{
         graphView.getViewport().setScalable(true);
 
         lineGraphWeekly.setDrawBackground(true);
-        lineGraphWeekly.setBackgroundColor(R.drawable.fade_red);
-        lineGraphWeekly.setColor(Color.BLACK);
+        lineGraphWeekly.setBackgroundColor(Color.argb(80, 17, 128, 255));
+        lineGraphWeekly.setColor(Color.argb(255, 0, 51, 102));
         lineGraphWeekly.setDrawDataPoints(true);
         lineGraphWeekly.setDataPointsRadius(15);
         lineGraphWeekly.setThickness(10);
