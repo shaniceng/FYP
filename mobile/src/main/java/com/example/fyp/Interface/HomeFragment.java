@@ -412,7 +412,7 @@ public class HomeFragment extends Fragment{
 
         lineGraphSeries.setDrawBackground(true);
 
-        lineGraphSeries.setBackgroundColor(Color.argb(80, 17, 128, 255));
+        lineGraphSeries.setBackgroundColor(Color.argb(100, 163, 180, 195));
         lineGraphSeries.setColor(Color.argb(255, 0, 51, 102));
         lineGraphSeries.setDrawDataPoints(true);
         lineGraphSeries.setDataPointsRadius(15);
@@ -452,7 +452,7 @@ public class HomeFragment extends Fragment{
         graphView.getViewport().setScalable(true);
 
         lineGraphWeekly.setDrawBackground(true);
-        lineGraphWeekly.setBackgroundColor(Color.argb(80, 17, 128, 255));
+        lineGraphWeekly.setBackgroundColor(Color.argb(100, 163, 180, 195));
         lineGraphWeekly.setColor(Color.argb(255, 0, 51, 102));
         lineGraphWeekly.setDrawDataPoints(true);
         lineGraphWeekly.setDataPointsRadius(15);

@@ -53,7 +53,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/round"
-            android:backgroundTint="@color/graphBlue"
+            android:backgroundTint="@color/lightgrey"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             app:layout_constraintBottom_toBottomOf="parent"

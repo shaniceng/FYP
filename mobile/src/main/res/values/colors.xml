@@ -14,7 +14,8 @@
     <color name="azure">#E6003366</color>
     <color name="progress">#991180FF</color>
 
-    <color name="graphBlue">#331080FF</color>
-    <color name="grey">#98AFC7</color>
+<!--    <color name="graphBlue">#331080FF</color>-->
+    <color name="grey">#c5cbe1</color>
+    <color name="lightgrey">#C0C8D0</color>
 
 </resources>
