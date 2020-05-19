@@ -340,20 +340,21 @@ public class HomeFragment extends Fragment{
         mydatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]",""));
-                MaxHeartRate= 220 - maxyHearty;
-                if (!prefs.contains("GET_MAX_HEART_RATE_FROM_AGE")) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
-                    editor.commit();
+                if(dataSnapshot.hasChildren()) {
+                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                    int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]", ""));
+                    MaxHeartRate = 220 - maxyHearty;
+                    if (!prefs.contains("GET_MAX_HEART_RATE_FROM_AGE")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                        editor.commit();
+                    } else {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                        editor.commit();
+                    }
+                    MaxFirebaseHR.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)) + "BPM");
                 }
-                else{
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
-                    editor.commit();
-                }
-                MaxFirebaseHR.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)) + "BPM");
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
