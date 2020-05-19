@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Interface.HomeFragment"
     android:id="@+id/home_layout"
-    android:background="#E8E8E8">
+    android:background="@color/lightgrey">
 
     <!-- Floating Button -->
 
@@ -93,7 +93,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_gravity="right"
-        app:fab_colorNormal="#314B7E"
+        app:fab_colorNormal="@color/azure"
         app:fab_colorPressed="#143981"
         app:fab_icon="@drawable/ic_add_black_24dp"
 
@@ -118,200 +118,228 @@
             android:orientation="vertical">
 
 
-            <!-- Top section -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/round"
+                android:backgroundTint="#DFDBDB"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp">
-
-
-                <!-- Step count section -->
+            <!-- Top section -->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout3"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/topLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="1dp"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/tvStep"
+
+                    <!-- Step count section -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="18dp"
-                        android:layout_marginBottom="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/steps_count"
-                        android:textColor="#143981"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/circularProgressBar"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.mikhaellopez.circularprogressbar.CircularProgressBar
-                        android:id="@+id/circularProgressBar"
-                        android:layout_width="170dp"
-                        android:layout_height="170dp"
-                        android:layout_marginTop="10dp"
-                        app:cpb_background_progressbar_color="#b6bbd8"
-                        app:cpb_background_progressbar_width="8dp"
-                        app:cpb_progress_direction="to_right"
-                        app:cpb_progressbar_color="#143981"
-                        app:cpb_progressbar_width="12dp"
-                        app:cpb_round_border="false"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvStep" />
-
-                    <TextView
-                        android:id="@+id/foot_icon"
-                        android:layout_width="64dp"
-                        android:layout_height="78dp"
-                        android:background="@drawable/foot_steps"
-                        android:backgroundTint="#1E2947"
-                        app:layout_constraintBottom_toBottomOf="@+id/circularProgressBar"
-                        app:layout_constraintEnd_toEndOf="@+id/circularProgressBar"
-                        app:layout_constraintStart_toStartOf="@+id/circularProgressBar"
-                        app:layout_constraintTop_toTopOf="@+id/circularProgressBar"
-                        app:layout_constraintVertical_bias="0.456" />
-
-                    <TextView
-                        android:id="@+id/stepsBackground"
-                        android:layout_width="173dp"
-                        android:layout_height="38dp"
-
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="100dp"
-                        android:layout_marginBottom="100dp"
-
-                        android:background="@drawable/round"
-                        android:backgroundTint="#DFDBDB"
-
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/circularProgressBar"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/steps_goal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="150dp"
-                        android:layout_marginBottom="50dp"
-                        android:background="@drawable/round"
-                        android:backgroundTint="#DFDBDB"
-                        android:padding="8dp"
-                        android:text="Steps Goal: 7500 steps"
-                        android:textAlignment="center"
-
-                        android:textColor="#000000"
-                        android:textSize="18dp"
-
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/circularProgressBar"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvStepsCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="0"
-                        android:textColor="#000000"
-                        android:textSize="25sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/stepsBackground"
-                        app:layout_constraintEnd_toStartOf="@+id/tvSteps"
-                        app:layout_constraintTop_toTopOf="@+id/stepsBackground"
-                        app:layout_constraintVertical_bias="0.526" />
-
-                    <TextView
-                        android:id="@+id/tvSteps"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/steps"
-                        android:textColor="#000000"
-                        app:layout_constraintBottom_toBottomOf="@+id/stepsBackground"
-                        app:layout_constraintEnd_toEndOf="@+id/stepsBackground"
-                        app:layout_constraintTop_toTopOf="@+id/stepsBackground" />
-
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="70dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="Your steps count today:"
-                        android:textAlignment="center"
-                        android:textColor="#000000"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toTopOf="@+id/stepsBackground"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.89"
-                        app:layout_constraintStart_toEndOf="@+id/tvStep"
+                        app:layout_constraintHorizontal_bias="0.551"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.0">
 
-                    <Button
-                        android:id="@+id/step_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="History"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        <TextView
+                            android:id="@+id/tvStep"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
 
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/steps_count"
+                            android:textColor="#143981"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/circularProgressBar"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                            android:id="@+id/circularProgressBar"
+                            android:layout_width="170dp"
+                            android:layout_height="170dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="24dp"
+                            app:cpb_background_progressbar_color="@color/lightgrey"
+                            app:cpb_background_progressbar_width="8dp"
+                            app:cpb_progress_direction="to_right"
+                            app:cpb_progressbar_color="@color/azure"
+                            app:cpb_progressbar_width="12dp"
+                            app:cpb_round_border="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvStep" />
+
+                        <TextView
+                            android:id="@+id/foot_icon"
+                            android:layout_width="64dp"
+                            android:layout_height="78dp"
+                            android:background="@drawable/foot_steps"
+                            android:backgroundTint="@color/azure"
+                            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBar"
+                            app:layout_constraintEnd_toEndOf="@+id/circularProgressBar"
+                            app:layout_constraintStart_toStartOf="@+id/circularProgressBar"
+                            app:layout_constraintTop_toTopOf="@+id/circularProgressBar"
+                            app:layout_constraintVertical_bias="0.456" />
+
+                        <TextView
+                            android:id="@+id/stepsBackground"
+                            android:layout_width="170dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginBottom="8dp"
+                            android:textColor="#000000"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/lightgrey"
+                            app:layout_constraintBottom_toTopOf="@+id/steps_goal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toEndOf="@+id/circularProgressBar"
+                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                        <TextView
+                            android:id="@+id/steps_goal"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="60dp"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/lightgrey"
+                            android:padding="8dp"
+                            android:text="Goal: 7500 steps"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/azure"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/circularProgressBar"
+                            app:layout_constraintTop_toBottomOf="@+id/stepsBackground" />
+
+                        <TextView
+                            android:id="@+id/tvStepsCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="sans-serif"
+                            android:text="0"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/azure"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@+id/stepsBackground"
+                            app:layout_constraintEnd_toStartOf="@+id/tvSteps"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="@+id/stepsBackground"
+                            app:layout_constraintTop_toTopOf="@+id/stepsBackground"
+                            app:layout_constraintVertical_bias="0.48000002" />
+
+                        <TextView
+                            android:id="@+id/tvSteps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/steps"
+                            android:textColor="@color/azure"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/stepsBackground"
+                            app:layout_constraintEnd_toEndOf="@+id/stepsBackground"
+                            app:layout_constraintTop_toTopOf="@+id/stepsBackground"
+                            app:layout_constraintVertical_bias="0.375" />
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Your steps count today:"
+                            android:textAlignment="center"
+                            android:textColor="@color/graphBlue"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/stepsBackground"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toEndOf="@+id/tvStep"
+                            app:layout_constraintTop_toBottomOf="@+id/step_btn" />
+
+                        <Button
+                            android:id="@+id/step_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="70dp"
+                            android:layout_marginBottom="32dp"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/azure"
+                            android:text="History"
+                            android:textColor="#ffffff"
+                            app:layout_constraintBottom_toTopOf="@+id/textView9"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Middle section -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/border_comparison">
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Average steps count of other participants currently:"
-                    android:textColor="#000000"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_avrStepsOfCompetitors"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_avrStepsOfCompetitors"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="/7500"
-                    android:textAlignment="center"
-                    android:textColor="#003366"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/border_comparison"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+                    app:layout_constraintTop_toBottomOf="@+id/topLayout">
 
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="Average steps count of other participants today:"
+                        android:textColor="@color/graphBlue"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_avrStepsOfCompetitors"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_avrStepsOfCompetitors"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/7500"
+                        android:textAlignment="center"
+                        android:textColor="@color/azure"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -319,7 +347,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/border_outline">
+                android:background="@drawable/border_comparison">
 
                 <TextView
                     android:id="@+id/tvWorkoutTitle"
@@ -329,6 +357,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Moderate intensity activity"
                     android:textSize="18sp"
+                    android:textColor="@color/graphBlue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -349,6 +378,7 @@
                         android:layout_height="wrap_content"
                         android:padding="9dp"
                         android:text="test"
+                        android:textColor="@color/graphBlue"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -407,17 +437,186 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <!-- Heart rate BPM values section -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout6"
+                            android:layout_width="90dp"
+                            android:layout_height="80dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/constraintLayout_MaxAge"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout2"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/tvMAX_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:textSize="20sp"
+                                android:textColor="@color/azure"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvMAX"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Max HR:"
+                                android:textSize="15sp"
+                                android:textColor="@color/azure"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tvMAX_value" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout"
+                            android:layout_width="90dp"
+                            android:layout_height="80dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/tvResting_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:textSize="20sp"
+                                android:textColor="@color/azure"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvResting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Current HR:"
+                                android:textAlignment="center"
+                                android:textColor="@color/azure"
+                                android:textSize="15sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tvResting_value" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout2"
+                            android:layout_width="90dp"
+                            android:layout_height="80dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/tvAvgResting_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:textSize="20sp"
+                                android:textColor="@color/azure"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvAvgResting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Avr HR:"
+                                android:textAlignment="center"
+                                android:textColor="@color/azure"
+                                android:textSize="15sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tvAvgResting_value" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout_MaxAge"
+                            android:layout_width="90dp"
+                            android:layout_height="80dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0">
+
+                            <TextView
+                                android:id="@+id/tvMaxHR_fromAge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:textSize="20sp"
+                                android:textColor="@color/azure"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvMaxHR_fromAge2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="220-Age:"
+                                android:textColor="@color/azure"
+                                android:textAlignment="center"
+                                android:textSize="15sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tvMaxHR_fromAge" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Heart rate BPM values section -->
+
+
+                    <!-- TODO: Insert graph of data -->
+                    <com.jjoe64.graphview.GraphView
+                        android:layout_width="match_parent"
+                        android:layout_height="500dp"
+                        android:id="@+id/graphView" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
 
                         <Button
                             android:id="@+id/btnDailyHeartRate"
                             android:layout_width="175dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/azure"
                             android:text="Daily"
+                            android:textColor="#ffffff"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/btnWeeklyHeartRate"
                             app:layout_constraintStart_toStartOf="parent"
@@ -433,123 +632,13 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/btnDailyHeartRate"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/azure"
+                            android:textColor="#ffffff"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="100dp"
-                            android:layout_height="80dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/constraintLayout2"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/tvMAX_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:textSize="20sp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/tvMAX"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Max HR:"
-                                android:textSize="15sp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvMAX_value" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout"
-                            android:layout_width="100dp"
-                            android:layout_height="80dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/tvResting_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:textSize="20sp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/tvResting"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Current HR:"
-                                android:textAlignment="center"
-                                android:textSize="15sp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvResting_value" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout2"
-                            android:layout_width="100dp"
-                            android:layout_height="80dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/tvAvgResting_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:textSize="20sp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/tvAvgResting"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Avr HR:"
-                                android:textAlignment="center"
-                                android:textSize="15sp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvAvgResting_value" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!-- TODO: Insert graph of data -->
-                    <com.jjoe64.graphview.GraphView
-                        android:layout_width="match_parent"
-                        android:layout_height="500dp"
-                        android:id="@+id/graphView" />
 
 
                 </LinearLayout>
@@ -578,6 +667,84 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:id="@+id/tvGoal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="sans-serif"
+                        android:text="EXERCISE GOAL"
+                        android:textColor="#143981"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/roundlesser"
+                        android:backgroundTint="@color/lightgrey"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp">
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:text="150 mins/week"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/azure"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/tvModerateMinsToday"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvModerateMinsToday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:text="Moderate exercise today: mins"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/azure"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/tvWeeklyModerateMins"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                        <TextView
+                            android:id="@+id/tvWeeklyModerateMins"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:text="Moderate exercise this week: mins"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/azure"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvModerateMinsToday" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <TextView
                         android:id="@+id/tvRecentActivity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -595,39 +762,12 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Activity goal: 150 mins/week"
-                        android:textAlignment="center"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tvModerateMinsToday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Minutes of moderate exercise today: mins"
-                        android:textAlignment="center"
-                        android:textColor="#000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold|italic" />
-
-
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/activity_RV">
 
                     </androidx.recyclerview.widget.RecyclerView>
-
-                    <TextView
-                        android:id="@+id/tvWeeklyModerateMins"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sum of moderate exercises for the past week: mins" />
 
 
                </LinearLayout>

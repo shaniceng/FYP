@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment{
     Animation fromsmall,fromnothing, fortrophy,togo;
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV, MaxFirebaseHR;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -173,6 +173,7 @@ public class HomeFragment extends Fragment{
         stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
+        MaxFirebaseHR=v.findViewById(R.id.tvMaxHR_fromAge);
 
         btnShowDaily=v.findViewById(R.id.btnDailyHeartRate);
         btnShowWeekly=v.findViewById(R.id.btnWeeklyHeartRate);
@@ -339,20 +340,21 @@ public class HomeFragment extends Fragment{
         mydatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]",""));
-                MaxHeartRate= 220 - maxyHearty;
-                if (!prefs.contains("GET_MAX_HEART_RATE_FROM_AGE")) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
-                    editor.commit();
+                if(dataSnapshot.hasChildren()) {
+                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                    int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]", ""));
+                    MaxHeartRate = 220 - maxyHearty;
+                    if (!prefs.contains("GET_MAX_HEART_RATE_FROM_AGE")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                        editor.commit();
+                    } else {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                        editor.commit();
+                    }
+                    MaxFirebaseHR.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)) + "BPM");
                 }
-                else{
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
-                    editor.commit();
-                }
-                //HeartRate.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)));
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -397,6 +399,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void showGraph() {
+        graphView.removeAllSeries();
         graphView.addSeries(lineGraphSeries);
         graphView.removeSeries(lineGraphWeekly);
         graphView.setTitle("Heart Rate(BPM)");
@@ -410,8 +413,9 @@ public class HomeFragment extends Fragment{
         graphView.getViewport().setScalable(true);
 
         lineGraphSeries.setDrawBackground(true);
-        lineGraphSeries.setBackgroundColor(R.drawable.fade_red);
-        lineGraphSeries.setColor(Color.BLACK);
+
+        lineGraphSeries.setBackgroundColor(Color.argb(100, 163, 180, 195));
+        lineGraphSeries.setColor(Color.argb(255, 0, 51, 102));
         lineGraphSeries.setDrawDataPoints(true);
         lineGraphSeries.setDataPointsRadius(15);
         lineGraphSeries.setThickness(10);
@@ -436,6 +440,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void showWeeklyGraph() {
+        graphView.removeAllSeries();
         graphView.addSeries(lineGraphWeekly);
         graphView.removeSeries(lineGraphSeries);
         graphView.setTitle("Heart Rate(BPM)");
@@ -449,8 +454,8 @@ public class HomeFragment extends Fragment{
         graphView.getViewport().setScalable(true);
 
         lineGraphWeekly.setDrawBackground(true);
-        lineGraphWeekly.setBackgroundColor(R.drawable.fade_red);
-        lineGraphWeekly.setColor(Color.BLACK);
+        lineGraphWeekly.setBackgroundColor(Color.argb(100, 163, 180, 195));
+        lineGraphWeekly.setColor(Color.argb(255, 0, 51, 102));
         lineGraphWeekly.setDrawDataPoints(true);
         lineGraphWeekly.setDataPointsRadius(15);
         lineGraphWeekly.setThickness(10);
@@ -755,7 +760,7 @@ public class HomeFragment extends Fragment{
                     }
                     insertWeeklyModerateMins();
                     double mmarray=calculateSumOfModerateMins(mModerateMinsArray);
-                    moderateMins.setText("Minutes of moderate exercise today: " + String.format("%.1f",mmarray ) + "mins");
+                    moderateMins.setText("Moderate exercise today: " + String.format("%.1f",mmarray ) + "mins");
 
 
                 }else{
@@ -820,7 +825,7 @@ public class HomeFragment extends Fragment{
                         WeeklyReportPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeklyReportPointValue.class);
                         weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
                         double smmarray=calculateSumOfModerateMins(weeklyModerateMins);
-                        WeeklyModerateMinsTV.setText("Sum of moderate exercises in the past week: " + String.format("%.1f", smmarray) + "mins");
+                        WeeklyModerateMinsTV.setText("Moderate exerecise this week: " + String.format("%.1f", smmarray) + "mins");
 
                         if (!prefs.contains(GET_firebase_moderatemins)) {
                             SharedPreferences.Editor editor = prefs.edit();

@@ -7,4 +7,15 @@
     <color name="white">#ffffff</color>
     <color name="darkBlue">#82878F</color>
     <color name="lightBlue">#E1E7F2</color>
+
+    <color name="purple">#BA55D3</color>
+    <color name="darkPurple">#9932CC</color>
+
+    <color name="azure">#E6003366</color>
+    <color name="progress">#991180FF</color>
+
+    <color name="graphBlue">#00274f</color>
+    <color name="grey">#c5cbe1</color>
+    <color name="lightgrey">#C0C8D0</color>
+
 </resources>
