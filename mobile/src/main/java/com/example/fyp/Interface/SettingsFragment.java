@@ -213,21 +213,21 @@ public class SettingsFragment extends Fragment {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("3DAY STREAK", 1);
                     editor.commit();
-                    iv3days.setImageResource(R.drawable.badges_colour);
+                    iv3days.setImageResource(R.drawable.badges_day3_color);
                 }
                 if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 7 || prefs.getInt("1WEEK STREAK", 0) ==1) {
                     //change greyscale to colour for 7days streak
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("1WEEK STREAK", 1);
                     editor.commit();
-                    iv1week.setImageResource(R.drawable.badges_colour);
+                    iv1week.setImageResource(R.drawable.badges_week1_color);
                 }
                 if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 21 || prefs.getInt("3WEEK STREAK", 0) ==1) {
                     //change greyscale to colour for 3 weeks streak
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("3WEEK STREAK", 1);
                     editor.commit();
-                    iv3weeks.setImageResource(R.drawable.badges_colour);
+                    iv3weeks.setImageResource(R.drawable.badges_week3_color);
                 }
                 if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 30|| prefs.getInt("1MONTH STREAK", 0) ==1) {
                     //change greyscale to colour for 1month streak
