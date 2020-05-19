@@ -1117,6 +1117,12 @@ public class HomeFragment extends Fragment{
         super.onPause();
         startAlarm();
         Refresh();
+        // Register the local broadcast receiver
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+        startThread();
+
     }
 
     @Override
@@ -1124,6 +1130,13 @@ public class HomeFragment extends Fragment{
         super.onStop();
         startAlarm();
         Refresh();
+
+        // Register the local broadcast receiver
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+        startThread();
+
     }
 
     public void startThread() {
