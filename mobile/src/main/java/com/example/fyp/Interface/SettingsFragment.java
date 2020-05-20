@@ -103,8 +103,6 @@ public class SettingsFragment extends Fragment {
 
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
-        retrieveStepsCount();
-
         DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+firebaseAuth.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -128,6 +126,8 @@ public class SettingsFragment extends Fragment {
                 Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
+        retrieveStepsCount();
+
 
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         SettingsFragment.MessageReceiver messageReceiver = new SettingsFragment.MessageReceiver();
@@ -150,6 +150,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void retrieveStepsCount(){
+
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -172,6 +173,11 @@ public class SettingsFragment extends Fragment {
             editor.putInt("3DAY STREAK", 0);
             editor.commit();
         }
+        if (!prefs.contains("ALREADYINCREASE")) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("ALREADYINCREASE", 0);
+            editor.commit();
+        }
 
         //SharedPreferences sharedPreferences = getContext().getSharedPreferences("YOUR PREF KEY", Context.MODE_PRIVATE);
         Calendar c = Calendar.getInstance();
@@ -189,17 +195,24 @@ public class SettingsFragment extends Fragment {
                     StepsPointValue stepsPointValue = dataSnapshot.getValue(StepsPointValue.class);
                     dataSteps = stepsPointValue.getSteps();
 
+//                //eg
+//                    lastDay=140;
+//                    thisDay=141;
 
-                if ((lastDay == thisDay -1) && (dataSteps >= 7500)) { //testing at 100 steps a day first must EDIT HERE
+                if ((lastDay == thisDay -1) &&(prefs.getInt("ALREADYINCREASE", 0) == 0) ){ //testing at 100 steps a day first must EDIT HERE
                     // CONSECUTIVE DAYS
                     //if today hit >7500, count up
-                    counterOfConsecutiveDays = counterOfConsecutiveDays + 1;
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("YOUR DATE PREF KEY", thisDay);
-                    editor.putInt("YOUR COUNTER PREF KEY", counterOfConsecutiveDays);
-                    editor.commit();
+                    if(dataSteps>=7500) {
+                        counterOfConsecutiveDays = counterOfConsecutiveDays + 1;
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("YOUR DATE PREF KEY", thisDay);
+                        editor.putInt("YOUR COUNTER PREF KEY", counterOfConsecutiveDays);
+                        editor.putInt("ALREADYINCREASE", 1);
+                        editor.commit();
+                    }
 
-                } else {
+                }
+                else if(lastDay < thisDay-1){
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("YOUR DATE PREF KEY", thisDay);
                     editor.putInt("YOUR COUNTER PREF KEY", 0);
