@@ -256,6 +256,46 @@ public class HomeFragment extends Fragment{
             editor.putInt("GET_TODAY_DATE", currentDate.get(Calendar.DAY_OF_YEAR)-1);
             editor.commit();
         }
+        showCongrats();
+
+        notificationManager = NotificationManagerCompat.from(getActivity());
+        getRadioText();
+        Refresh();
+
+        btnShowDaily.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retrieveData();
+                showGraph();
+            }
+        });
+        btnShowWeekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retriveWeeklyData();
+                showWeeklyGraph();
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataRefOfStepsOfCompetitors();
+                retrieveStepsData();
+                retrieveData();
+                RetrieveLockInData();
+                retrieveMaxHR();
+                showGraph();
+                showCongrats();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        return v;
+    }
+
+    public void showCongrats(){
+        Calendar currentDate = Calendar.getInstance();
         if(prefs.getInt("GET_TODAY_DATE",currentDate.get(Calendar.DAY_OF_YEAR))!=currentDate.get(Calendar.DAY_OF_YEAR)) {
             if (prefs.getInt(GET_firebase_steps, -1) >= 7500) {
                 trophy.setVisibility(View.VISIBLE);
@@ -297,42 +337,7 @@ public class HomeFragment extends Fragment{
             });
 
         }
-
-        notificationManager = NotificationManagerCompat.from(getActivity());
-        getRadioText();
-        Refresh();
-
-        btnShowDaily.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                retrieveData();
-                showGraph();
-            }
-        });
-        btnShowWeekly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                retriveWeeklyData();
-                showWeeklyGraph();
-            }
-        });
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getDataRefOfStepsOfCompetitors();
-                retrieveStepsData();
-                retrieveData();
-                RetrieveLockInData();
-                retrieveMaxHR();
-                showGraph();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-        return v;
     }
-
 
     public void getMaxHR(){
         //get Max heart rate for each individual age
