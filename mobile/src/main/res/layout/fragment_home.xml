@@ -449,7 +449,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout6"
-                            android:layout_width="90dp"
+                            android:layout_width="95dp"
                             android:layout_height="80dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/constraintLayout_MaxAge"
@@ -461,8 +461,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
-                                android:textSize="20sp"
                                 android:textColor="@color/azure"
+                                android:textSize="19sp"
                                 android:textStyle="bold"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -474,8 +474,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:text="Max HR:"
-                                android:textSize="15sp"
                                 android:textColor="@color/azure"
+                                android:textSize="14sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tvMAX_value" />
@@ -484,7 +484,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout"
-                            android:layout_width="90dp"
+                            android:layout_width="95dp"
                             android:layout_height="80dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
@@ -496,8 +496,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
-                                android:textSize="20sp"
                                 android:textColor="@color/azure"
+                                android:textSize="19sp"
                                 android:textStyle="bold"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -511,7 +511,7 @@
                                 android:text="Current HR:"
                                 android:textAlignment="center"
                                 android:textColor="@color/azure"
-                                android:textSize="15sp"
+                                android:textSize="14sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tvResting_value" />
@@ -520,7 +520,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout2"
-                            android:layout_width="90dp"
+                            android:layout_width="95dp"
                             android:layout_height="80dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
@@ -532,8 +532,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
-                                android:textSize="20sp"
                                 android:textColor="@color/azure"
+                                android:textSize="19sp"
                                 android:textStyle="bold"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -547,7 +547,7 @@
                                 android:text="Avr HR:"
                                 android:textAlignment="center"
                                 android:textColor="@color/azure"
-                                android:textSize="15sp"
+                                android:textSize="14sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tvAvgResting_value" />
@@ -557,7 +557,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout_MaxAge"
-                            android:layout_width="90dp"
+                            android:layout_width="95dp"
                             android:layout_height="80dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -570,8 +570,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
-                                android:textSize="20sp"
                                 android:textColor="@color/azure"
+                                android:textSize="19sp"
                                 android:textStyle="bold"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -583,9 +583,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:text="220-Age:"
-                                android:textColor="@color/azure"
                                 android:textAlignment="center"
-                                android:textSize="15sp"
+                                android:textColor="@color/azure"
+                                android:textSize="14sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tvMaxHR_fromAge" />
