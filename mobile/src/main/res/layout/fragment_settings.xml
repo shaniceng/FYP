@@ -146,76 +146,30 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+
 
                         <ImageView
                             android:id="@+id/iV_1_month"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
                             android:layout_weight="1"
-                            android:src="@drawable/badges_grey" />
-
-                        <TextView
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginTop="15dp"
-                            android:fontFamily="sans-serif-black"
-                            android:padding="8dp"
-                            android:text="1 month streak"
-                            android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:textSize="18sp" />
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                            android:src="@drawable/badges_month1_grey" />
 
                         <ImageView
                             android:id="@+id/iV3_months"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
                             android:layout_weight="1"
-                            android:src="@drawable/badges_grey" />
+                            android:src="@drawable/badges_month3_grey" />
 
-
-                        <TextView
-                            android:layout_width="98dp"
-                            android:layout_height="68dp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginTop="15dp"
-                            android:fontFamily="sans-serif-black"
-                            android:padding="8dp"
-                            android:text="3 months streak"
-                            android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:textSize="18sp" />
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/iV6_months"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
                             android:layout_weight="1"
-                            android:src="@drawable/badges_grey" />
+                            android:src="@drawable/badges_month6_grey" />
 
-                        <TextView
-                            android:layout_width="95dp"
-                            android:layout_height="71dp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginTop="15dp"
-                            android:fontFamily="sans-serif-black"
-                            android:padding="8dp"
-                            android:text="6 months streak"
-                            android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:textSize="18sp" />
-                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
 
