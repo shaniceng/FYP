@@ -111,6 +111,14 @@
                     android:textColor="@color/azure"
                     android:textSize="18sp" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"/>
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
