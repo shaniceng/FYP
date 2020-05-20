@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightgrey">
+    android:background="@color/lightgrey"
+    android:layout_marginBottom="30dp">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
@@ -39,8 +40,8 @@
                 android:layout_height="70dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/border_outline"
-                android:backgroundTint="#DFDBDB"
+                android:background="@drawable/round"
+                android:backgroundTint="@color/azure"
                 android:paddingBottom="15dp"
                 android:src="@drawable/ic_park_marker"
                 android:text="Park" />
@@ -49,7 +50,7 @@
                 android:layout_height="match_parent"
                 android:text="Park"
                 android:textAlignment="center"
-                android:textColor="#000000"
+                android:textColor="#ffffff"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="45dp"/>
         </FrameLayout>
@@ -67,8 +68,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/border_outline"
-                android:backgroundTint="#DFDBDB"
+                android:background="@drawable/round"
+                android:backgroundTint="@color/azure"
                 android:paddingBottom="15dp"
                 android:src="@drawable/ic_gym_marker_2"
                 android:text="Gym" />
@@ -77,7 +78,7 @@
                 android:layout_height="match_parent"
                 android:text="Gym"
                 android:textAlignment="center"
-                android:textColor="#000000"
+                android:textColor="#ffffff"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="45dp"/>
         </FrameLayout>
@@ -94,8 +95,8 @@
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/border_outline"
-                android:backgroundTint="#DFDBDB"
+                android:background="@drawable/round"
+                android:backgroundTint="@color/azure"
                 android:paddingBottom="15dp"
                 android:src="@drawable/ic_stadium_marker"
                 android:text="Stadium" />
@@ -105,7 +106,7 @@
                 android:layout_height="match_parent"
                 android:text="Stadium"
                 android:textAlignment="center"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:layout_marginLeft="34dp"
                 android:layout_marginTop="45dp"/>
         </FrameLayout>
@@ -140,14 +141,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="32dp"
         android:background="@color/lightgrey">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ParkDetails"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
