@@ -1144,6 +1144,19 @@ public class HomeFragment extends Fragment{
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        startAlarm();
+        Refresh();
+
+        // Register the local broadcast receiver
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+        startThread();
+    }
+
     public void startThread() {
         stopThread = false;
         ExampleRunnable runnable = new ExampleRunnable(10);
