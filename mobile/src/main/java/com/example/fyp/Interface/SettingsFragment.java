@@ -70,7 +70,7 @@ public class SettingsFragment extends Fragment {
         height=v.findViewById(R.id.tvHeight);
         weight=v.findViewById(R.id.tvWeight);
         birthday=v.findViewById(R.id.tvBirthday);
-        batt=v.findViewById(R.id.tvBattery);
+        batt=v.findViewById(R.id.tvBatteryPercentage);
         radioButton=v.findViewById(R.id.tvRadioButton);
 
         iv3days=v.findViewById(R.id.iV3_days);
