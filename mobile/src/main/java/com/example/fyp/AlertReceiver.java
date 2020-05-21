@@ -21,7 +21,7 @@ public class AlertReceiver extends BroadcastReceiver {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(GET_firebase_steps, 0);
-        editor.putInt("ALREADYINCREASE", 0);
+//        editor.putInt("ALREADYINCREASE", 0);
         editor.commit();
 
 //        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
