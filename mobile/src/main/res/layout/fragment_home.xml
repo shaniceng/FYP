@@ -296,10 +296,160 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.551"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                        app:layout_constraintVertical_bias="0.0">
+
+                        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                            android:id="@+id/circularProgressBarModerate"
+                            android:layout_width="170dp"
+                            android:layout_height="170dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="24dp"
+                            app:cpb_background_progressbar_color="@color/lightgrey"
+                            app:cpb_background_progressbar_width="8dp"
+                            app:cpb_progress_direction="to_right"
+                            app:cpb_progressbar_color="@color/azure"
+                            app:cpb_progressbar_width="12dp"
+                            app:cpb_round_border="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvModerateAct" />
+
+                        <TextView
+                            android:id="@+id/moderate_act_icon"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/clock"
+                            android:backgroundTint="@color/azure"
+                            app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintEnd_toEndOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintStart_toStartOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintTop_toTopOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintVertical_bias="0.456" />
+
+                        <TextView
+                            android:id="@+id/moderateBackground"
+                            android:layout_width="170dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/lightgrey"
+                            android:textColor="#000000"
+                            app:layout_constraintBottom_toTopOf="@+id/moderate_goal"
+                            app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="50dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Your minutes this week:"
+                            android:textAlignment="center"
+                            android:textColor="@color/graphBlue"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/moderateBackground"
+                            app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvModerateAct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/moderate_activity"
+                            android:textColor="#143981"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/moderate_goal"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="14dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/lightgrey"
+                            android:padding="8dp"
+                            android:text="Goal: 150 minutes"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/azure"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView11"
+                            app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/moderateBackground" />
+
+                        <TextView
+                            android:id="@+id/tvModMinutes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="sans-serif"
+                            android:text="0"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/azure"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@+id/moderateBackground"
+                            app:layout_constraintEnd_toStartOf="@+id/tvMinutes"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="@+id/moderateBackground"
+                            app:layout_constraintTop_toTopOf="@+id/moderateBackground"
+                            app:layout_constraintVertical_bias="0.48000002" />
+
+                        <TextView
+                            android:id="@+id/tvMinutes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/mins"
+                            android:textColor="@color/azure"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/moderateBackground"
+                            app:layout_constraintEnd_toEndOf="@+id/moderateBackground"
+                            app:layout_constraintTop_toTopOf="@+id/moderateBackground"
+                            app:layout_constraintVertical_bias="0.375" />
+
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="32dp"
+                            android:text="50% -70% heart rate"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/moderate_goal"
+                            app:layout_constraintVertical_bias="0.462" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Middle section -->
  </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -319,7 +469,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:text="Moderate intensity activity"
+                    android:text="SAFETY INFORMATION"
                     android:textColor="@color/graphBlue"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -362,166 +512,133 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Activity Section -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/topActivityLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@drawable/round"
-                android:backgroundTint="#DFDBDB"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/round"
+                android:backgroundTint="#DFDBDB">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.551"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
-
-                <com.mikhaellopez.circularprogressbar.CircularProgressBar
-                    android:id="@+id/circularProgressBarModerate"
-                    android:layout_width="170dp"
-                    android:layout_height="170dp"
-                    android:layout_marginBottom="24dp"
-                    app:cpb_background_progressbar_color="@color/lightgrey"
-                    app:cpb_background_progressbar_width="8dp"
-                    app:cpb_progress_direction="to_right"
-                    app:cpb_progressbar_color="@color/azure"
-                    app:cpb_progressbar_width="12dp"
-                    app:cpb_round_border="false"
+                <!-- Heart rate section -->
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvModerateAct" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/moderate_act_icon"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/clock"
-                    android:backgroundTint="@color/azure"
-                    app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintEnd_toEndOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintStart_toStartOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintTop_toTopOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintVertical_bias="0.456" />
+                    <TextView
+                        android:id="@+id/tvGoal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                <TextView
-                    android:id="@+id/moderateBackground"
-                    android:layout_width="170dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/round"
-                    android:backgroundTint="@color/lightgrey"
-                    android:textColor="#000000"
-                    app:layout_constraintBottom_toTopOf="@+id/moderate_goal"
-                    app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="sans-serif"
+                        android:text="EXERCISE GOAL"
+                        android:textColor="#143981"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
 
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="75dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Your minutes this week:"
-                    android:textAlignment="center"
-                    android:textColor="@color/graphBlue"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toTopOf="@+id/moderateBackground"
-                    app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tvModerateAct"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/moderate_activity"
-                    android:textColor="#143981"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/moderate_goal"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/round"
-                    android:backgroundTint="@color/lightgrey"
-                    android:padding="8dp"
-                    android:text="Goal: 150 minutes"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/azure"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView11"
-                    app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/moderateBackground" />
 
-                <TextView
-                    android:id="@+id/tvModMinutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginEnd="5dp"
-                    android:fontFamily="sans-serif"
-                    android:text="0"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/azure"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/moderateBackground"
-                    app:layout_constraintEnd_toStartOf="@+id/tvMinutes"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/moderateBackground"
-                    app:layout_constraintTop_toTopOf="@+id/moderateBackground"
-                    app:layout_constraintVertical_bias="0.48000002" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/roundlesser"
+                        android:backgroundTint="@color/lightgrey"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp">
 
-                <TextView
-                    android:id="@+id/tvMinutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/mins"
-                    android:textColor="@color/azure"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/moderateBackground"
-                    app:layout_constraintEnd_toEndOf="@+id/moderateBackground"
-                    app:layout_constraintTop_toTopOf="@+id/moderateBackground"
-                    app:layout_constraintVertical_bias="0.375" />
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:text="150 mins/week"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/azure"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/tvModerateMinsToday"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
-                    android:text="50% -70% heart rate"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/moderate_goal"
-                    app:layout_constraintVertical_bias="0.462" />
+                        <TextView
+                            android:id="@+id/tvModerateMinsToday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:text="Moderate exercise today: mins"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/azure"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/tvWeeklyModerateMins"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
+                        <TextView
+                            android:id="@+id/tvWeeklyModerateMins"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:text="Moderate exercise this week: mins"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/azure"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvModerateMinsToday" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <TextView
+                        android:id="@+id/tvRecentActivity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/recent_activity"
+                        android:textColor="#143981"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/activity_RV">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <!-- Bottom section -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -770,133 +887,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Activity Section -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/round"
-                android:backgroundTint="#DFDBDB">
-
-                <!-- Heart rate section -->
-                <LinearLayout
-                    android:id="@+id/linearLayout3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/tvGoal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="18dp"
-                        android:layout_marginBottom="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="EXERCISE GOAL"
-                        android:textColor="#143981"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/roundlesser"
-                        android:backgroundTint="@color/lightgrey"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:paddingTop="3dp"
-                        android:paddingBottom="3dp">
-
-                        <TextView
-                            android:id="@+id/textView6"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:text="150 mins/week"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/azure"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/tvModerateMinsToday"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tvModerateMinsToday"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:text="Moderate exercise today: mins"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/azure"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/tvWeeklyModerateMins"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-                        <TextView
-                            android:id="@+id/tvWeeklyModerateMins"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:text="Moderate exercise this week: mins"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/azure"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvModerateMinsToday" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <TextView
-                        android:id="@+id/tvRecentActivity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="18dp"
-                        android:layout_marginBottom="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/recent_activity"
-                        android:textColor="#143981"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/activity_RV">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-
-
-               </LinearLayout>
-           </androidx.constraintlayout.widget.ConstraintLayout>
        </LinearLayout>
 
 </ScrollView>
