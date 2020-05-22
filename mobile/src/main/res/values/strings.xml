@@ -7,7 +7,9 @@
 
     //used in fragment home
     <string name="steps_count">STEPS COUNT</string>
+    <string name="moderate_activity">MODERATE ACTIVITY</string>
     <string name="steps">steps</string>
+    <string name="mins">minutes</string>
     <string name="column1">Resting</string>
     <string name="column2">Avg. resting</string>
     <string name="column3">MAX</string>

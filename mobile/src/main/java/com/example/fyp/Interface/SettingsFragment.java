@@ -119,7 +119,8 @@ public class SettingsFragment extends Fragment {
                 birthday.setText(userProfile.getUserBirthday());
                 radioButton.setText(userProfile.getRadiotext());
 //                age.setText(String.valueOf(prefs.getInt("YOUR COUNTER PREF KEY", 0)));
-//                age.setText(String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR)));
+//                age.setText(String.valueOf(prefs.getInt("ALREADYINCREASE", 0)));
+//                age.setText(String.valueOf(thisDay));
             }
 
             @Override

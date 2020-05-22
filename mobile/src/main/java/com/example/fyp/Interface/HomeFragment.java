@@ -1,5 +1,6 @@
 package com.example.fyp.Interface;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,8 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -144,6 +148,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<Double> calculateWeeklyAvrHeartRate;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -154,6 +159,7 @@ public class HomeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+        needsPermission();
         activity=getActivity();
         yValues= new ArrayList<>();
         startAlarm();
@@ -170,7 +176,7 @@ public class HomeFragment extends Fragment{
         maxHeartrate=v.findViewById(R.id.tvMAX_value);
         ratedMaxHR=v.findViewById(R.id.tvAvgResting_value);
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
-        stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
+        //stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
         MaxFirebaseHR=v.findViewById(R.id.tvMaxHR_fromAge);
@@ -280,7 +286,7 @@ public class HomeFragment extends Fragment{
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getDataRefOfStepsOfCompetitors();
+                //getDataRefOfStepsOfCompetitors();
                 retrieveStepsData();
                 retrieveData();
                 RetrieveLockInData();
@@ -292,6 +298,62 @@ public class HomeFragment extends Fragment{
         });
 
         return v;
+    }
+
+
+    public void needsPermission(){
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                //to simplify, call requestPermissions again
+                Toast.makeText(getContext(),
+                        "shouldShowRequestPermissionRationale",
+                        Toast.LENGTH_LONG).show();
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            }
+        }else{
+            // permission granted
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE){
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted.
+                Toast.makeText(getContext(),
+                        "Permission was granted, thx:)",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                // permission denied.
+                Toast.makeText(getContext(),
+                        "Permission denied! Oh:(",
+                        Toast.LENGTH_LONG).show();
+            }
+            return;
+        }else{
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     public void showCongrats(){
@@ -375,40 +437,40 @@ public class HomeFragment extends Fragment{
         }
         return (int) l;
     }
-    private void getDataRefOfStepsOfCompetitors(){
-        dataRefStepsFromCompetitors.child("Steps Count").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                avrStepsFromCompetitors = new ArrayList<>();
-                if(dataSnapshot.hasChildren()){
-                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-                        if(myDataSnapshot.hasChildren() && (myDataSnapshot.child(date).getValue()!=null)) {
-                            int steppy = safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue());
-                            avrStepsFromCompetitors.add(steppy);
-                            double steps=calculateAverageStepsOfCompetitors(avrStepsFromCompetitors);
-                            stepsFromCompetitors.setText(String.format("%.1f", steps ) + "/7500 steps");
-                        }else{
-                            //Toast.makeText(getContext(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }else{
-                    Toast.makeText(getActivity(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    private void getDataRefOfStepsOfCompetitors(){
+//        dataRefStepsFromCompetitors.child("Steps Count").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                avrStepsFromCompetitors = new ArrayList<>();
+//                if(dataSnapshot.hasChildren()){
+//                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+//                        if(myDataSnapshot.hasChildren() && (myDataSnapshot.child(date).getValue()!=null)) {
+//                            int steppy = safeLongToInt((Long) myDataSnapshot.child(date +"/steps").getValue());
+//                            avrStepsFromCompetitors.add(steppy);
+//                            double steps=calculateAverageStepsOfCompetitors(avrStepsFromCompetitors);
+//                            stepsFromCompetitors.setText(String.format("%.1f", steps ) + "/7500 steps");
+//                        }else{
+//                            //Toast.makeText(getContext(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }else{
+//                    Toast.makeText(getActivity(), "Error in getting participants steps", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     private void showGraph() {
         graphView.removeAllSeries();
         graphView.addSeries(lineGraphSeries);
         graphView.removeSeries(lineGraphWeekly);
         graphView.setTitle("Heart Rate(BPM)");
-        graphView.getViewport().setMinX(new Date().getTime()-1000000);
+        graphView.getViewport().setMinX(new Date().getTime()-10800000);
         graphView.getViewport().setMaxX(new Date().getTime());
         graphView.getViewport().setMinY(50);
         graphView.getViewport().setMaxY(170);
@@ -1191,7 +1253,7 @@ public class HomeFragment extends Fragment{
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            getDataRefOfStepsOfCompetitors();
+                            //getDataRefOfStepsOfCompetitors();
                             retrieveStepsData();
                             retrieveData();
                             RetrieveLockInData();

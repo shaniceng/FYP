@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
-                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -151,7 +151,7 @@
                         app:layout_constraintVertical_bias="0.0">
 
                         <TextView
-                            android:id="@+id/tvStep"
+                            android:id="@+id/tvModAct"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
@@ -182,7 +182,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvStep" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvModAct" />
 
                         <TextView
                             android:id="@+id/foot_icon"
@@ -202,9 +202,9 @@
                             android:layout_height="40dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginBottom="8dp"
-                            android:textColor="#000000"
                             android:background="@drawable/round"
                             android:backgroundTint="@color/lightgrey"
+                            android:textColor="#000000"
                             app:layout_constraintBottom_toTopOf="@+id/steps_goal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
@@ -277,7 +277,7 @@
                             app:layout_constraintBottom_toTopOf="@+id/stepsBackground"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toEndOf="@+id/tvStep"
+                            app:layout_constraintStart_toEndOf="@+id/tvModAct"
                             app:layout_constraintTop_toBottomOf="@+id/step_btn" />
 
                         <Button
@@ -299,47 +299,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Middle section -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout5"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:background="@drawable/border_comparison"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/topLayout">
-
-                    <TextView
-                        android:id="@+id/textView11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Average steps count of other participants today:"
-                        android:textColor="@color/graphBlue"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_avrStepsOfCompetitors"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_avrStepsOfCompetitors"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="/7500"
-                        android:textAlignment="center"
-                        android:textColor="@color/azure"
-                        android:textSize="30sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+ </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -347,7 +307,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/border_comparison">
+                android:background="@drawable/border_comparison"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topLayout">
 
                 <TextView
                     android:id="@+id/tvWorkoutTitle"
@@ -356,8 +320,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
                     android:text="Moderate intensity activity"
-                    android:textSize="18sp"
                     android:textColor="@color/graphBlue"
+                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -397,6 +361,167 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/topActivityLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/round"
+                android:backgroundTint="#DFDBDB"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.551"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:id="@+id/circularProgressBarModerate"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
+                    android:layout_marginBottom="24dp"
+                    app:cpb_background_progressbar_color="@color/lightgrey"
+                    app:cpb_background_progressbar_width="8dp"
+                    app:cpb_progress_direction="to_right"
+                    app:cpb_progressbar_color="@color/azure"
+                    app:cpb_progressbar_width="12dp"
+                    app:cpb_round_border="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvModerateAct" />
+
+                <TextView
+                    android:id="@+id/moderate_act_icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/clock"
+                    android:backgroundTint="@color/azure"
+                    app:layout_constraintBottom_toBottomOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintEnd_toEndOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintStart_toStartOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintTop_toTopOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintVertical_bias="0.456" />
+
+                <TextView
+                    android:id="@+id/moderateBackground"
+                    android:layout_width="170dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="@color/lightgrey"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/moderate_goal"
+                    app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="75dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Your minutes this week:"
+                    android:textAlignment="center"
+                    android:textColor="@color/graphBlue"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@+id/moderateBackground"
+                    app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvModerateAct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/moderate_activity"
+                    android:textColor="#143981"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/moderate_goal"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="@color/lightgrey"
+                    android:padding="8dp"
+                    android:text="Goal: 150 minutes"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/azure"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@+id/textView11"
+                    app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/moderateBackground" />
+
+                <TextView
+                    android:id="@+id/tvModMinutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="5dp"
+                    android:fontFamily="sans-serif"
+                    android:text="0"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/azure"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/moderateBackground"
+                    app:layout_constraintEnd_toStartOf="@+id/tvMinutes"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/moderateBackground"
+                    app:layout_constraintTop_toTopOf="@+id/moderateBackground"
+                    app:layout_constraintVertical_bias="0.48000002" />
+
+                <TextView
+                    android:id="@+id/tvMinutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/mins"
+                    android:textColor="@color/azure"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/moderateBackground"
+                    app:layout_constraintEnd_toEndOf="@+id/moderateBackground"
+                    app:layout_constraintTop_toTopOf="@+id/moderateBackground"
+                    app:layout_constraintVertical_bias="0.375" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:text="50% -70% heart rate"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/moderate_goal"
+                    app:layout_constraintVertical_bias="0.462" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <!-- Bottom section -->
             <androidx.constraintlayout.widget.ConstraintLayout
