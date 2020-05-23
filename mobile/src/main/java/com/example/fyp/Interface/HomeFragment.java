@@ -55,6 +55,7 @@ import com.example.fyp.UserProfile;
 import com.example.fyp.WeeklyReportPointValue;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.mikephil.charting.data.Entry;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -95,7 +96,7 @@ public class HomeFragment extends Fragment{
     Animation fromsmall,fromnothing, fortrophy,togo;
 
     private static final String TAG = "LineChartActivity";
-    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV, MaxFirebaseHR;
+    private TextView stepsCount, HeartRate, maxHeartrate, ratedMaxHR, stepsFromCompetitors, moderateMins, WeeklyModerateMinsTV, MaxFirebaseHR, tvTargetHR, tvModMins;
     private RecyclerView mrecyclerView;
     private RecyclerView.LayoutManager mlayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -111,7 +112,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<Float> weeklyModerateMins;
     private String time;
     private String message, steps, heart, max_HeartRate, notiRadioText, activityTrackheartRate;
-    private CircularProgressBar circularProgressBar;
+    private CircularProgressBar circularProgressBar, circularProgressBarHR;
     private NotificationManagerCompat notificationManager;
     private int currentHeartRate=0, MaxHeartRate=0, currentStepsCount=0, databaseHeart;
     private Button stepbtn;
@@ -138,6 +139,7 @@ public class HomeFragment extends Fragment{
 
     private Activity activity;
 
+    private double fifety, seventyfive;
     private int duration;
     private float mins, sec, activity_heartRate=0;
     private String activity_heart_ratey;
@@ -164,6 +166,7 @@ public class HomeFragment extends Fragment{
         yValues= new ArrayList<>();
         startAlarm();
 
+
         graphView=v.findViewById(R.id.graphView);
         lineGraphSeries=new LineGraphSeries();
         lineGraphWeekly=new LineGraphSeries();
@@ -176,10 +179,13 @@ public class HomeFragment extends Fragment{
         maxHeartrate=v.findViewById(R.id.tvMAX_value);
         ratedMaxHR=v.findViewById(R.id.tvAvgResting_value);
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
+        circularProgressBarHR=v.findViewById(R.id.circularProgressBarModerate);
         //stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
         moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
         MaxFirebaseHR=v.findViewById(R.id.tvMaxHR_fromAge);
+        tvTargetHR=v.findViewById(R.id.tvTargetHr);
+        tvModMins=v.findViewById(R.id.tvModMinutes);
 
         btnShowDaily=v.findViewById(R.id.btnDailyHeartRate);
         btnShowWeekly=v.findViewById(R.id.btnWeeklyHeartRate);
@@ -215,6 +221,7 @@ public class HomeFragment extends Fragment{
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
         dataRefStepsFromCompetitors = firebaseDatabase.getReference();
         weeklymoderateminsdataref=firebaseDatabase.getReference("Weekly Moderate Mins/" + currentuser+"/");
+        checkModMInsRefresh();
 
         // Register the local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -235,12 +242,14 @@ public class HomeFragment extends Fragment{
 //        RetrieveLockInData();
 
         circularProgressBar.setProgressMax(7500);
+        circularProgressBarHR.setProgressMax(150);
 
         //getting data from firebase
 
 
         ExpandableTextView expTv1 = v.findViewById(R.id.expand_text_view).findViewById(R.id.expand_text_view);
         circularProgressBar.setRoundBorder(true);
+        circularProgressBarHR.setRoundBorder(true);
         expTv1.setText(getString(R.string.intensity_workout_details));
         fab = (FloatingActionButton) v.findViewById(R.id.btnAddActivity);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -287,9 +296,11 @@ public class HomeFragment extends Fragment{
             @Override
             public void onRefresh() {
                 //getDataRefOfStepsOfCompetitors();
+                checkModMInsRefresh();
                 retrieveStepsData();
                 retrieveData();
                 RetrieveLockInData();
+                retrieveWeeklyModerateMins();
                 retrieveMaxHR();
                 showGraph();
                 showCongrats();
@@ -297,7 +308,34 @@ public class HomeFragment extends Fragment{
             }
         });
 
+
         return v;
+    }
+
+    public void checkModMInsRefresh(){
+        if (!prefs.contains("weeklyModMinsCheck")) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("weeklyModMinsCheck", 0);
+            editor.commit();
+        }
+        if((Integer.parseInt(week)==7) && (prefs.getInt("weeklyModMinsCheck", 0) == 0)){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("weeklyModMinsCheck", 1);
+            editor.commit();
+            //firebase clear data
+            weeklymoderateminsdataref.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(activity, "This is a new week", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else
+        {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("weeklyModMinsCheck", 0);
+            editor.commit();
+        }
     }
 
 
@@ -409,8 +447,8 @@ public class HomeFragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()) {
                     UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                    int maxyHearty = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]", ""));
-                    MaxHeartRate = 220 - maxyHearty;
+                    int agey = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]", ""));
+                    MaxHeartRate = 220 - agey;
                     if (!prefs.contains("GET_MAX_HEART_RATE_FROM_AGE")) {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
@@ -421,6 +459,9 @@ public class HomeFragment extends Fragment{
                         editor.commit();
                     }
                     MaxFirebaseHR.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)) + "BPM");
+                     fifety= 0.5 * prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                     seventyfive= 0.75 * prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                    tvTargetHR.setText("Target activity HR: \n" + fifety + "BPM - " + seventyfive + "BPM");
                 }
             }
             @Override
@@ -887,12 +928,14 @@ public class HomeFragment extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 weeklyModerateMins=new ArrayList<>();
+                double smmarray;
                 if(dataSnapshot.hasChildren()){
                     for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
                         WeeklyReportPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeklyReportPointValue.class);
                         weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
-                        double smmarray=calculateSumOfModerateMins(weeklyModerateMins);
+                        smmarray =calculateSumOfModerateMins(weeklyModerateMins);
                         WeeklyModerateMinsTV.setText("Moderate exerecise this week: " + String.format("%.1f", smmarray) + "mins");
+                        tvModMins.setText(String.format("%.1f", smmarray));
 
                         if (!prefs.contains(GET_firebase_moderatemins)) {
                             SharedPreferences.Editor editor = prefs.edit();
@@ -904,6 +947,7 @@ public class HomeFragment extends Fragment{
                             edit.commit();
                         }
                     }
+                    circularProgressBarHR.setProgressWithAnimation(prefs.getFloat(GET_firebase_moderatemins,0)); // =1s
                 }
             }
             @Override
@@ -1254,11 +1298,14 @@ public class HomeFragment extends Fragment{
                         @Override
                         public void run() {
                             //getDataRefOfStepsOfCompetitors();
+                            checkModMInsRefresh();
                             retrieveStepsData();
                             retrieveData();
                             RetrieveLockInData();
                             retrieveMaxHR();
+                            retrieveWeeklyModerateMins();
                             showGraph();
+
                         }
                     });
 //                }

@@ -393,7 +393,7 @@
                             android:textAlignment="textEnd"
                             android:textColor="@color/azure"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toTopOf="@+id/textView11"
+                            app:layout_constraintBottom_toTopOf="@+id/tvTargetHr"
                             app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/moderateBackground" />
@@ -432,11 +432,19 @@
                             app:layout_constraintVertical_bias="0.375" />
 
                         <TextView
-                            android:id="@+id/textView11"
+                            android:id="@+id/tvTargetHr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="32dp"
+                            android:background="@drawable/round"
+                            android:backgroundTint="@color/lightgrey"
                             android:text="50% -70% heart rate"
+                            android:layout_marginEnd="8dp"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/azure"
+                            android:textSize="18sp"
+                            android:padding="8dp"
+                            android:textAlignment="center"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/circularProgressBarModerate"
                             app:layout_constraintStart_toStartOf="parent"
@@ -476,14 +484,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                <com.ms.square.android.expandabletextview.ExpandableTextView
                     android:id="@+id/expand_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/tvWorkoutTitle"
 
-                    expandableTextView:animDuration="200"
-                    expandableTextView:maxCollapsedLines="4">
+                    app:animDuration="200"
+                    app:maxCollapsedLines="4">
 
 
                     <TextView
@@ -493,6 +501,7 @@
                         android:padding="9dp"
                         android:text="test"
                         android:textColor="@color/graphBlue"
+                        android:textSize="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
