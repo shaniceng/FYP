@@ -330,7 +330,7 @@ public class HomeFragment extends Fragment{
                 }
             });
         }
-        else
+        else if((Integer.parseInt(week)!=7))
         {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("weeklyModMinsCheck", 0);
