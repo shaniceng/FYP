@@ -79,8 +79,6 @@
         android:elevation="8dp"
         android:orientation="vertical">
 
-
-
     </LinearLayout>
 
 
@@ -382,7 +380,7 @@
 
                         <TextView
                             android:id="@+id/moderate_goal"
-                            android:layout_width="170dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="14dp"
                             android:layout_marginBottom="8dp"
@@ -442,7 +440,7 @@
                             android:layout_marginEnd="8dp"
                             android:fontFamily="sans-serif"
                             android:textColor="@color/azure"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:padding="8dp"
                             android:textAlignment="center"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -571,50 +569,36 @@
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp">
 
-                        <TextView
-                            android:id="@+id/textView6"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:text="150 mins/week"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/azure"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/tvModerateMinsToday"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/tvModerateMinsToday"
+                            android:id="@+id/tvWhatisModerateActivity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:text="Moderate exercise today: mins"
                             android:textAlignment="textStart"
                             android:textColor="@color/azure"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/tvWeeklyModerateMins"
+                            android:layout_marginStart="24dp"
+                            android:text="What is moderate activity?"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                            app:layout_constraintTop_toTopOf="parent" />
+
 
                         <TextView
                             android:id="@+id/tvWeeklyModerateMins"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:text="Moderate exercise this week: mins"
+                            android:text="“Being able to see an increase in breathing and heart rate.” “As a general rule of thumb, you should be able to talk but not sing.”"
                             android:textAlignment="textStart"
                             android:textColor="@color/azure"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:textSize="14sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvModerateMinsToday" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvWhatisModerateActivity"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -644,6 +628,21 @@
                         android:id="@+id/activity_RV">
 
                     </androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/tvModerateMinsToday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Moderate exercise today: mins"
+                        android:textAlignment="center"
+                        android:textColor="@color/azure"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/activity_RV"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
                 </LinearLayout>

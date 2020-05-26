@@ -934,7 +934,7 @@ public class HomeFragment extends Fragment{
                         WeeklyReportPointValue weeksModerateMinsPointValue = myDataSnapshot.getValue(WeeklyReportPointValue.class);
                         weeklyModerateMins.add(Float.valueOf(weeksModerateMinsPointValue.getModerateMins()));
                         smmarray =calculateSumOfModerateMins(weeklyModerateMins);
-                        WeeklyModerateMinsTV.setText("Moderate exerecise this week: " + String.format("%.1f", smmarray) + "mins");
+                        //WeeklyModerateMinsTV.setText("Moderate exerecise this week: " + String.format("%.1f", smmarray) + "mins");
                         tvModMins.setText(String.format("%.1f", smmarray));
 
                         if (!prefs.contains(GET_firebase_moderatemins)) {
