@@ -20,10 +20,10 @@
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="3"
-        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map">
@@ -45,14 +45,15 @@
                 android:paddingBottom="15dp"
                 android:src="@drawable/ic_park_marker"
                 android:text="Park" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="45dp"
                 android:text="Park"
                 android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="45dp"/>
+                android:textColor="#ffffff" />
         </FrameLayout>
 
         <FrameLayout
@@ -63,8 +64,8 @@
 
             <ImageButton
                 android:id="@+id/gymbutton"
-                android:layout_width="120dp"
-                android:layout_height="70dp"
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
@@ -73,14 +74,15 @@
                 android:paddingBottom="15dp"
                 android:src="@drawable/ic_gym_marker_2"
                 android:text="Gym" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="45dp"
                 android:text="Gym"
                 android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="45dp"/>
+                android:textColor="#ffffff" />
         </FrameLayout>
 
         <FrameLayout
@@ -104,59 +106,58 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="34dp"
+                android:layout_marginTop="45dp"
                 android:text="Stadium"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:layout_marginLeft="34dp"
-                android:layout_marginTop="45dp"/>
+                android:textColor="#FFFFFF" />
         </FrameLayout>
 
 
     </LinearLayout>
 
 
-
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="580dp"
+        android:background="@color/lightgrey"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        android:layout_marginTop="580dp"
-        android:layout_marginBottom="32dp"
-        android:background="@color/lightgrey">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:background="@color/lightgrey">
+            android:background="@color/lightgrey"
+            android:overScrollMode="never">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        android:background="@color/lightgrey">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/lightgrey"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ParkDetails"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/lightgrey">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ParkDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightgrey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-        </androidx.recyclerview.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
 
-    </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 

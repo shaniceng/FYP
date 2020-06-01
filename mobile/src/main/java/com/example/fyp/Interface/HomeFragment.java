@@ -211,7 +211,7 @@ public class HomeFragment extends Fragment{
         firebaseAuth= FirebaseAuth.getInstance();
         currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Calendar currentDate = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat weekFormat = new SimpleDateFormat("u");
         week = weekFormat.format(currentDate.getTime());
         date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
@@ -308,6 +308,7 @@ public class HomeFragment extends Fragment{
             }
         });
 
+        //insertStepsData(); //put this when testing with watch
 
         return v;
     }
@@ -688,7 +689,7 @@ public class HomeFragment extends Fragment{
 
     private void insertData() {
         Calendar currentDate = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
         databaseReference = firebaseDatabase.getReference("Chart Values/" + currentuser +"/");
         String id = databaseReference.child(date).push().getKey();
@@ -766,11 +767,16 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertStepsData() {
+        if (!prefs.contains(GET_firebase_steps)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(GET_firebase_steps, 0);
+            editor.commit();
+        }
         Calendar currentDate = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
-        StepsPointValue pointSteps = new StepsPointValue(currentStepsCount);
+        StepsPointValue pointSteps = new StepsPointValue(prefs.getInt(GET_firebase_steps, 0));
         stepsDataBaseRef.setValue(pointSteps); //.child(id)
 
         retrieveStepsData();
@@ -787,15 +793,15 @@ public class HomeFragment extends Fragment{
                     float steps = Float.parseFloat(String.valueOf(stepsPointValue.getSteps()));
                     circularProgressBar.setProgressWithAnimation(steps); // =1s
 
-                    if (!prefs.contains(GET_firebase_steps)) {
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt(GET_firebase_steps, 0);
-                        editor.commit();
-                    } else {
-                        SharedPreferences.Editor edit = prefs.edit();
-                        edit.putInt(GET_firebase_steps, currentStepsCount);
-                        edit.commit();
-                    }
+//                    if (!prefs.contains(GET_firebase_steps)) {
+//                        SharedPreferences.Editor editor = prefs.edit();
+//                        editor.putInt(GET_firebase_steps, 0);
+//                        editor.commit();
+//                    } else {
+//                        SharedPreferences.Editor edit = prefs.edit();
+//                        edit.putInt(GET_firebase_steps, currentStepsCount);
+//                        edit.commit();
+//                    }
                 }
             }
 
@@ -809,7 +815,7 @@ public class HomeFragment extends Fragment{
 
     private void insertLockInData() {
         Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         date = dateFormat.format(currentTime.getTime()).replaceAll("[\\D]","");
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
 
@@ -959,7 +965,7 @@ public class HomeFragment extends Fragment{
 
     private void insertMaxHR() {
         Calendar currentDate = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
 
         maxHRDataref = firebaseDatabase.getReference("MaxHeartRate/" +currentuser + "/" + date );
@@ -1040,7 +1046,9 @@ public class HomeFragment extends Fragment{
                     steps = intent.getStringExtra("countSteps");
                     Log.v(TAG, "Main activity received message: " + message);
 
-                    currentStepsCount = Integer.parseInt(steps);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt(GET_firebase_steps, Integer.parseInt(steps));
+                    editor.commit();
                     insertStepsData();
 
                 } else if (intent.getStringExtra("maxHeartRate") != null) {

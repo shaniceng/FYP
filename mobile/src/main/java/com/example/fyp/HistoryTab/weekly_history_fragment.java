@@ -107,7 +107,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
         dataDate ="Week selected: " +String.format("%02d", dayOfMonth) + "/" + String.format("%02d", month) + "/" + year;
         //final String datetxt2 = String.format("%02d", dayOfMonth) + "/" + String.format("%02d", month) + "/" + year;
 
-        selecteddate = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        selecteddate = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);
         dayOfMonth = dayOfMonth+1;
         if (dayOfMonth==maxday) {
             dayOfMonth=1;
@@ -117,7 +117,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                 year = year+1;
             }
         }
-        selecteddateDay2 = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        selecteddateDay2 = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);;
         dayOfMonth = dayOfMonth+1;
         if (dayOfMonth==maxday) {
             dayOfMonth=1;
@@ -127,7 +127,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                 year = year+1;
             }
         }
-        selecteddateDay3 = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        selecteddateDay3 = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);;
         dayOfMonth = dayOfMonth+1;
         if (dayOfMonth==maxday) {
             dayOfMonth=1;
@@ -137,7 +137,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                 year = year+1;
             }
         }
-        selecteddateDay4 = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        selecteddateDay4 = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);;
         dayOfMonth = dayOfMonth+1;
         if (dayOfMonth==maxday) {
             dayOfMonth=1;
@@ -147,7 +147,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                 year = year+1;
             }
         }
-        selecteddateDay5 = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        selecteddateDay5 = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);;
         dayOfMonth = dayOfMonth+1;
         if (dayOfMonth==maxday) {
             dayOfMonth=1;
@@ -157,7 +157,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                 year = year+1;
             }
         }
-        selecteddateDay6 = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        selecteddateDay6 = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);;
         dayOfMonth = dayOfMonth+1;
         if (dayOfMonth==maxday) {
             dayOfMonth=1;
@@ -167,7 +167,7 @@ public class weekly_history_fragment extends Fragment implements DatePickerDialo
                 year = year+1;
             }
         }
-        selecteddateDay7 = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        selecteddateDay7 = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);;
 
         dateText.setText(dataDate);
 

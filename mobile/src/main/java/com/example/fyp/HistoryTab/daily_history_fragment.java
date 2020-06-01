@@ -88,7 +88,7 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
         dataDate = String.format("%02d", dayOfMonth) + " " + String.format("%02d", month) + "," + year;
         final String datetxt = "Date selected: " + String.format("%02d", dayOfMonth) + "/" + String.format("%02d", month) + "/" + year;
         final String datetxt2 = String.format("%02d", dayOfMonth) + "/" + String.format("%02d", month) + "/" + year;
-        selecteddate = String.format("%02d", dayOfMonth) + String.format("%02d", month) + year;
+        selecteddate = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);;
 
         dateText.setText(datetxt);
 
@@ -98,7 +98,7 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
             firebaseDatabase = FirebaseDatabase.getInstance();
             firebaseAuth = FirebaseAuth.getInstance();
             Calendar currentDate = Calendar.getInstance();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             currentdate = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]", "");
             currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
