@@ -130,6 +130,13 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         // Enables Always-on
         setAmbientEnabled();
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        getHartRate();
+        if (!prefs.contains("PressedOnOrOff")) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("PressedOnOrOff", 0);
+            editor.commit();
+        }
         trackActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +172,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         onHeartRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    getHartRate();
+                    getStepsAndHeart();
                     IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
                     registerReceiver(ambientUpdateBroadcastReceiver, filter);
                     refreshDisplayAndSetNextUpdate();
@@ -177,9 +184,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 startActivity(new Intent(MainActivity.this, GoogleMapsActivity.class));
             }
         });
-
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        getHartRate();
 
         ambientUpdateAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent ambientUpdateIntent = new Intent(AMBIENT_UPDATE_ACTION);
@@ -200,6 +204,9 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     }
     private void getHartRate() {
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putInt("PressedOnOrOff", 1);
+        edit.commit();
         mSensorManager= ((SensorManager) getSystemService(SENSOR_SERVICE));
         time = Calendar.getInstance();
 
@@ -218,6 +225,21 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         else{
             mSensorManager.unregisterListener(this);
         }
+    }
+
+    private void getStepsAndHeart() {
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putInt("PressedOnOrOff", 2);
+        edit.commit();
+        mSensorManager= ((SensorManager) getSystemService(SENSOR_SERVICE));
+        Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        //stepsCount
+        Sensor mStepCountSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        Sensor mStepDetectSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        mSensorManager.registerListener(this, mStepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mStepDetectSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -408,9 +430,14 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
-        getHartRate();
         refreshDisplayAndSetNextUpdate();
         startAlarm();
+        if(prefs.getInt("PressedOnOrOff", 0)==1) {
+            getHartRate();
+        }
+        else if(prefs.getInt("PressedOnOrOff", 0)==2){
+            getStepsAndHeart();
+        }
     }
 
     @Override
@@ -423,13 +450,23 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     protected void onStart() {
         super.onStart();
-        getHartRate();
+        if(prefs.getInt("PressedOnOrOff", 0)==1) {
+            getHartRate();
+        }
+        else if(prefs.getInt("PressedOnOrOff", 0)==2){
+            getStepsAndHeart();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getHartRate();
+        if(prefs.getInt("PressedOnOrOff", 0)==1) {
+            getHartRate();
+        }
+        else if(prefs.getInt("PressedOnOrOff", 0)==2){
+            getStepsAndHeart();
+        }
         IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
         registerReceiver(ambientUpdateBroadcastReceiver, filter);
         refreshDisplayAndSetNextUpdate();
