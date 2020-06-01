@@ -475,46 +475,68 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:paddingTop="8dp"
                     android:text="SAFETY INFORMATION"
-                    android:textColor="@color/graphBlue"
+                    android:textStyle="bold"
+                    android:textColor="#143981"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.ms.square.android.expandabletextview.ExpandableTextView
-                    android:id="@+id/expand_text_view"
+<!--                <com.ms.square.android.expandabletextview.ExpandableTextView-->
+<!--                    android:id="@+id/expand_text_view"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/tvWorkoutTitle"-->
+
+<!--                    app:animDuration="200"-->
+<!--                    app:maxCollapsedLines="4">-->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/tvWorkoutTitle"
-
-                    app:animDuration="200"
-                    app:maxCollapsedLines="4">
-
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/roundlesser"
+                    android:backgroundTint="@color/lightgrey"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWorkoutTitle">
 
                     <TextView
                         android:id="@id/expandable_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="9dp"
-                        android:text="test"
-                        android:textColor="@color/graphBlue"
-                        android:textSize="16dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/roundlesser"
+                        android:backgroundTint="@color/lightgrey"
+                        android:fontFamily="sans-serif"
+                        android:padding="10dp"
+                        android:text="@string/intensity_workout_details"
+                        android:textColor="@color/azure"
+                        android:textSize="17dp"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvWorkoutTitle" />
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                    <ImageButton
-                        android:id="@id/expand_collapse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|bottom"
-                        android:background="@android:color/transparent"
-                        android:padding="16dp" />
+<!--                    <ImageButton-->
+<!--                        android:id="@id/expand_collapse"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center|bottom"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:padding="16dp" />-->
 
-                </com.ms.square.android.expandabletextview.ExpandableTextView>
+<!--                </com.ms.square.android.expandabletextview.ExpandableTextView>-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -544,12 +566,10 @@
                         android:id="@+id/tvGoal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="18dp"
-                        android:layout_marginBottom="10dp"
                         android:fontFamily="sans-serif"
-                        android:text="EXERCISE GOAL"
+                        android:text="WHAT IS MODERATE ACTIVITY?"
                         android:textColor="#143981"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -557,51 +577,67 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <TextView
+                        android:id="@+id/tvWeeklyModerateMins"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/roundlesser"
-                        android:backgroundTint="@color/lightgrey"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:paddingTop="3dp"
-                        android:paddingBottom="3dp">
-
-
-                        <TextView
-                            android:id="@+id/tvWhatisModerateActivity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/azure"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_marginStart="24dp"
-                            android:text="What is moderate activity?"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
-                        <TextView
-                            android:id="@+id/tvWeeklyModerateMins"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:text="“Being able to see an increase in breathing and heart rate.” “As a general rule of thumb, you should be able to talk but not sing.”"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/azure"
-                            android:textSize="14sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvWhatisModerateActivity"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:text="“Being able to see an increase in breathing and heart rate.” “As a general rule of thumb, you should be able to talk but not sing.”"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/azure"
+                        android:textSize="16sp"
+                        android:paddingBottom="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@drawable/roundlesser"-->
+<!--                        android:backgroundTint="@color/lightgrey"-->
+<!--                        android:layout_marginStart="8dp"-->
+<!--                        android:layout_marginEnd="8dp">-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/tvWhatisModerateActivity"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textAlignment="textStart"-->
+<!--                            android:textColor="@color/azure"-->
+<!--                            android:textSize="16sp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            android:paddingTop="8dp"-->
+<!--                            android:layout_marginStart="16dp"-->
+<!--                            android:layout_marginEnd="16dp"-->
+<!--                            android:text="What is moderate activity?"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/tvWeeklyModerateMins"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="16dp"-->
+<!--                            android:layout_marginEnd="16dp"-->
+<!--                            android:text="“Being able to see an increase in breathing and heart rate.” “As a general rule of thumb, you should be able to talk but not sing.”"-->
+<!--                            android:textAlignment="textStart"-->
+<!--                            android:textColor="@color/azure"-->
+<!--                            android:textSize="16sp"-->
+<!--                            android:paddingBottom="8dp"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/tvWhatisModerateActivity"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent" />-->
+
+
+
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
                     <TextView
@@ -610,7 +646,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="18dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="sans-serif"
                         android:text="@string/recent_activity"

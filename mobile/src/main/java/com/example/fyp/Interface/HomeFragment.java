@@ -242,10 +242,10 @@ public class HomeFragment extends Fragment{
         circularProgressBar.setProgressMax(7500);
         circularProgressBarHR.setProgressMax(150);
 
-        ExpandableTextView expTv1 = v.findViewById(R.id.expand_text_view).findViewById(R.id.expand_text_view);
+//        ExpandableTextView expTv1 = v.findViewById(R.id.expand_text_view).findViewById(R.id.expand_text_view);
         circularProgressBar.setRoundBorder(true);
         circularProgressBarHR.setRoundBorder(true);
-        expTv1.setText(getString(R.string.intensity_workout_details));
+//        expTv1.setText(getString(R.string.intensity_workout_details));
         fab = (FloatingActionButton) v.findViewById(R.id.btnAddActivity);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
