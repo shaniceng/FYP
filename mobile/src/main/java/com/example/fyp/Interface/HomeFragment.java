@@ -743,9 +743,37 @@ public class HomeFragment extends Fragment{
                                     //avr of each day
                                     weeklyAvrHeartRate.add(pointValue.getyValue());
                                 }
-                                heartRate= calculateAverageStepsOfCompetitors(weeklyAvrHeartRate);
-                                dataVals[indexWeekly] = new DataPoint(indexWeekly,heartRate);
-                                indexWeekly++;
+                                heartRate = calculateAverageStepsOfCompetitors(weeklyAvrHeartRate);
+                                switch ((int) dataSnapshot.getChildrenCount()){
+                                    case 7:
+                                        dataVals[indexWeekly] = new DataPoint(indexWeekly, heartRate);
+                                        indexWeekly++;
+                                        break;
+                                    case 6:
+                                        dataVals[indexWeekly] = new DataPoint(indexWeekly+1, heartRate);
+                                        indexWeekly++;
+                                        break;
+                                    case 5:
+                                        dataVals[indexWeekly] = new DataPoint(indexWeekly+2, heartRate);
+                                        indexWeekly++;
+                                        break;
+                                    case 4:
+                                        dataVals[indexWeekly] = new DataPoint(indexWeekly+3, heartRate);
+                                        indexWeekly++;
+                                        break;
+                                    case 3:
+                                        dataVals[indexWeekly] = new DataPoint(indexWeekly+4, heartRate);
+                                        indexWeekly++;
+                                        break;
+                                    case 2:
+                                        dataVals[indexWeekly] = new DataPoint(indexWeekly+5, heartRate);
+                                        indexWeekly++;
+                                        break;
+                                    case 1:
+                                        dataVals[indexWeekly] = new DataPoint(indexWeekly+6, heartRate);
+                                        indexWeekly++;
+                                        break;
+                                }
                             }
                         }
                         lineGraphWeekly.resetData(dataVals);
