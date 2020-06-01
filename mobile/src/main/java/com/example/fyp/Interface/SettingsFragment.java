@@ -120,7 +120,7 @@ public class SettingsFragment extends Fragment {
                 radioButton.setText(userProfile.getRadiotext());
 //                age.setText(String.valueOf(prefs.getInt("YOUR COUNTER PREF KEY", 0)));
 //                age.setText(String.valueOf(prefs.getInt("ALREADYINCREASE", 0)));
-//                age.setText(String.valueOf(thisDay));
+//                age.setText(String.valueOf(lastDay));
             }
 
             @Override
@@ -156,7 +156,7 @@ public class SettingsFragment extends Fragment {
 
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Calendar currentDate = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         String date = dateFormat.format(currentDate.getTime()).replaceAll("[\\D]","");
         stepsDataBaseRef=firebaseDatabase.getReference("Steps Count/" +currentuser + "/" + date );
         newday = currentDate.get(Calendar.DAY_OF_YEAR);
@@ -232,7 +232,7 @@ public class SettingsFragment extends Fragment {
                 }
                 else if(lastDay < thisDay-1){
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("YOUR DATE PREF KEY", thisDay);
+                    editor.putInt("YOUR DATE PREF KEY", thisDay-1);
                     editor.putInt("YOUR COUNTER PREF KEY", 0);
                     editor.commit();
                 }
