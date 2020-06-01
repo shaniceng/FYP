@@ -1185,13 +1185,14 @@ public class HomeFragment extends Fragment{
                 }
 
                 getRadioText();
+                int step = prefs.getInt(GET_firebase_steps, 0);
                 if ((notiRadioText!=null)&& (notiRadioText.equals("4pm") )) {
-                    if ((currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) && (currentStepsCount < 7500))  {
+                    if ((currentTime.get(Calendar.HOUR_OF_DAY) == 16) && (currentTime.get(Calendar.MINUTE) == 00) && (step < 7500))  {
                         sendOnChannel3(null);
 
                     }
                 } else if ( (notiRadioText!=null)&&(notiRadioText.equals("7pm"))) {
-                    if ((currentStepsCount < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
+                    if ((step < 7500) && (currentTime.get(Calendar.HOUR_OF_DAY) == 19) && (currentTime.get(Calendar.MINUTE) == 00)) {
                         sendOnChannel3(null);
 
                     }
@@ -1330,10 +1331,10 @@ public class HomeFragment extends Fragment{
                             //getDataRefOfStepsOfCompetitors();
                             checkModMInsRefresh();
                             retrieveStepsData();
-                            retrieveData();
-                            RetrieveLockInData();
                             retrieveMaxHR();
                             retrieveWeeklyModerateMins();
+                            RetrieveLockInData();
+                            retrieveData();
                             showGraph();
 
                         }
