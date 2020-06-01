@@ -1,5 +1,6 @@
 package com.example.fyp;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -9,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -26,6 +28,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -72,12 +80,16 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private Boolean ifalrOff = false;
 
     private  SensorManager mSensorManager;
+    final int MY_PERMISSIONS_REQUEST_WRITE_SENSORS = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        needsSENSORSPermission();
 
         myView= (ScrollView) findViewById(R.id.myview);
         myView.requestFocus();
@@ -515,6 +527,61 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     protected void onDestroy() {
         super.onDestroy();
         startAlarm();
+    }
+
+
+    public void needsSENSORSPermission(){
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.BODY_SENSORS)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    MainActivity.this,
+                    Manifest.permission.BODY_SENSORS)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                //to simplify, call requestPermissions again
+                Toast.makeText(MainActivity.this,
+                        "shouldShowRequestPermissionRationale",
+                        Toast.LENGTH_LONG).show();
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.BODY_SENSORS},
+                        MY_PERMISSIONS_REQUEST_WRITE_SENSORS);
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.BODY_SENSORS},
+                        MY_PERMISSIONS_REQUEST_WRITE_SENSORS);
+            }
+        }else{
+            // permission granted
+
+        }
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == MY_PERMISSIONS_REQUEST_WRITE_SENSORS){
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted.
+                Toast.makeText(MainActivity.this,
+                        "Permission was granted :)",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                // permission denied.
+                Toast.makeText(MainActivity.this,
+                        "Permission denied!",
+                        Toast.LENGTH_LONG).show();
+            }
+            return;
+        }else{
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
 }

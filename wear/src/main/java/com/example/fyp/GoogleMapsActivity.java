@@ -58,11 +58,14 @@ public class GoogleMapsActivity extends WearableActivity
     private Marker mMarker;
     private LocationRequest mLocationRequest;
 
+    final int MY_PERMISSIONS_REQUEST_WRITE_LOCATION = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_maps);
 
+//        needsLOCATIONPermission();
         mMapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
@@ -72,6 +75,38 @@ public class GoogleMapsActivity extends WearableActivity
             checkLocationPermission();
         }
     }
+//    public void needsLOCATIONPermission(){
+//        if (ContextCompat.checkSelfPermission(GoogleMapsActivity.this,
+//                Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            // Permission is not granted
+//            // Should we show an explanation?
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(
+//                    GoogleMapsActivity.this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                // Show an explanation to the user *asynchronously* -- don't block
+//                // this thread waiting for the user's response! After the user
+//                // sees the explanation, try again to request the permission.
+//
+//                //to simplify, call requestPermissions again
+//                Toast.makeText(GoogleMapsActivity.this,
+//                        "shouldShowRequestPermissionRationale",
+//                        Toast.LENGTH_LONG).show();
+//                ActivityCompat.requestPermissions(GoogleMapsActivity.this,
+//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                        MY_PERMISSIONS_REQUEST_WRITE_LOCATION);
+//            } else {
+//                // No explanation needed; request the permission
+//                ActivityCompat.requestPermissions(GoogleMapsActivity.this,
+//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                        MY_PERMISSIONS_REQUEST_WRITE_LOCATION);
+//            }
+//        }else{
+//            // permission granted
+//
+//        }
+//
+//    }
 
     private boolean checkLocationPermission() {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){

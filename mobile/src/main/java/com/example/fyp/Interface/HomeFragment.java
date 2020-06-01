@@ -207,6 +207,7 @@ public class HomeFragment extends Fragment{
         //for shared prefs
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
+        //getting data from firebase
         firebaseDatabase= FirebaseDatabase.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
         currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -228,8 +229,6 @@ public class HomeFragment extends Fragment{
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
-
-
         getMaxHR();
 //       new LongRunningTask().execute();
         startThread();
@@ -240,12 +239,8 @@ public class HomeFragment extends Fragment{
 //        retrieveMaxHR();
 //        showGraph();
 //        RetrieveLockInData();
-
         circularProgressBar.setProgressMax(7500);
         circularProgressBarHR.setProgressMax(150);
-
-        //getting data from firebase
-
 
         ExpandableTextView expTv1 = v.findViewById(R.id.expand_text_view).findViewById(R.id.expand_text_view);
         circularProgressBar.setRoundBorder(true);
@@ -308,7 +303,7 @@ public class HomeFragment extends Fragment{
             }
         });
 
-        //insertStepsData(); //put this when testing with watch
+        insertStepsData(); //put this when testing with watch
 
         return v;
     }
@@ -372,7 +367,6 @@ public class HomeFragment extends Fragment{
         }
 
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
