@@ -152,6 +152,9 @@ public class HomeFragment extends Fragment{
     private SwipeRefreshLayout swipeRefreshLayout;
     final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
+    IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+    MessageReceiver messageReceiver = new MessageReceiver();
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -1257,6 +1260,8 @@ public class HomeFragment extends Fragment{
         startAlarm();
         Refresh();
         //stopThread();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
+        startThread();
     }
 
     @Override
@@ -1265,8 +1270,8 @@ public class HomeFragment extends Fragment{
         startAlarm();
         Refresh();
         // Register the local broadcast receiver
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
+//        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+//        MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
         startThread();
 
@@ -1279,8 +1284,8 @@ public class HomeFragment extends Fragment{
         Refresh();
 
         // Register the local broadcast receiver
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
+//        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+//        MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
         startThread();
 
@@ -1293,8 +1298,8 @@ public class HomeFragment extends Fragment{
         Refresh();
 
         // Register the local broadcast receiver
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
+//        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+//        MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
         startThread();
     }
@@ -1304,8 +1309,7 @@ public class HomeFragment extends Fragment{
         super.onResume();
         startAlarm();
         Refresh();
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
+
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
         startThread();
     }

@@ -223,7 +223,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent event) {
         time = Calendar.getInstance();
-        if ((time.get(Calendar.HOUR_OF_DAY) >= 6) && (time.get(Calendar.HOUR_OF_DAY) < 22)) {
+        if ((time.get(Calendar.HOUR_OF_DAY) >= 6) ){//&& (time.get(Calendar.HOUR_OF_DAY) <= 23)) {
             if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
                 msg = "" + (int) event.values[0];
                 heartrate =(int) event.values[0];
