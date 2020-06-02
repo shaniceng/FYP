@@ -232,13 +232,13 @@ public class HomeFragment extends Fragment{
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
+        insertStepsData(); //put this when testing with watch
         getMaxHR();
-//       new LongRunningTask().execute();
         startThread();
 //        getDataRefOfStepsOfCompetitors();
 //        retrieveStepsData();
 //        retrieveData();
-//
+//          new LongRunningTask().execute();
 //        retrieveMaxHR();
 //        showGraph();
 //        RetrieveLockInData();
@@ -293,20 +293,19 @@ public class HomeFragment extends Fragment{
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                startThread();
                 //getDataRefOfStepsOfCompetitors();
-                checkModMInsRefresh();
-                retrieveStepsData();
-                retrieveData();
-                RetrieveLockInData();
-                retrieveWeeklyModerateMins();
-                retrieveMaxHR();
-                showGraph();
+//                checkModMInsRefresh();
+//                retrieveStepsData();
+//                retrieveData();
+//                RetrieveLockInData();
+//                retrieveWeeklyModerateMins();
+//                retrieveMaxHR();
+//                showGraph();
                 showCongrats();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-        insertStepsData(); //put this when testing with watch
 
         return v;
     }
