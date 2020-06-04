@@ -232,7 +232,7 @@ public class HomeFragment extends Fragment{
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, messageFilter);
 
-        insertStepsData(); //put this when testing with watch
+       //insertStepsData(); //put this when testing with watch
         getMaxHR();
         startThread();
 //        getDataRefOfStepsOfCompetitors();
@@ -1332,6 +1332,7 @@ public class HomeFragment extends Fragment{
                         @Override
                         public void run() {
                             //getDataRefOfStepsOfCompetitors();
+                            insertStepsData(); //put this when testing with watch
                             checkModMInsRefresh();
                             retrieveStepsData();
                             retrieveMaxHR();
