@@ -1,13 +1,13 @@
 package com.example.fyp;
 
 public class UserProfile {
-    public String userName, userEmail, userAge, userGender, userHeight, userWeight, userBirthday, radiotext;
+    public String userName, userEmail, userAge, userGender, userHeight, userWeight, userBirthday, radiotext, group;
 
     public UserProfile(){
 
     }
 
-    public UserProfile(String userName, String userEmail, String userAge, String userGender, String userHeight, String userWeight, String userBirthday, String radioText)
+    public UserProfile(String userName, String userEmail, String userAge, String userGender, String userHeight, String userWeight, String userBirthday, String radioText, String group)
     {
         this.userName=userName;
         this.userEmail=userEmail;
@@ -17,6 +17,7 @@ public class UserProfile {
         this.userWeight=userWeight;
         this.userBirthday=userBirthday;
         this.radiotext=radioText;
+        this.group = group;
     }
 
     public String getUserEmail() {
@@ -81,5 +82,13 @@ public class UserProfile {
 
     public void setRadiotext(String radiotext) {
         this.radiotext = radiotext;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

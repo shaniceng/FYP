@@ -88,7 +88,7 @@ public class daily_history_fragment extends Fragment implements DatePickerDialog
         dataDate = String.format("%02d", dayOfMonth) + " " + String.format("%02d", month) + "," + year;
         final String datetxt = "Date selected: " + String.format("%02d", dayOfMonth) + "/" + String.format("%02d", month) + "/" + year;
         final String datetxt2 = String.format("%02d", dayOfMonth) + "/" + String.format("%02d", month) + "/" + year;
-        selecteddate = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);;
+        selecteddate = year +  String.format("%02d", month) + String.format("%02d", dayOfMonth);
 
         dateText.setText(datetxt);
 

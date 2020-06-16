@@ -88,8 +88,9 @@ public class EditProfile extends AppCompatActivity {
                 String height = newUserHeight.getText().toString();
                 String weight = newUserWeight.getText().toString();
                 String birthday = newUserBirthday.getText().toString();
+                String group = "intervention";
 
-                UserProfile userProfile=new UserProfile(name, email, age,gender,height,weight,birthday, radioEdittext);
+                UserProfile userProfile=new UserProfile(name, email, age,gender,height,weight,birthday, radioEdittext, group);
                 databaseReference.setValue(userProfile);
 
                 finish();

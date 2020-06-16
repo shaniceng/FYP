@@ -94,12 +94,9 @@
         app:fab_colorNormal="@color/azure"
         app:fab_colorPressed="#143981"
         app:fab_icon="@drawable/ic_add_black_24dp"
-
-
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
-        app:elevation="6dp"
-        android:elevation="6dp"/>
+        android:elevation="7dp"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
@@ -119,11 +116,12 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round"
                 android:backgroundTint="#DFDBDB"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/border_comparison"
+                android:elevation="5dp">
             <!-- Top section -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/topLayout"
@@ -133,7 +131,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/round">
 
 
                     <!-- Step count section -->
@@ -467,7 +466,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topLayout">
+                app:layout_constraintTop_toBottomOf="@+id/topLayout"
+                android:elevation="5dp">
 
                 <TextView
                     android:id="@+id/tvWorkoutTitle"
@@ -548,8 +548,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/round"
-                android:backgroundTint="#DFDBDB">
+                android:backgroundTint="#DFDBDB"
+                android:background="@drawable/border_comparison"
+                android:elevation="5dp">
 
                 <!-- Heart rate section -->
                 <LinearLayout
@@ -560,7 +561,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/round">
 
                     <TextView
                         android:id="@+id/tvGoal"
@@ -691,8 +693,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/round"
-                android:backgroundTint="#DFDBDB">
+                android:backgroundTint="#DFDBDB"
+                android:background="@drawable/border_comparison"
+                android:elevation="5dp">
 
                 <!-- Heart rate section -->
                 <LinearLayout
@@ -700,7 +703,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/round">
 
                     <TextView
                         android:id="@+id/tvHeartRate"

@@ -28,7 +28,7 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
     private Button regButtton;
     private ImageButton closeButton;
     private FirebaseAuth firebaseAuth;
-    private String email, name, password, age, gender, height, weight, birthday, radiotext;
+    private String email, name, password, age, gender, height, weight, birthday, radiotext, interventionGroup;
     private RadioButton radioButton;
     private RadioGroup radioGroup;
 
@@ -106,6 +106,7 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
         height = userHeight.getText().toString();
         weight = userWeight.getText().toString();
         birthday = userBirthday.getText().toString();
+        interventionGroup = "intervention";
 
         if(name.isEmpty() || password.isEmpty() || email.isEmpty() || age.isEmpty() || gender.isEmpty() || height.isEmpty() || weight.isEmpty() || birthday.isEmpty()){
             Toast.makeText(this, "Please enter all the details", Toast.LENGTH_SHORT).show();
@@ -140,7 +141,7 @@ public class CreateAccActivity extends AppCompatActivity implements AdapterView.
     private void sendUserData(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference("Users/" + firebaseAuth.getUid() );
-        UserProfile userProfile=new UserProfile(name,email,age, gender, height, weight, birthday, radiotext);
+        UserProfile userProfile=new UserProfile(name,email,age, gender, height, weight, birthday, radiotext, interventionGroup);
         myRef.setValue(userProfile);
     }
 
