@@ -70,7 +70,7 @@ public class TimerActivity extends AppCompatActivity {
 
         usern = firebaseAuth.getInstance().getCurrentUser().getUid();
         calForDate = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("ddMMyyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyyMMdd");
         saveCurrentDate = currentDate.format(calForDate.getTime());
 
 
