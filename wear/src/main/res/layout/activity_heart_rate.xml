@@ -28,10 +28,10 @@
             app:cpb_round_border="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.454"
+            app:layout_constraintHorizontal_bias="0.515"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.454" />
+            app:layout_constraintVertical_bias="0.484" />
 
         <TextView
             android:id="@+id/textView"
@@ -60,7 +60,7 @@
             android:backgroundTint="@color/babyPink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.285"
+            app:layout_constraintHorizontal_bias="0.21"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintVertical_bias="0.145" />
@@ -70,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="60dp"
             android:fontFamily="sans-serif"
             android:paddingTop="16dp"
@@ -78,10 +79,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.718" />
+            app:layout_constraintVertical_bias="0.707" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

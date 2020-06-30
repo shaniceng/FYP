@@ -131,7 +131,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
 
 
             step = String.valueOf(prefs.getInt("dailyCurrentSteps", -1));
-            msg = "Steps count:\n " + step + " steps";
+            msg = step + " steps";
             mTextViewSteps.setText(msg);
             circularProgressBar.setProgressWithAnimation(stepCount); // =1s
             Log.d(TAG, msg);
