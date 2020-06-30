@@ -5,6 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class App extends Application {
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
@@ -14,6 +16,7 @@ public class App extends Application {
         super.onCreate();
 
         createNotificationChannels();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     private void createNotificationChannels() {
