@@ -201,7 +201,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         Refresh();
         startAlarm();
-
+        setRemindertoLockIn();
     }
     private void getHartRate() {
         SharedPreferences.Editor edit = prefs.edit();
@@ -245,7 +245,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent event) {
         time = Calendar.getInstance();
-        if ((time.get(Calendar.HOUR_OF_DAY) >= 6) ){//&& (time.get(Calendar.HOUR_OF_DAY) <= 23)) {
+        if ((time.get(Calendar.HOUR_OF_DAY) >= 6) && (time.get(Calendar.HOUR_OF_DAY) <= 23)) {
             if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
                 msg = "" + (int) event.values[0];
                 heartrate =(int) event.values[0];
@@ -443,8 +443,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
-        refreshDisplayAndSetNextUpdate();
         setRemindertoLockIn();
+        refreshDisplayAndSetNextUpdate();
+
+
     }
 
     @Override
@@ -456,6 +458,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         else if(prefs.getInt("PressedOnOrOff", 0)==2){
             getStepsAndHeart();
         }
+        setRemindertoLockIn();
     }
 
     @Override
@@ -471,7 +474,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         registerReceiver(ambientUpdateBroadcastReceiver, filter);
         refreshDisplayAndSetNextUpdate();
         startAlarm();
-
+        //setRemindertoLockIn();
     }
 
     @Override
@@ -480,7 +483,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         unregisterReceiver(ambientUpdateBroadcastReceiver);
         ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
         refreshDisplayAndSetNextUpdate();
-        startAlarm();
+        //startAlarm();
 
     }
 
@@ -492,7 +495,12 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     }
 
     private void setRemindertoLockIn(){
-        if((heartrate!=0)&&(heartrate>=120)) {
+        if(!prefs.contains("ReminderToLockIn")){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("ReminderToLockIn", 0);
+            editor.commit();
+        }
+        if((heartrate!=0)&&(heartrate>=120) && (prefs.getInt("ReminderToLockIn", 0)==0)) { //change to 120
             vibration();
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder//.setMessage("Are you exercising now?")
@@ -512,8 +520,24 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             AlertDialog alertDialog = builder.create();
             alertDialog.setTitle("Are you exercising now?");
             alertDialog.show();
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("ReminderToLockIn", 1);
+            editor.commit();
+
         }
+        final Handler handler = new Handler(); //next reminder in 30 mins
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("ReminderToLockIn", 0);
+                editor.commit();
+                setRemindertoLockIn();
+            }
+        },1800000); //30mins ,1800000
     }
+
     public Vibrator vibration() {
 
         Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
