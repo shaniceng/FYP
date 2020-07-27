@@ -17,6 +17,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -201,7 +202,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         Refresh();
         startAlarm();
-        setRemindertoLockIn();
+        //setRemindertoLockIn();
     }
     private void getHartRate() {
         SharedPreferences.Editor edit = prefs.edit();
@@ -444,6 +445,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
         setRemindertoLockIn();
+        Log.d("Reminder", String.valueOf(prefs.getInt("ReminderToLockIn", 0)));
         refreshDisplayAndSetNextUpdate();
 
 
@@ -458,7 +460,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         else if(prefs.getInt("PressedOnOrOff", 0)==2){
             getStepsAndHeart();
         }
-        setRemindertoLockIn();
+        //setRemindertoLockIn();
     }
 
     @Override
@@ -495,12 +497,14 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     }
 
     private void setRemindertoLockIn(){
+        Log.d("Reminder", String.valueOf(prefs.getInt("ReminderToLockIn", 0)));
         if(!prefs.contains("ReminderToLockIn")){
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("ReminderToLockIn", 0);
             editor.commit();
         }
         if((heartrate!=0)&&(heartrate>=120) && (prefs.getInt("ReminderToLockIn", 0)==0)) { //change to 120
+            Log.d("Reminder", "INSIDEEE");
             vibration();
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder//.setMessage("Are you exercising now?")
@@ -526,16 +530,31 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             editor.commit();
 
         }
-        final Handler handler = new Handler(); //next reminder in 30 mins
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+
+        new CountDownTimer(1800000, 1000) {
+            public void onFinish() {
+                // When timer is finished
+                // Execute your code here
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putInt("ReminderToLockIn", 0);
                 editor.commit();
-                setRemindertoLockIn();
             }
-        },1800000); //30mins ,1800000
+
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
+
+//        final Handler handler = new Handler(); //next reminder in 30 mins
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                SharedPreferences.Editor editor = prefs.edit();
+//                editor.putInt("ReminderToLockIn", 0);
+//                editor.commit();
+//                setRemindertoLockIn();
+//            }
+//        },60000); //30mins ,1800000
     }
 
     public Vibrator vibration() {
