@@ -37,22 +37,15 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     private Sensor sensor;
     private TextView mTextViewSteps;
     private static final String TAG = "FitActivity";
-    private CircularProgressBar circularProgressBar;
     private String step;
     private String msg;
     private static final String Current_Steps_Now = "CurrentStepsCount";
     private static final String Initial_Count_Key = "FootStepInitialCount";
     String stepsPath = "/steps-count-path";
 
-//    private static final String AMBIENT_UPDATE_ACTION = "com.your.package.action.AMBIENT_STEPS_UPDATE";
-//
-//    private AlarmManager ambientUpdateAlarmManager;
-//    private PendingIntent ambientUpdatePendingIntent;
-//    private BroadcastReceiver ambientUpdateBroadcastReceiver;
-
     private Calendar currentTime;
     private SharedPreferences prefs;
-    private int currentSteps;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,31 +55,12 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         mTextViewSteps = findViewById(R.id.tvStepsCount);
         // Enables Always-on
         setAmbientEnabled();
+        //Initializing step count sensor
         sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         getStepCount();
 
-        circularProgressBar= findViewById(R.id.circularProgressBar);
-        circularProgressBar.setProgressMax(7500);
-        circularProgressBar.setProgressBarColor(Color.YELLOW);
-        circularProgressBar.setBackgroundProgressBarColor(Color.GRAY);
-        circularProgressBar.setProgressBarWidth(7f); // in DP
-        circularProgressBar.setBackgroundProgressBarWidth(3f); // in DP
-        circularProgressBar.setRoundBorder(true);
-        circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
 
-//        ambientUpdateAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//        Intent ambientUpdateIntent = new Intent(AMBIENT_UPDATE_ACTION);
-//        ambientUpdatePendingIntent = PendingIntent.getBroadcast(this, 0, ambientUpdateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        ambientUpdateBroadcastReceiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) { refreshDisplayAndSetNextUpdate(); }
-//        };
-
-
-
-
-       // resetSteps();
     }
     private void getStepCount() {
         SensorManager mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
@@ -94,13 +68,10 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         Sensor mStepDetectSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         mSensorManager.registerListener(this, mStepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mStepDetectSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //resetSteps();
         currentTime = Calendar.getInstance();
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
 
@@ -133,149 +104,28 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
             step = String.valueOf(prefs.getInt("dailyCurrentSteps", -1));
             msg = step + " steps";
             mTextViewSteps.setText(msg);
-            circularProgressBar.setProgressWithAnimation(stepCount); // =1s
             Log.d(TAG, msg);
 
             //display starting steps count to phone app database
         } else
             Log.d(TAG, "Unknown sensor type");
-
     }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.d(TAG, "onAccuracyChanged - accuracy: " + accuracy);
     }
 
-    protected void onResume() {
-        super.onResume();
-
-//        IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
-//        registerReceiver(ambientUpdateBroadcastReceiver, filter);
-//        refreshDisplayAndSetNextUpdate();
-
-    }
+    protected void onResume() { super.onResume(); }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-//        if((currentTime.get(Calendar.HOUR_OF_DAY)==00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
-//            SharedPreferences.Editor editor = prefs.edit();
-//            editor.putInt(Initial_Count_Key, currentSteps);
-//            editor.commit();
-//        }
-//        unregisterReceiver(ambientUpdateBroadcastReceiver);
-//        ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
-//        refreshDisplayAndSetNextUpdate();
-
-    }
+    protected void onPause() { super.onPause(); }
 
     @Override
     protected void onStop() {
         super.onStop();
         sensorManager.registerListener(this, this.sensor, 3);
-//        refreshDisplayAndSetNextUpdate();
     }
 
 
-//    class SendThread extends Thread {
-//        String path;
-//        String message;
-//
-//        //constructor
-//        SendThread(String p, String msg) {
-//            path = p;
-//            message = msg;
-//        }
-//
-//        //sends the message via the thread.  this will send to all wearables connected, but
-//        //since there is (should only?) be one, so no problem.
-//        public void run() {
-//            //first get all the nodes, ie connected wearable devices.
-//            Task<List<Node>> nodeListTask =
-//                    Wearable.getNodeClient(getApplicationContext()).getConnectedNodes();
-//            try {
-//                // Block on a task and get the result synchronously (because this is on a background
-//                // thread).
-//                List<Node> nodes = Tasks.await(nodeListTask);
-//
-//                //Now send the message to each device.
-//                for (Node node : nodes) {
-//                    Task<Integer> sendMessageTask =
-//                            Wearable.getMessageClient(StepsCountActivity.this).sendMessage(node.getId(), path, message.getBytes());
-//
-//                    try {
-//                        // Block on a task and get the result synchronously (because this is on a background
-//                        // thread).
-//                        Integer result = Tasks.await(sendMessageTask);
-//                        Log.v(TAG, "SendThread: message send to " + node.getDisplayName());
-//
-//                    } catch (ExecutionException exception) {
-//                        Log.e(TAG, "Task failed: " + exception);
-//
-//                    } catch (InterruptedException exception) {
-//                        Log.e(TAG, "Interrupt occurred: " + exception);
-//                    }
-//
-//                }
-//
-//            } catch (ExecutionException exception) {
-//                Log.e(TAG, "Task failed: " + exception);
-//
-//            } catch (InterruptedException exception) {
-//                Log.e(TAG, "Interrupt occurred: " + exception);
-//            }
-//        }
-//    }
-
-   /* private static final long AMBIENT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(600000);
-    private void refreshDisplayAndSetNextUpdate() {
-        if (isAmbient()) {
-            // Implement data retrieval and update the screen for ambient mode
-            sensorManager.registerListener(this, this.sensor, 3);
-            if((currentTime.get(Calendar.HOUR_OF_DAY) == 00) && (currentTime.get(Calendar.MINUTE) == 01)){ //&& (currentTime.get(Calendar.SECOND) == 00)) {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt(Initial_Count_Key, currentSteps);
-                editor.commit();
-            }
-
-        } else {
-            // Implement data retrieval and update the screen for interactive mode
-            sensorManager.registerListener(this, this.sensor, 3);
-            if(msg != null) {
-                new StepsCountActivity.SendThread(stepsPath, step).start();
-            }
-        }
-
-        long timeMs = System.currentTimeMillis();
-        // Schedule a new alarm
-        if (isAmbient()) {
-            // Calculate the next trigger time
-            long delayMs = AMBIENT_INTERVAL_MS - (timeMs % AMBIENT_INTERVAL_MS);
-            long triggerTimeMs = timeMs + delayMs;
-            ambientUpdateAlarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    triggerTimeMs,
-                    ambientUpdatePendingIntent);
-        } else {
-            // Calculate the next trigger time for interactive mode
-        }
-    }
-
-    @Override
-    public void onEnterAmbient(Bundle ambientDetails) {
-        super.onEnterAmbient(ambientDetails);
-        refreshDisplayAndSetNextUpdate();
-    }
-
-    @Override
-    public void onUpdateAmbient() {
-        super.onUpdateAmbient();
-        refreshDisplayAndSetNextUpdate();
-    }
-
-    @Override
-    public void onDestroy() {
-        ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
-        super.onDestroy();
-    }*/
 }

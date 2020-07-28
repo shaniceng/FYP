@@ -49,7 +49,6 @@ public class GoogleMapsActivity extends WearableActivity
     private static final int MY_PERMISSION_CODE = 1000;
     private MapFragment mMapFragment;
     private DismissOverlayView mDismissOverlay;
-    private static final LatLng SYDNEY = new LatLng(-33.85704, 151.21522);
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
 
@@ -58,14 +57,12 @@ public class GoogleMapsActivity extends WearableActivity
     private Marker mMarker;
     private LocationRequest mLocationRequest;
 
-    final int MY_PERMISSIONS_REQUEST_WRITE_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_maps);
 
-//        needsLOCATIONPermission();
         mMapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
@@ -75,38 +72,7 @@ public class GoogleMapsActivity extends WearableActivity
             checkLocationPermission();
         }
     }
-//    public void needsLOCATIONPermission(){
-//        if (ContextCompat.checkSelfPermission(GoogleMapsActivity.this,
-//                Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            // Permission is not granted
-//            // Should we show an explanation?
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                    GoogleMapsActivity.this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//
-//                //to simplify, call requestPermissions again
-//                Toast.makeText(GoogleMapsActivity.this,
-//                        "shouldShowRequestPermissionRationale",
-//                        Toast.LENGTH_LONG).show();
-//                ActivityCompat.requestPermissions(GoogleMapsActivity.this,
-//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                        MY_PERMISSIONS_REQUEST_WRITE_LOCATION);
-//            } else {
-//                // No explanation needed; request the permission
-//                ActivityCompat.requestPermissions(GoogleMapsActivity.this,
-//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                        MY_PERMISSIONS_REQUEST_WRITE_LOCATION);
-//            }
-//        }else{
-//            // permission granted
-//
-//        }
-//
-//    }
+
 
     private boolean checkLocationPermission() {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
@@ -160,7 +126,6 @@ public class GoogleMapsActivity extends WearableActivity
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        //mDismissOverlay.show();
     }
 
     @Override
@@ -224,21 +189,13 @@ public class GoogleMapsActivity extends WearableActivity
         longitude=location.getLongitude();
 
         LatLng latLng = new LatLng(latitude,longitude);
-
-        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
-        //cameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).build();
 
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
                 .title("Your position")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         mMarker =mMap.addMarker(markerOptions);
-
-        //Move Camera
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
         if(mGoogleApiClient!=null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -257,8 +214,6 @@ public class GoogleMapsActivity extends WearableActivity
         mLocationRequest.setInterval(1000);
         // Set the fastest update interval to 2 seconds
         mLocationRequest.setFastestInterval(1000);
-//        // Set the minimum displacement
-//        locationRequest.setSmallestDisplacement(2);
 
         // Register listener using the LocationRequest object
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);

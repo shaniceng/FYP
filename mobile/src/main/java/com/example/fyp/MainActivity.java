@@ -127,47 +127,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-   /* public void sendOnChannel1(View v) {
-        String title = "Alert!!!";
-        String message = "You have not reached the sufficient steps for today!";
-
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_message)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
-
-        notificationManager.notify(1, notification);
-    }
-
-    public void Refresh(){
-        Calendar currentTime = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-        String time = "Current Time:" + format.format(currentTime.getTime());
-
-        //set fixed time : eg 7pm=19:00:00
-        int setHour = 13; //testing times only
-        int setMin = 31;
-        int setSec = 00;
-
-        if ((currentTime.get(Calendar.HOUR_OF_DAY) == setHour) && (currentTime.get(Calendar.MINUTE) == setMin)  && (currentTime.get(Calendar.SECOND) == setSec)) {
-            sendOnChannel1(null);
-        }
-        runnable(1000);
-    }
-
-    public void runnable(int milliseconds){
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Refresh();
-            }
-        };
-        handler.postDelayed(runnable, milliseconds);
-    }*/
-
 
 }

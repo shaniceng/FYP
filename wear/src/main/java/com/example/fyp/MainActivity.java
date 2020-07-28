@@ -19,11 +19,13 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.input.RotaryEncoder;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -663,6 +665,19 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if (event.getRepeatCount() == 0) {
+            if (keyCode == KeyEvent.KEYCODE_STEM_1) {
+                startActivity(new Intent(MainActivity.this, TrackActivity.class));
+            }
+            else if (keyCode == KeyEvent.KEYCODE_STEM_2) {
+
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
 }
 
