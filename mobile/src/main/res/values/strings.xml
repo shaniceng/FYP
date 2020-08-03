@@ -13,7 +13,7 @@
     <string name="column1">Resting</string>
     <string name="column2">Avg. resting</string>
     <string name="column3">MAX</string>
-    <string name="heart_rate">HEART RATE</string>
+    <string name="heart_rate">WEEKLY HEART RATE</string>
     <string name="recent_activity">RECENT ACTIVITY</string>
     <string name="intensity_workout_details">1) Becareful not to over-exert yourself as you will be at risk of injuries.\n2) Please wear
     appropriate footwear and clothing for exercising.\n3) Hydrate regularly.</string>

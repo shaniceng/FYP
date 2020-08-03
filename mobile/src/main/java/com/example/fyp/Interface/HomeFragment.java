@@ -122,7 +122,7 @@ public class HomeFragment extends Fragment{
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors, weeklymoderateminsdataref;
+    private DatabaseReference databaseReference, stepsDataBaseRef, lockinDataBaseRef, lockinMODDataBaseRef, maxHRDataref, dataRefStepsFromCompetitors, weeklymoderateminsdataref;
 
     private String currentuser;
     private SharedPreferences prefs;
@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment{
 
     private Activity activity;
 
-    private double fifety, seventyfive;
+    private float fifety, seventyfive;
     private int duration;
     private float mins, sec, activity_heartRate=0;
     private String activity_heart_ratey;
@@ -176,7 +176,7 @@ public class HomeFragment extends Fragment{
 
         swipeRefreshLayout=v.findViewById(R.id.refreshLayout);
 
-        mrecyclerView = v.findViewById(R.id.activity_RV);
+//        mrecyclerView = v.findViewById(R.id.activity_RV);
         stepsCount=v.findViewById(R.id.tvStepsCount);
         HeartRate=v.findViewById(R.id.tvResting_value);
         maxHeartrate=v.findViewById(R.id.tvMAX_value);
@@ -184,14 +184,14 @@ public class HomeFragment extends Fragment{
         circularProgressBar = v.findViewById(R.id.circularProgressBar);
         circularProgressBarHR=v.findViewById(R.id.circularProgressBarModerate);
         //stepsFromCompetitors=v.findViewById(R.id.tv_avrStepsOfCompetitors);
-        moderateMins=v.findViewById(R.id.tvModerateMinsToday);
+//        moderateMins=v.findViewById(R.id.tvModerateMinsToday);
         WeeklyModerateMinsTV=v.findViewById(R.id.tvWeeklyModerateMins);
         MaxFirebaseHR=v.findViewById(R.id.tvMaxHR_fromAge);
         tvTargetHR=v.findViewById(R.id.tvTargetHr);
         tvModMins=v.findViewById(R.id.tvModMinutes);
 
-        btnShowDaily=v.findViewById(R.id.btnDailyHeartRate);
-        btnShowWeekly=v.findViewById(R.id.btnWeeklyHeartRate);
+//        btnShowDaily=v.findViewById(R.id.btnDailyHeartRate);
+//        btnShowWeekly=v.findViewById(R.id.btnWeeklyHeartRate);
 
         //for pop up
         btnClosePopup=v.findViewById(R.id.btnclosePopUp);
@@ -275,20 +275,19 @@ public class HomeFragment extends Fragment{
         getRadioText();
         Refresh();
 
-        btnShowDaily.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                retrieveData();
-                showGraph();
-            }
-        });
-        btnShowWeekly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                retriveWeeklyData();
-                showWeeklyGraph();
-            }
-        });
+//        btnShowDaily.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                retrieveData();
+//                showGraph();
+//            }
+//        });
+//        btnShowWeekly.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -446,6 +445,7 @@ public class HomeFragment extends Fragment{
                     UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                     int agey = Integer.parseInt(userProfile.getUserAge().replaceAll("[\\D]", ""));
                     MaxHeartRate = 220 - agey;
+
                     if (!prefs.contains("GET_MAX_HEART_RATE_FROM_AGE")) {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
@@ -456,8 +456,26 @@ public class HomeFragment extends Fragment{
                         editor.commit();
                     }
                     MaxFirebaseHR.setText(String.valueOf(prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate)) + "BPM");
-                     fifety= 0.5 * prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
-                     seventyfive= 0.75 * prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
+                    fifety= (float) (0.5 * prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate));
+                    if (!prefs.contains("GET_FIFETY_HEART_RATE_FROM_AGE")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putFloat("GET_FIFETY_HEART_RATE_FROM_AGE",  fifety);
+                        editor.commit();
+                    } else {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putFloat("GET_FIFETY_HEART_RATE_FROM_AGE", fifety);
+                        editor.commit();
+                    }
+                    seventyfive= (float) (0.75 * prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate));
+                    if (!prefs.contains("GET_SEVENTYFIVE_HEART_RATE_FROM_AGE")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putFloat("GET_SEVENTYFIVE_HEART_RATE_FROM_AGE",  seventyfive);
+                        editor.commit();
+                    } else {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putFloat("GET_SEVENTYFIVE_HEART_RATE_FROM_AGE", seventyfive);
+                        editor.commit();
+                    }
                     tvTargetHR.setText("Target activity HR: \n" + fifety + "BPM - " + seventyfive + "BPM");
                 }
             }
@@ -468,13 +486,13 @@ public class HomeFragment extends Fragment{
         });
     }
     //    //for getDataRefOfStepsOfCompetitors to convert long to int
-    public static int safeLongToInt(long l) {
-        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException
-                    (l + " cannot be cast to int without changing its value.");
-        }
-        return (int) l;
-    }
+//    public static int safeLongToInt(long l) {
+//        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+//            throw new IllegalArgumentException
+//                    (l + " cannot be cast to int without changing its value.");
+//        }
+//        return (int) l;
+//    }
 //    private void getDataRefOfStepsOfCompetitors(){
 //        dataRefStepsFromCompetitors.child("Steps Count").addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -503,46 +521,46 @@ public class HomeFragment extends Fragment{
 //        });
 //    }
 
-    private void showGraph() {
-        graphView.removeAllSeries();
-        graphView.addSeries(lineGraphSeries);
-        graphView.removeSeries(lineGraphWeekly);
-        graphView.setTitle("Heart Rate(BPM)");
-        graphView.getViewport().setMinX(new Date().getTime()-10800000);
-        graphView.getViewport().setMaxX(new Date().getTime());
-        graphView.getViewport().setMinY(50);
-        graphView.getViewport().setMaxY(170);
-        graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setScalable(true);
-
-        lineGraphSeries.setDrawBackground(true);
-
-        lineGraphSeries.setBackgroundColor(Color.argb(100, 163, 180, 195));
-        lineGraphSeries.setColor(Color.argb(255, 0, 51, 102));
-        lineGraphSeries.setDrawDataPoints(true);
-        lineGraphSeries.setDataPointsRadius(15);
-        lineGraphSeries.setThickness(10);
-        graphView.getGridLabelRenderer().setNumHorizontalLabels(3);
-        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
-            @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if(isValueX) {
-                    return simpleDateFormat.format(new Date((long) value));
-                }else {
-                    return super.formatLabel(value, isValueX);
-                }
-
-            }
-        });
-        lineGraphSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
-            @Override
-            public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(activity, "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void showGraph() {
+//        graphView.removeAllSeries();
+//        graphView.addSeries(lineGraphSeries);
+//        graphView.removeSeries(lineGraphWeekly);
+//        graphView.setTitle("Heart Rate(BPM)");
+//        graphView.getViewport().setMinX(new Date().getTime()-10800000);
+//        graphView.getViewport().setMaxX(new Date().getTime());
+//        graphView.getViewport().setMinY(50);
+//        graphView.getViewport().setMaxY(170);
+//        graphView.getViewport().setYAxisBoundsManual(true);
+//        graphView.getViewport().setXAxisBoundsManual(true);
+//        graphView.getViewport().setScrollable(true);
+//        graphView.getViewport().setScalable(true);
+//
+//        lineGraphSeries.setDrawBackground(true);
+//
+//        lineGraphSeries.setBackgroundColor(Color.argb(100, 163, 180, 195));
+//        lineGraphSeries.setColor(Color.argb(255, 0, 51, 102));
+//        lineGraphSeries.setDrawDataPoints(true);
+//        lineGraphSeries.setDataPointsRadius(15);
+//        lineGraphSeries.setThickness(10);
+//        graphView.getGridLabelRenderer().setNumHorizontalLabels(3);
+//        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+//            @Override
+//            public String formatLabel(double value, boolean isValueX) {
+//                if(isValueX) {
+//                    return simpleDateFormat.format(new Date((long) value));
+//                }else {
+//                    return super.formatLabel(value, isValueX);
+//                }
+//
+//            }
+//        });
+//        lineGraphSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
+//            @Override
+//            public void onTap(Series series, DataPointInterface dataPoint) {
+//                Toast.makeText(activity, "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     private void showWeeklyGraph() {
         graphView.removeAllSeries();
@@ -693,38 +711,38 @@ public class HomeFragment extends Fragment{
         int y=currentHeartRate;
         PointValue pointValue = new PointValue(x,y);
         databaseReference.child(date).child(id).setValue(pointValue);
-        retrieveData();
+        retriveWeeklyData();
     }
 
-    private void retrieveData() {
-        databaseReference.child(date).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
-                int index =0;
-
-                if(dataSnapshot.hasChildren()){
-                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-                        PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
-                        dataVals[index] = new DataPoint(pointValue.getxValue(),pointValue.getyValue());
-                        index++;
-
-                        avrHeartRate.add(pointValue.getyValue());
-                        double heartRate=calculateAverageStepsOfCompetitors(avrHeartRate);
-                        ratedMaxHR.setText(String.format("%.1f", heartRate) + "BPM");
-                    }
-                    lineGraphSeries.resetData(dataVals);
-
-                }else{
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
+//    private void retrieveData() {
+//        databaseReference.child(date).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
+//                int index =0;
+//
+//                if(dataSnapshot.hasChildren()){
+//                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+//                        PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
+//                        dataVals[index] = new DataPoint(pointValue.getxValue(),pointValue.getyValue());
+//                        index++;
+//
+//                        avrHeartRate.add(pointValue.getyValue());
+//                        double heartRate=calculateAverageStepsOfCompetitors(avrHeartRate);
+//                        ratedMaxHR.setText(String.format("%.1f", heartRate) + "BPM");
+//                    }
+//                    lineGraphSeries.resetData(dataVals);
+//
+//                }else{
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//    }
 
     private void retriveWeeklyData() {
             Query chatQuery = databaseReference.orderByChild(currentuser).limitToLast(7);
@@ -848,6 +866,7 @@ public class HomeFragment extends Fragment{
         String id = lockinDataBaseRef.push().getKey();
         LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
         lockinDataBaseRef.child(id).setValue(lockInValue);
+        insertModerateMins();
         RetrieveLockInData();
     }
 
@@ -892,6 +911,7 @@ public class HomeFragment extends Fragment{
                     }
                     if(prefs.getLong("CHECK_IF_DISPLAYED_DIALOG",count-1)!=count) {
                         ShowAlertDialogWhenCompleteActivity();
+                        //
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putLong("CHECK_IF_DISPLAYED_DIALOG", count);
                         editor.commit();
@@ -917,7 +937,7 @@ public class HomeFragment extends Fragment{
     private void ShowAlertDialogWhenCompleteActivity(){
         MaxHeartRate= prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
         if((activity_heartRate!=0)&&(MaxHeartRate!=0)) {
-            if (activity_heartRate>= MaxHeartRate) {
+            if (activity_heartRate>seventyfive || activity_heartRate<fifety) { //shud be in between 50%-75%
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setMessage("Your average heart rate for " + activity_heart_ratey + " is: " + activity_heartRate + "BPM.\nPlease slow down as your average heart rate is very high.")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -945,6 +965,24 @@ public class HomeFragment extends Fragment{
             }
         }
 
+    }
+
+    private void insertModerateMins(){
+        if((activity_heartRate!=0)&&(MaxHeartRate!=0)) {
+            if (activity_heartRate <= seventyfive || activity_heartRate >= fifety) { //if hr is under this range
+                //send data to firebase
+                Calendar currentTime = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                date = dateFormat.format(currentTime.getTime()).replaceAll("[\\D]","");
+                lockinMODDataBaseRef = firebaseDatabase.getReference("Moderate Mins/" +currentuser + "/" + date );
+
+                SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
+                String cTime = format.format(currentTime.getTime());
+                String id = lockinDataBaseRef.push().getKey();
+                LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
+                lockinMODDataBaseRef.child(id).setValue(lockInValue);
+            }
+        }
     }
 
     private void insertWeeklyModerateMins(){
@@ -1338,8 +1376,10 @@ public class HomeFragment extends Fragment{
                             retrieveMaxHR();
                             retrieveWeeklyModerateMins();
                             RetrieveLockInData();
-                            retrieveData();
-                            showGraph();
+//                            retrieveData();
+//                            showGraph();
+                            retriveWeeklyData();
+                            showWeeklyGraph();
 
                         }
                     });

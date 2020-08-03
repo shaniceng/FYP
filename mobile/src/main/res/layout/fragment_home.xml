@@ -642,45 +642,45 @@
 <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-                    <TextView
-                        android:id="@+id/tvRecentActivity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvRecentActivity"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
 
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/recent_activity"
-                        android:textColor="#143981"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+<!--                        android:layout_marginStart="24dp"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:fontFamily="sans-serif"-->
+<!--                        android:text="@string/recent_activity"-->
+<!--                        android:textColor="#143981"-->
+<!--                        android:textSize="18sp"-->
+<!--                        android:textStyle="bold"-->
 
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/activity_RV">
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:id="@+id/activity_RV">-->
 
-                    </androidx.recyclerview.widget.RecyclerView>
+<!--                    </androidx.recyclerview.widget.RecyclerView>-->
 
-                    <TextView
-                        android:id="@+id/tvModerateMinsToday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Moderate exercise today: mins"
-                        android:textAlignment="center"
-                        android:textColor="@color/azure"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/activity_RV"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvModerateMinsToday"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Moderate exercise today: mins"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:textColor="@color/azure"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:gravity="center"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/activity_RV"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
 
                 </LinearLayout>
@@ -695,7 +695,8 @@
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="#DFDBDB"
                 android:background="@drawable/border_comparison"
-                android:elevation="5dp">
+                android:elevation="5dp"
+                android:layout_marginBottom="8dp">
 
                 <!-- Heart rate section -->
                 <LinearLayout
@@ -898,34 +899,34 @@
                         android:layout_height="wrap_content"
                         android:padding="8dp">
 
-                        <Button
-                            android:id="@+id/btnDailyHeartRate"
-                            android:layout_width="175dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:background="@drawable/round"
-                            android:backgroundTint="@color/azure"
-                            android:text="Daily"
-                            android:textColor="#ffffff"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/btnWeeklyHeartRate"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <Button-->
+<!--                            android:id="@+id/btnDailyHeartRate"-->
+<!--                            android:layout_width="175dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="8dp"-->
+<!--                            android:background="@drawable/round"-->
+<!--                            android:backgroundTint="@color/azure"-->
+<!--                            android:text="Daily"-->
+<!--                            android:textColor="#ffffff"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/btnWeeklyHeartRate"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <Button
-                            android:id="@+id/btnWeeklyHeartRate"
-                            android:layout_width="175dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:text="Weekly"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/btnDailyHeartRate"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:background="@drawable/round"
-                            android:backgroundTint="@color/azure"
-                            android:textColor="#ffffff"/>
+<!--                        <Button-->
+<!--                            android:id="@+id/btnWeeklyHeartRate"-->
+<!--                            android:layout_width="175dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="8dp"-->
+<!--                            android:layout_marginEnd="8dp"-->
+<!--                            android:text="Weekly"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/btnDailyHeartRate"-->
+<!--                            app:layout_constraintTop_toTopOf="parent"-->
+<!--                            android:background="@drawable/round"-->
+<!--                            android:backgroundTint="@color/azure"-->
+<!--                            android:textColor="#ffffff"/>-->
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
