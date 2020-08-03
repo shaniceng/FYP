@@ -898,7 +898,7 @@ public class HomeFragment extends Fragment{
                             activity_heart_ratey=lockInValue.getActivity();
                             activity_heartRate=Float.parseFloat(lockInValue.getAvrHeartRate().replaceAll("[^0-9.]", ""));
                         }
-                        InsertRecyclerView();
+//                        InsertRecyclerView();
 
                         if(lockInValue.getDuration()!=null) {
                             duration = Integer.parseInt(lockInValue.getDuration().replaceAll("[\\D]", ""));
@@ -940,7 +940,7 @@ public class HomeFragment extends Fragment{
     private void ShowAlertDialogWhenCompleteActivity(){
         MaxHeartRate= prefs.getInt("GET_MAX_HEART_RATE_FROM_AGE", MaxHeartRate);
         if((activity_heartRate!=0)&&(MaxHeartRate!=0)) {
-            if (activity_heartRate>seventyfive || activity_heartRate<fifety) { //shud be in between 50%-75%
+            if (activity_heartRate>seventyfive ) { //shud be in between 50%-75%
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setMessage("Your average heart rate for " + activity_heart_ratey + " is: " + activity_heartRate + "BPM.\nPlease slow down as your average heart rate is very high.")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -952,7 +952,20 @@ public class HomeFragment extends Fragment{
                 AlertDialog alertDialog = builder.create();
                 alertDialog.setTitle("Congratulations on completing a workout!");
                 alertDialog.show();
-            } else {
+            } else if (activity_heartRate<fifety) { //shud be in between 50%-75%
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage("Your average heart rate for " + activity_heart_ratey + " is: " + activity_heartRate + "BPM.\nYour average heart rate is too low for a moderate exercise.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.setTitle("Congratulations on completing a workout!");
+                alertDialog.show();
+            }
+            else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setMessage("Your average heart rate for " + activity_heart_ratey + " is: " + activity_heartRate
                         + "BPM.\nThis is a moderate intensity workout" + "\nYou are doing great!\nKeep it up! ")
@@ -1256,13 +1269,13 @@ public class HomeFragment extends Fragment{
         }
 
         //insert activity into home page
-        public void InsertRecyclerView() {
-            mlayoutManager = new LinearLayoutManager(getContext());
-            mrecyclerView.setHasFixedSize(true);
-            mAdapter = new CustomAdapter(mDataSet, mTimeSet, currentTimeA, image, activityHeartRate);
-            mrecyclerView.setLayoutManager(mlayoutManager);
-            mrecyclerView.setAdapter(mAdapter);
-        }
+//        public void InsertRecyclerView() {
+//            mlayoutManager = new LinearLayoutManager(getContext());
+//            mrecyclerView.setHasFixedSize(true);
+//            mAdapter = new CustomAdapter(mDataSet, mTimeSet, currentTimeA, image, activityHeartRate);
+//            mrecyclerView.setLayoutManager(mlayoutManager);
+//            mrecyclerView.setAdapter(mAdapter);
+//        }
 
 
     private void startAlarm() {
