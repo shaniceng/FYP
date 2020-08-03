@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Control_Group</string>
     <!--
@@ -15,6 +16,7 @@
     <string name="title_activity_language">LanguageActivity</string>
 
     //main activity
-    <string name="track_activity">TRACK ACTIVITY</string>
+    <string name="track_activity">追踪活动</string>
+
 
 </resources>

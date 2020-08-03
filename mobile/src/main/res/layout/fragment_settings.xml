@@ -107,7 +107,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:text="My Badges"
+                    android:text="@string/My_Badges"
                     android:textColor="@color/azure"
                     android:textSize="18sp" />
 
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Personal info"
+                    android:text="@string/Personal_info"
                     android:textAlignment="center"
                     android:textColor="@color/azure"
                     android:textSize="18sp" />
@@ -217,7 +217,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Age "
+                    android:text="@string/Age"
                     android:textColor="@color/azure"
                     android:textSize="13sp"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -237,7 +237,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Gender "
+                    android:text="@string/Gender"
                     android:textColor="@color/azure"
                     android:textSize="13sp"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -257,7 +257,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Height"
+                    android:text="@string/Height"
                     android:textColor="@color/azure"
                     android:textSize="13sp"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -277,7 +277,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Weight"
+                    android:text="@string/Weight"
                     android:textColor="@color/azure"
                     android:textSize="13sp"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -298,7 +298,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Birthday"
+                    android:text="@string/Birthday"
                     android:textColor="@color/azure"
                     android:textSize="13sp"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -318,7 +318,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Prompt timing"
+                    android:text="@string/Prompt_timing"
                     android:textColor="@color/azure"
                     android:textSize="13sp"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -336,6 +336,41 @@
 
             </LinearLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_blue"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:elevation="5dp">
+
+
+            <Button
+                android:id="@+id/En_btn"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="60dp"
+                android:text="English"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/Chi_btn"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="60dp"
+                android:text="中文"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="93dp"
@@ -345,7 +380,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="64dp"
                 android:background="@drawable/rounded_lightblue"
-                android:text="Logout"
+                android:text="@string/Logout"
                 android:textColor="@color/azure" />
         </LinearLayout>
     </ScrollView>

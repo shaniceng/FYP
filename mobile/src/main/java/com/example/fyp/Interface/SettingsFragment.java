@@ -1,10 +1,14 @@
 package com.example.fyp.Interface;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -33,13 +38,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SettingsFragment extends Fragment {
-    private Button editProfile, logout;
+    private Button editProfile, logout,engLang,chiLang;
     private TextView name, email, age, gender, height, weight, birthday, batt, radioButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -59,6 +67,11 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        loadLocale();
+
+        //ActionBar actionBar = getActivity().getSupportActionBar();
+        //actionBar.setTitle(getResources().getString(R.string.app_name));
+
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_settings, container, false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
@@ -72,6 +85,9 @@ public class SettingsFragment extends Fragment {
         birthday=v.findViewById(R.id.tvBirthday);
         batt=v.findViewById(R.id.tvBatteryPercentage);
         radioButton=v.findViewById(R.id.tvRadioButton);
+        engLang=v.findViewById(R.id.En_btn);
+        chiLang=v.findViewById(R.id.Chi_btn);
+
 
         iv3days=v.findViewById(R.id.iV3_days);
         iv1week=v.findViewById(R.id.iV1_week);
@@ -100,6 +116,23 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        engLang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    setLocale("en");
+                refresh();
+                    //recreate();
+
+            }
+        });
+        chiLang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLocale("zh");
+                refresh();
+                //recreate();
+            }
+        });
 
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
@@ -108,9 +141,9 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                name.setText("Hello, "+userProfile.getUserName());
+                name.setText(getResources().getString(R.string.Hello) + userProfile.getUserName());
                 email.setText(userProfile.getUserEmail());
-                age.setText(userProfile.getUserAge() + " years old");
+                age.setText(userProfile.getUserAge() + getResources().getString(R.string.years_old));
                 if(userProfile.getUserGender() ==  "F"){gender.setText("Female"); }
                 else if(userProfile.getUserGender() ==  "M"){gender.setText("Male"); }
                 else {gender.setText(userProfile.getUserGender());}
@@ -138,6 +171,30 @@ public class SettingsFragment extends Fragment {
 
 
         return v;
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale .setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getActivity().getBaseContext().getResources().updateConfiguration(config,getActivity().getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences("Settings",MODE_PRIVATE).edit();
+        editor.putString("My_Lang",lang);
+        editor.apply();
+    }
+
+    public void loadLocale(){
+        SharedPreferences prefs = getActivity().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Lang","");
+        setLocale(language);
+    }
+    public void refresh(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false);
+        }
+        ft.detach(this).attach(this).commit();
     }
 
     public class MessageReceiver extends BroadcastReceiver {

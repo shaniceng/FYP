@@ -36,7 +36,7 @@
             android:name=".HistoryTab.HistoryActivity"
             android:label="History"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".CreateAccActivity" />
         <activity android:name=".Interface.TimerActivity" />
         <activity android:name=".Interface.MapsActivity" />
@@ -69,7 +69,7 @@
         <receiver
             android:name=".AlertReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
     </application>
 
 </manifest>

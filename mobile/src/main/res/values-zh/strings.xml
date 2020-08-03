@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FYP_Control_Group</string>
+    <string name="title_activity_menu">菜单活动</string>
+    <string name="title_home">家</string>
+    <string name="title_map">地图</string>
+    <string name="title_settings">设定值</string>
+
+    //used in fragment home
+    <string name="steps_count">步数T</string>
+    <string name="moderate_activity">适度的活动</string>
+    <string name="steps">脚步</string>
+    <string name="mins">分钟</string>
+    <string name="column1">休息的</string>
+    <string name="column2">平均休息</string>
+    <string name="column3">最高</string>
+    <string name="heart_rate">每周心率</string>
+    <string name="recent_activity">近期活动</string>
+    <string name="intensity_workout_details">1) 注意不要过度劳累自己，因为这样很容易受伤。 \n2) 请穿着适当的鞋类和衣物进行锻炼。
+        \n3)定期补水。</string>
+
+    //used in fragment setting
+    <string name="Hello">你好, </string>
+
+    //not used
+    <string name="b3_DAYS_streak_to_UNLOCK">3 DAYS streak to UNLOCK</string>
+    <string name="b1_WEEK_streak_to_UNLOCK">1 WEEK streak to UNLOCK</string>
+    <string name="b3_WEEK_streak_to_UNLOCK">3 WEEK streak to UNLOCK</string>
+    <string name="b1_MONTH_streak_to_UNLOCK">1 MONTHS streak to UNLOCK</string>
+    <string name="b3_MONTH_streak_to_UNLOCK">3 MONTHS streak to UNLOCK</string>
+    <string name="b6_MONTH_streak_to_UNLOCK">6 MONTHS streak to UNLOCK</string>
+    //
+
+    <string name="My_Badges">徽章</string>
+    <string name="Personal_info">个人信息</string>
+    <string name="Age">年龄</string>
+    <string name="years_old">岁</string>
+    <string name="Gender">性别</string>
+    <string name="Height">高度</string>
+    <string name="Weight">重量</string>
+    <string name="Birthday">生日</string>
+    <string name="Prompt_timing">及时的时机</string>
+    <string name="Logout">登出</string>
+    <string name="save">保存</string>
+    <string name="Battery">电池</string>
+    <string name="E_Age">年龄: </string>
+    <string name="E_Gender">性别: </string>
+    <string name="E_Height">高度: </string>
+    <string name="E_Weight">重量: </string>
+    <string name="E_Birthday">生日: </string>
+    <string name="Preferred_time_for_notification_prompt">通知提示的首选时间:</string>
+
+
+    <string name="action_settings">Settings</string>
+</resources>
