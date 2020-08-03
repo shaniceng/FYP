@@ -985,7 +985,7 @@ public class HomeFragment extends Fragment{
 
     private void insertModerateMins(){
         if((activity_heartRate!=0)&&(MaxHeartRate!=0)) {
-            if (activity_heartRate <= seventyfive || activity_heartRate >= fifety) { //if hr is under this range
+            if (activity_heartRate <= seventyfive && activity_heartRate >= fifety) { //if hr is under this range
                 //send data to firebase
                 Calendar currentTime = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -1076,20 +1076,21 @@ public class HomeFragment extends Fragment{
         public class MessageReceiver extends BroadcastReceiver {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (!prefs.contains("HeartRateFromWear")) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("HeartRateFromWear", 0);
-                    editor.commit();
-                }
-                if (!prefs.contains("ActivityFromWear")) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("ActivityFromWear", "null");
-                    editor.commit();
-                }
+
 
                 if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null
                         || intent.getStringExtra("activityTrackerHeartRate")!=null)
                 {
+                    if (!prefs.contains("HeartRateFromWear")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("HeartRateFromWear", 0);
+                        editor.commit();
+                    }
+                    if (!prefs.contains("ActivityFromWear")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("ActivityFromWear", null);
+                        editor.commit();
+                    }
                     if (intent.getStringExtra("timing") != null) {
                         time = intent.getStringExtra("timing");
                     }
@@ -1097,7 +1098,7 @@ public class HomeFragment extends Fragment{
                         activityTrackheartRate = intent.getStringExtra("activityTrackerHeartRate");
                     }
                     else if ((intent.getStringExtra("message") != null) &&
-                            ((intent.getStringExtra("message") != prefs.getString("ActivityFromWear", "null")))) {
+                            ((intent.getStringExtra("message") != prefs.getString("ActivityFromWear", null)))) {
                         message = intent.getStringExtra("message");
                         Log.v(TAG, "Main activity received message: " + message);
                             insertLockInData();
