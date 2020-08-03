@@ -1081,11 +1081,6 @@ public class HomeFragment extends Fragment{
                 if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null
                         || intent.getStringExtra("activityTrackerHeartRate")!=null)
                 {
-                    if (!prefs.contains("HeartRateFromWear")) {
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("HeartRateFromWear", 0);
-                        editor.commit();
-                    }
                     if (!prefs.contains("ActivityFromWear")) {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("ActivityFromWear", null);
@@ -1108,6 +1103,11 @@ public class HomeFragment extends Fragment{
                     }
                 }
                 else if (intent.getStringExtra("heartRate") != null ){
+                    if (!prefs.contains("HeartRateFromWear")) {
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("HeartRateFromWear", 0);
+                        editor.commit();
+                    }
                         heart = intent.getStringExtra("heartRate");
                         Log.v(TAG, "Main activity received message: " + message);
                         HeartRate.setText(heart);
