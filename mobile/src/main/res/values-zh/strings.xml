@@ -40,6 +40,7 @@
     <string name="Weight">重量</string>
     <string name="Birthday">生日</string>
     <string name="Prompt_timing">及时的时机</string>
+    <string name="Language">语言</string>
     <string name="Logout">登出</string>
     <string name="save">保存</string>
     <string name="Battery">电池</string>
@@ -52,4 +53,5 @@
 
 
     <string name="action_settings">Settings</string>
+
 </resources>

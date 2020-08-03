@@ -16,7 +16,15 @@
     <string name="title_activity_language">LanguageActivity</string>
 
     //main activity
+
     <string name="track_activity">追踪活动</string>
+    <string name="heart_rate">心率</string>
+    <string name="steps_count">步数</string>
+    <string name="google_map">谷歌地图</string>
+    <string name="language">语言E</string>
+    <string name="off_sensor">关闭传感器</string>
+    <string name="on_sensor">在传感器上</string>
+
 
 
 </resources>

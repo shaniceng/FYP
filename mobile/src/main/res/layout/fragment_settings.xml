@@ -349,24 +349,57 @@
             android:padding="15dp"
             android:elevation="5dp">
 
+            <LinearLayout
+                android:id="@+id/linearLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="15dp"
+                tools:layout_editor_absoluteY="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/Language"
+                    android:textAlignment="center"
+                    android:textColor="@color/azure"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray" />
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/En_btn"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="60dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round"
+                android:backgroundTint="@color/azure"
                 android:text="English"
+                android:textColor="#ffffff"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
 
             <Button
                 android:id="@+id/Chi_btn"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="60dp"
+                android:background="@drawable/round"
+                android:backgroundTint="@color/azure"
                 android:text="中文"
+                android:textColor="#ffffff"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

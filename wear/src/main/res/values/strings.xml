@@ -16,5 +16,12 @@
 
     //main activity
     <string name="track_activity">TRACK ACTIVITY</string>
+    <string name="heart_rate">HEART RATE</string>
+    <string name="steps_count">STEPS COUNT</string>
+    <string name="google_map">GOOGLE MAP</string>
+    <string name="language">LANGUAGE</string>
+    <string name="off_sensor">OFF SENSOR</string>
+    <string name="on_sensor">ON SENSOR</string>
+
 
 </resources>

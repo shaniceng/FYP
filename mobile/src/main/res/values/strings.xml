@@ -39,6 +39,7 @@
     <string name="Weight">Weight</string>
     <string name="Birthday">Birthday</string>
     <string name="Prompt_timing">Prompt timing</string>
+    <string name="Language">Language</string>
     <string name="Logout">Logout</string>
     <string name="save">SAVE</string>
     <string name="Battery">Battery</string>

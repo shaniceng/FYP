@@ -18,15 +18,21 @@ import java.util.Locale;
 public class LanguageActivity extends WearableActivity {
 
     private Button engbtn, chibtn;
+    private TextView selectedlanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale();
+
+
         setContentView(R.layout.activity_language);
 
         engbtn = findViewById(R.id.btn_eng);
         chibtn = findViewById(R.id.btn_chi);
+        selectedlanguage=findViewById(R.id.tvSelectedLanguage);
+
+
 
         engbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +59,12 @@ public class LanguageActivity extends WearableActivity {
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
         editor.putString("My_Lang", lang);
+
+        if(lang == "en")
+        {selectedlanguage.setText("Selected Language: English");}
+        if(lang == "zh")
+        {selectedlanguage.setText("Selected Language: 中文");}
+
         editor.apply();
     }
 

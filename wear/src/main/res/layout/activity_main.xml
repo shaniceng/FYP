@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@color/babyPink"
-                    android:text="Heart Rate"
+                    android:text="@string/heart_rate"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:drawableLeft="@drawable/heart"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="#CDDC39"
-                    android:text="Steps Count"
+                    android:text="@string/steps_count"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:drawableLeft="@drawable/foot_steps"
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="#8AD38B"
-                    android:text="Google Map"
+                    android:text="@string/google_map"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:paddingTop="5dp"
@@ -114,7 +114,7 @@
                     android:background="@color/grey"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:text="Language"
+                    android:text="@string/language"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:drawableLeft="@drawable/directional"
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:background="#850000"
-                    android:text="Off sensor" />
+                    android:text="@string/off_sensor" />
 
                 <Button
                     android:id="@+id/btnOnHeartRate"
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="42dp"
                     android:background="#004E01"
-                    android:text="on sensor" />
+                    android:text="@string/on_sensor" />
 
             </LinearLayout>
         </ScrollView>
