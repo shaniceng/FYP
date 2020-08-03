@@ -869,7 +869,6 @@ public class HomeFragment extends Fragment{
         String id = lockinDataBaseRef.push().getKey();
         LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
         lockinDataBaseRef.child(id).setValue(lockInValue);
-        insertModerateMins();
         RetrieveLockInData();
     }
 
@@ -981,24 +980,6 @@ public class HomeFragment extends Fragment{
             }
         }
 
-    }
-
-    private void insertModerateMins(){
-        if((activity_heartRate!=0)&&(MaxHeartRate!=0)) {
-            if (activity_heartRate <= seventyfive && activity_heartRate >= fifety) { //if hr is under this range
-                //send data to firebase
-                Calendar currentTime = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                date = dateFormat.format(currentTime.getTime()).replaceAll("[\\D]","");
-                lockinMODDataBaseRef = firebaseDatabase.getReference("Moderate Mins/" +currentuser + "/" + date );
-
-                SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
-                String cTime = format.format(currentTime.getTime());
-                String id = lockinDataBaseRef.push().getKey();
-                LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
-                lockinMODDataBaseRef.child(id).setValue(lockInValue);
-            }
-        }
     }
 
     private void insertWeeklyModerateMins(){
