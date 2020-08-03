@@ -917,8 +917,8 @@ public class HomeFragment extends Fragment{
                         editor.commit();
                     }
                     insertWeeklyModerateMins();
-                    double mmarray=calculateSumOfModerateMins(mModerateMinsArray);
-                    moderateMins.setText("Moderate exercise today: " + String.format("%.1f",mmarray ) + "mins");
+//                    double mmarray=calculateSumOfModerateMins(mModerateMinsArray);
+//                    moderateMins.setText("Moderate exercise today: " + String.format("%.1f",mmarray ) + "mins");
 
 
                 }else{
