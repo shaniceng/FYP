@@ -54,4 +54,8 @@
 
     <string name="action_settings">Settings</string>
 
+
+    //MAP LOCATION NAMES (leave at bottom)
+    <string name="Bishan_Ang_Mo_Kio_Park">碧山－宏茂橋公園</string>
+
 </resources>

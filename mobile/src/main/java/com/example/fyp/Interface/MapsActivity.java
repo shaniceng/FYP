@@ -376,7 +376,7 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
         InsertCheckDistance("Marine Parade Road Park",SphericalUtil.computeDistanceBetween(Marine_Parade_Road_Park,latLng));
         LatLng Joo_Chiat_Terrace_Interim_Park = new LatLng (1.3145,103.9017);
         mMap.addMarker(new MarkerOptions().position(Joo_Chiat_Terrace_Interim_Park).title("Joo Chiat Terrace Interim Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("AJoo Chiat Terrace Interim Park",SphericalUtil.computeDistanceBetween(Joo_Chiat_Terrace_Interim_Park,latLng));
+        InsertCheckDistance("Joo Chiat Terrace Interim Park",SphericalUtil.computeDistanceBetween(Joo_Chiat_Terrace_Interim_Park,latLng));
         LatLng Ceylon_Road_Interim_Park = new LatLng (1.309867, 103.899647);
         mMap.addMarker(new MarkerOptions().position(Ceylon_Road_Interim_Park).title("Ceylon Road Interim Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
         InsertCheckDistance("Ceylon Road Interim Park",SphericalUtil.computeDistanceBetween(Ceylon_Road_Interim_Park,latLng));
@@ -686,8 +686,8 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
         mMap.addMarker(new MarkerOptions().position(Ang_Mo_Kio_Town_Garden_West).title("Ang Mo Kio Town Garden West").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
         InsertCheckDistance("Ang Mo Kio Town Garden West",SphericalUtil.computeDistanceBetween(Ang_Mo_Kio_Town_Garden_West,latLng));
         LatLng Bishan_Ang_Mo_Kio_Park = new LatLng(1.3634088, 103.8435614);
-        mMap.addMarker(new MarkerOptions().position(Bishan_Ang_Mo_Kio_Park).title("Bishan-Ang Mo Kio Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("Bishan-Ang Mo Kio Park",SphericalUtil.computeDistanceBetween(Bishan_Ang_Mo_Kio_Park,latLng));
+        mMap.addMarker(new MarkerOptions().position(Bishan_Ang_Mo_Kio_Park).title(getResources().getString(R.string.Bishan_Ang_Mo_Kio_Park)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        InsertCheckDistance(getResources().getString(R.string.Bishan_Ang_Mo_Kio_Park),SphericalUtil.computeDistanceBetween(Bishan_Ang_Mo_Kio_Park,latLng));
         LatLng Gelenggang_Park = new LatLng (1.3734,103.8296);
         mMap.addMarker(new MarkerOptions().position(Gelenggang_Park).title("Gelenggang Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
         InsertCheckDistance("Gelenggang Park",SphericalUtil.computeDistanceBetween(Gelenggang_Park,latLng));
@@ -749,6 +749,7 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
         LatLng TreeTop_Walk = new LatLng(1.3607287, 103.8125215);
         LatLng Neram_Park = new LatLng(1.3856951, 103.8658256);
         LatLng MacRitchie_Trail = new LatLng(1.3419705, 103.8348653);
+
 
 
         mAdapter = new ParkAdapter(ParkDetails,this);

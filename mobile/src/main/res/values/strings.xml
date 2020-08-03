@@ -52,4 +52,14 @@
 
 
     <string name="action_settings">Settings</string>
+
+
+    //MAP LOCATION NAMES (leave at bottom)
+    <string name="Admiralty_Park">Admiralty Park</string>
+    <string name="Woodlands_Waterfront_Park">Woodlands Waterfront Park</string>
+    <string name="Marsiling_Park">Marsiling Park</string>
+    <string name="Woodlands_Town_Part_East">Woodlands Town Part East</string>
+
+    <string name="Bishan_Ang_Mo_Kio_Park">Bishan-Ang Mo Kio Park</string>
+
 </resources>
