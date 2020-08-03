@@ -74,6 +74,7 @@ import com.jjoe64.graphview.series.Series;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -582,6 +583,14 @@ public class HomeFragment extends Fragment{
         lineGraphWeekly.setDrawDataPoints(true);
         lineGraphWeekly.setDataPointsRadius(15);
         lineGraphWeekly.setThickness(10);
+        lineGraphWeekly.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                DecimalFormat formatter = new DecimalFormat("00");
+                String minformat = formatter.format(dataPoint.getY());
+                Toast.makeText(activity, "Heart Rate: "+ minformat + "BPM", Toast.LENGTH_SHORT).show();
+            }
+        });
         graphView.getGridLabelRenderer().setNumHorizontalLabels(3);
         graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
@@ -691,12 +700,6 @@ public class HomeFragment extends Fragment{
                     return printDay;
                 }
                 return super.formatLabel(value, isValueX);
-            }
-        });
-        lineGraphSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
-            @Override
-            public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(activity, "Heart Rate: "+dataPoint.getY() + "BPM", Toast.LENGTH_SHORT).show();
             }
         });
     }
