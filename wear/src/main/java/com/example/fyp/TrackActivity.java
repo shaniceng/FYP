@@ -23,10 +23,10 @@ public class TrackActivity extends WearableActivity {
     private TextView mTextView;
     private Button walk, jog, run, swim, taichi, yoga,zumba,sports,strength_training,others;
     public static final String EXTRA_TEXT = "com.example.application.fyp.EXTRA_TEXT";
+    public static final String ACTIVITY_TEXT = "com.example.application.fyp.ACTIVITY_TEXT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        loadLocale();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
 
@@ -74,6 +74,7 @@ public class TrackActivity extends WearableActivity {
 
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,walking);
+                intent.putExtra(ACTIVITY_TEXT,"a1");
                 startActivity(intent);
                 finish();
 
@@ -86,6 +87,7 @@ public class TrackActivity extends WearableActivity {
 
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,jogging);
+                intent.putExtra(ACTIVITY_TEXT,"a2");
                 startActivity(intent);
                 finish();
 
@@ -98,6 +100,7 @@ public class TrackActivity extends WearableActivity {
 
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,running);
+                intent.putExtra(ACTIVITY_TEXT,"a3");
                 startActivity(intent);
                 finish();
 
@@ -110,6 +113,7 @@ public class TrackActivity extends WearableActivity {
 
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,swimming);
+                intent.putExtra(ACTIVITY_TEXT,"a4");
                 startActivity(intent);
                 finish();
 
@@ -122,6 +126,8 @@ public class TrackActivity extends WearableActivity {
 
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,taiching);
+                intent.putExtra(ACTIVITY_TEXT,"a5");
+
                 startActivity(intent);
                 finish();
 
@@ -134,6 +140,8 @@ public class TrackActivity extends WearableActivity {
 
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,yogaing);
+                intent.putExtra(ACTIVITY_TEXT,"a6");
+
                 startActivity(intent);
                 finish();
             }
@@ -145,6 +153,8 @@ public class TrackActivity extends WearableActivity {
 
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,zumbaing);
+                intent.putExtra(ACTIVITY_TEXT,"a7");
+
                 startActivity(intent);
                 finish();
             }
@@ -163,6 +173,8 @@ public class TrackActivity extends WearableActivity {
 
                 Intent intent = new Intent(TrackActivity.this, TimerActivity.class);
                 intent.putExtra(EXTRA_TEXT,training);
+                intent.putExtra(ACTIVITY_TEXT,"a8");
+
                 startActivity(intent);
                 finish();
             }
@@ -182,22 +194,6 @@ public class TrackActivity extends WearableActivity {
 
     }
 
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale .setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
-        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
-        editor.putString("My_Lang",lang);
-        editor.apply();
-    }
-
-    public void loadLocale(){
-        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Lang","");
-        setLocale(language);
-    }
     // Create an intent that can start the Speech Recognizer activity
     private void displaySpeechRecognizer() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);

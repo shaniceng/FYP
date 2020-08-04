@@ -75,6 +75,9 @@ import com.jjoe64.graphview.series.Series;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import org.json.JSONObject;
+
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -875,7 +878,7 @@ public class HomeFragment extends Fragment{
 
     private void insertLockInData() {
 
-        SharedPreferences prefs = getContext().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        //SharedPreferences prefs = getContext().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
         String language = prefs.getString("My_Lang","");
 
         Locale locale = new Locale("en");
@@ -889,6 +892,7 @@ public class HomeFragment extends Fragment{
         SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
         String cTime = format.format(currentTime.getTime());
         String id = lockinDataBaseRef.push().getKey();
+
         LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
         lockinDataBaseRef.child(id).setValue(lockInValue);
         RetrieveLockInData();

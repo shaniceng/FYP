@@ -49,6 +49,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
     private ImageButton startTimer, stopTimer, pauseTimer;
     String datapath = "/message_path";
     String chromoPath = "/chromo-path";
+    String numpath = "/activitynum-path";
     String activityHeartRatePath = "/activity_tracking_heart_rate_path";
 
     private static final String Initial_Count_Key = "FootStepInitialCount";
@@ -60,7 +61,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
     long tMilliSec, tStart, tBuff, tUpdate = 0L;
     int sec,min,milliSec;
     private String chronometertext;
-    private String TrackText;
+    private String TrackText,Anumber;
 
     private boolean running;
     private long pauseOffset;
@@ -77,7 +78,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        loadLocale();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
 
@@ -103,6 +104,7 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
 
         Intent intent = getIntent();
         TrackText = intent.getStringExtra(TrackActivity.EXTRA_TEXT);
+        Anumber = intent.getStringExtra(TrackActivity.ACTIVITY_TEXT);
         startTimer = findViewById(R.id.startBtn);
         pauseTimer = findViewById(R.id.pauseBtn);
         stopTimer = findViewById(R.id.stopBtn);
@@ -141,22 +143,6 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         setAmbientEnabled();
     }
 
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale .setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
-        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
-        editor.putString("My_Lang",lang);
-        editor.apply();
-    }
-
-    public void loadLocale(){
-        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Lang","");
-        setLocale(language);
-    }
 
 
     public void startChronometer(View v){
@@ -218,6 +204,26 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
         AlertDialog alertDialog = builder.create();
         alertDialog.setTitle("Good Job!");
         alertDialog.show();
+
+        switch (Anumber){
+            case "a1": TrackText = "Brisk Walking";
+            break;
+            case "a2": TrackText = "Jogging";
+            break;
+            case "a3": TrackText = "Running";
+            break;
+            case "a4": TrackText = "Tai Chi";
+                break;
+            case "a5": TrackText = "Yoga";
+                break;
+            case "a6": TrackText = "Zumba";
+                break;
+            case "a7": TrackText = "Swimming";
+                break;
+            case "a8": TrackText = "Strength training";
+                break;
+        }
+
         new TimerActivity.SendActivity(datapath, TrackText).start();
 
     }

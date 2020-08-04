@@ -93,7 +93,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
         setContentView(R.layout.activity_main);
 
 
@@ -220,22 +219,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         //setRemindertoLockIn();
     }
 
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale .setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
-        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
-        editor.putString("My_Lang",lang);
-        editor.apply();
-    }
-
-    public void loadLocale(){
-        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Lang","");
-        setLocale(language);
-    }
 
     private void getHartRate() {
         SharedPreferences.Editor edit = prefs.edit();
