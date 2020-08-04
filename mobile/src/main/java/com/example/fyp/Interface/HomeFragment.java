@@ -75,6 +75,9 @@ import com.jjoe64.graphview.series.Series;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import org.json.JSONObject;
+
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -889,6 +892,13 @@ public class HomeFragment extends Fragment{
         SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
         String cTime = format.format(currentTime.getTime());
         String id = lockinDataBaseRef.push().getKey();
+
+        /*message = message.trim();
+        message = message.replace(" ", "");
+        if (String.valueOf(message) == "快走"){ message =  "Brisk Walking";}
+        else{message =  "Brisk Walkingg";}
+        Log.i("value4", message );*/
+
         LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
         lockinDataBaseRef.child(id).setValue(lockInValue);
         RetrieveLockInData();
