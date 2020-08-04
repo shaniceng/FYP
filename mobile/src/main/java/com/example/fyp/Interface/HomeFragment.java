@@ -878,7 +878,7 @@ public class HomeFragment extends Fragment{
 
     private void insertLockInData() {
 
-        SharedPreferences prefs = getContext().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        //SharedPreferences prefs = getContext().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
         String language = prefs.getString("My_Lang","");
 
         Locale locale = new Locale("en");
@@ -892,12 +892,6 @@ public class HomeFragment extends Fragment{
         SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
         String cTime = format.format(currentTime.getTime());
         String id = lockinDataBaseRef.push().getKey();
-
-        /*message = message.trim();
-        message = message.replace(" ", "");
-        if (String.valueOf(message) == "快走"){ message =  "Brisk Walking";}
-        else{message =  "Brisk Walkingg";}
-        Log.i("value4", message );*/
 
         LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
         lockinDataBaseRef.child(id).setValue(lockInValue);
