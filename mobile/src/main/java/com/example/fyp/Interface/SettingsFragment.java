@@ -189,6 +189,7 @@ public class SettingsFragment extends Fragment {
         String language = prefs.getString("My_Lang","");
         setLocale(language);
     }
+
     public void refresh(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (Build.VERSION.SDK_INT >= 26) {

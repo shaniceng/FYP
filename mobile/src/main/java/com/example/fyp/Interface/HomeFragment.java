@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -80,11 +81,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.fyp.App.CHANNEL_1_ID;
-
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -133,7 +133,6 @@ public class HomeFragment extends Fragment{
     private GraphView graphView;
     private LineGraphSeries lineGraphSeries, lineGraphWeekly;
 
-    //private Activity activity = getActivity();
 
     private String date;
     private String week;
@@ -164,6 +163,7 @@ public class HomeFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        loadLocale();
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         needsPermission();
         activity=getActivity();
@@ -308,6 +308,21 @@ public class HomeFragment extends Fragment{
         });
 
         return v;
+    }
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale .setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getActivity().getBaseContext().getResources().updateConfiguration(config,getActivity().getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences("Settings",MODE_PRIVATE).edit();
+        editor.putString("My_Lang",lang);
+        editor.apply();
+    }
+    public void loadLocale(){
+        SharedPreferences prefs = getActivity().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Lang","");
+        setLocale(language);
     }
 
     public void checkModMInsRefresh(){
@@ -859,17 +874,27 @@ public class HomeFragment extends Fragment{
     }
 
     private void insertLockInData() {
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Lang","");
+
+        Locale locale = new Locale("en");
+        Locale .setDefault(locale);
+
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         date = dateFormat.format(currentTime.getTime()).replaceAll("[\\D]","");
         lockinDataBaseRef = firebaseDatabase.getReference("Activity Tracker/" +currentuser + "/" + date );
-
+        Log.i("currenttime", currentTime + "currentdate"+ date);
         SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
         String cTime = format.format(currentTime.getTime());
         String id = lockinDataBaseRef.push().getKey();
         LockInValue lockInValue = new LockInValue(message,time,cTime, activityTrackheartRate);
         lockinDataBaseRef.child(id).setValue(lockInValue);
         RetrieveLockInData();
+
+        Locale locale2 = new Locale(language);
+        Locale .setDefault(locale2);
     }
 
     private void RetrieveLockInData() {

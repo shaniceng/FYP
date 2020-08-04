@@ -133,7 +133,6 @@ public class TimerActivity extends AppCompatActivity {
             SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
             saveCurrentTime = currentTime.format(calForDate.getTime());
 
-
             activityInsert.setActivity(activity);
             activityInsert.setduration(String.valueOf(chronometer.getText()));
             activityInsert.setcTime(saveCurrentTime);
