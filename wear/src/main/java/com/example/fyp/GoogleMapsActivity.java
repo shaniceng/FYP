@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
 public class GoogleMapsActivity extends WearableActivity
         implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener{
+        LocationListener {
 
     private static final int MY_PERMISSION_CODE = 1000;
     private MapFragment mMapFragment;
@@ -52,7 +52,7 @@ public class GoogleMapsActivity extends WearableActivity
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
 
-    private double latitude,longitude;
+    private double latitude, longitude;
     private Location mLastLocation;
     private Marker mMarker;
     private LocationRequest mLocationRequest;
@@ -68,55 +68,50 @@ public class GoogleMapsActivity extends WearableActivity
         mMapFragment.getMapAsync(this);
 
         //Request Runtime permission
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
     }
 
 
     private boolean checkLocationPermission() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION))
-                ActivityCompat.requestPermissions(this,new String[]{
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION))
+                ActivityCompat.requestPermissions(this, new String[]{
 
                         Manifest.permission.ACCESS_FINE_LOCATION
-                },MY_PERMISSION_CODE);
+                }, MY_PERMISSION_CODE);
             else
-                ActivityCompat.requestPermissions(this,new String[]{
+                ActivityCompat.requestPermissions(this, new String[]{
 
                         Manifest.permission.ACCESS_FINE_LOCATION
-                },MY_PERMISSION_CODE);
+                }, MY_PERMISSION_CODE);
             return false;
-        }
-        else
+        } else
             return true;
 
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode){
-            case MY_PERMISSION_CODE:
-            {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                    {
-                        if(mGoogleApiClient==null)
+        switch (requestCode) {
+            case MY_PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        if (mGoogleApiClient == null)
                             buildGoogleApiClien();
                         mMap.setMyLocationEnabled(true);
                     }
 
-                }
-                else
-                Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
             }
             break;
         }
     }
 
     private synchronized void buildGoogleApiClien() {
-        mGoogleApiClient= new GoogleApiClient.Builder(GoogleMapsActivity.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(GoogleMapsActivity.this)
                 .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) this)
                 .addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) this)
                 .addApi(LocationServices.API)
@@ -136,26 +131,26 @@ public class GoogleMapsActivity extends WearableActivity
         //googleMap = map;
 
         //Init Google Play Services
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(GoogleMapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClien();
                 mMap.setMyLocationEnabled(true);
                 Toast.makeText(this, "View more map details on phone", Toast.LENGTH_LONG).show();
             }
 
-        }
-        else
-        {
+        } else {
             buildGoogleApiClien();
             mMap.setMyLocationEnabled(true);
             Toast.makeText(this, "View more map details on phone", Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
         mMapFragment.onEnterAmbient(ambientDetails);
     }
+
     @Override
     public void onExitAmbient() {
         super.onExitAmbient();
@@ -164,7 +159,7 @@ public class GoogleMapsActivity extends WearableActivity
 
     @Override
 // Activity
-    public boolean onKeyDown(int keyCode, KeyEvent event){
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getRepeatCount() == 0) {
             if (keyCode == KeyEvent.KEYCODE_STEM_1) {
                 // Do stuff
@@ -181,25 +176,25 @@ public class GoogleMapsActivity extends WearableActivity
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
-        if(mMarker !=null)
+        if (mMarker != null)
             mMarker.remove();
 
 
-        latitude=location.getLatitude();
-        longitude=location.getLongitude();
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
 
-        LatLng latLng = new LatLng(latitude,longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+        LatLng latLng = new LatLng(latitude, longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
                 .title("Your position")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        mMarker =mMap.addMarker(markerOptions);
+        mMarker = mMap.addMarker(markerOptions);
 
-        if(mGoogleApiClient!=null) {
+        if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        }else{
+        } else {
             Toast.makeText(this, "Please ensure you have wifi connection", Toast.LENGTH_LONG).show();
         }
     }
@@ -216,6 +211,16 @@ public class GoogleMapsActivity extends WearableActivity
         mLocationRequest.setFastestInterval(1000);
 
         // Register listener using the LocationRequest object
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
 
@@ -243,9 +248,11 @@ public class GoogleMapsActivity extends WearableActivity
 
     @Override
     protected void onPause() {
-        if (mGoogleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            mGoogleApiClient.disconnect();
+        if(mGoogleApiClient!=null) {
+            if (mGoogleApiClient.isConnected()) {
+                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+                mGoogleApiClient.disconnect();
+            }
         }
         super.onPause();
     }
