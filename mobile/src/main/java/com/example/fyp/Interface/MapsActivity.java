@@ -590,7 +590,7 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
         InsertCheckDistance("Novena Park",SphericalUtil.computeDistanceBetween(Novena_Park,latLng));
         LatLng Novena_Rise_Park = new LatLng (1.3252,103.8429);
         mMap.addMarker(new MarkerOptions().position(Novena_Rise_Park).title("Novena Rise Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("\"Novena Rise Park",SphericalUtil.computeDistanceBetween(Novena_Rise_Park,latLng));
+        InsertCheckDistance("Novena Rise Park",SphericalUtil.computeDistanceBetween(Novena_Rise_Park,latLng));
 
         //Stevens
         LatLng Malcolm_Park = new LatLng (1.324725, 103.8301232);
@@ -922,10 +922,10 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
         InsertCheckDistance("Anytime Fitness West Coast",SphericalUtil.computeDistanceBetween(ATF_West_Coast,latLng));
         LatLng ATF_Taman_Jurong= new LatLng(1.335522, 103.721574);
         mMap.addMarker(new MarkerOptions().position(ATF_Taman_Jurong).title("Anytime Fitness Boon Lay").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
-        InsertCheckDistance("Anytime Fitness Boon Lay",SphericalUtil.computeDistanceBetween(ATF_Taman_Jurong,latLng));
+        InsertCheckDistance("Anytime Fitness Taman Jurong",SphericalUtil.computeDistanceBetween(ATF_Taman_Jurong,latLng));
         LatLng ATF_Boon_Lay= new LatLng(1.346288, 103.712581);
         mMap.addMarker(new MarkerOptions().position(ATF_Boon_Lay).title("Anytime Fitness Taman Jurong").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
-        InsertCheckDistance("Anytime Fitness Taman Jurong",SphericalUtil.computeDistanceBetween(ATF_Boon_Lay,latLng));
+        InsertCheckDistance("Anytime Fitness Boon Lay",SphericalUtil.computeDistanceBetween(ATF_Boon_Lay,latLng));
         LatLng ATF_Jurong_West= new LatLng(1.342407, 103.692496);
         mMap.addMarker(new MarkerOptions().position(ATF_Jurong_West).title("Anytime Fitness Jurong West").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
         InsertCheckDistance("Anytime Fitness Jurong West",SphericalUtil.computeDistanceBetween(ATF_Jurong_West,latLng));
@@ -937,7 +937,7 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
         InsertCheckDistance("Anytime Fitness CSC Bukit Batok",SphericalUtil.computeDistanceBetween(ATF_CSC_Bukit_Batok,latLng));
         LatLng ATF_Fitness_hillV2= new LatLng(1.363136, 103.764190);
         mMap.addMarker(new MarkerOptions().position(ATF_Fitness_hillV2).title("Anytime Fitness hillV2").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
-        InsertCheckDistance("\"Anytime Fitness hillV2",SphericalUtil.computeDistanceBetween(ATF_Fitness_hillV2,latLng));
+        InsertCheckDistance("Anytime Fitness hillV2",SphericalUtil.computeDistanceBetween(ATF_Fitness_hillV2,latLng));
         LatLng ATF_Choa_Chu_Kang= new LatLng(1.376907, 103.745243);
         mMap.addMarker(new MarkerOptions().position(ATF_Choa_Chu_Kang).title("Anytime Fitness Choa Chu Kang").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
         InsertCheckDistance("Anytime Fitness Choa Chu Kang",SphericalUtil.computeDistanceBetween(ATF_Choa_Chu_Kang,latLng));
@@ -976,7 +976,7 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
         InsertCheckDistance("Anytime Fitness Potong Pasir",SphericalUtil.computeDistanceBetween(ATF_Potong_Pasir,latLng));
         LatLng ATF_Geylang_Bahru= new LatLng(1.324311, 103.869705);
         mMap.addMarker(new MarkerOptions().position(ATF_Geylang_Bahru).title("Anytime Fitness Geylang Bahru").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
-        InsertCheckDistance("Anytime Fitness Geylang Bahru\"",SphericalUtil.computeDistanceBetween(ATF_Geylang_Bahru,latLng));
+        InsertCheckDistance("Anytime Fitness Geylang Bahru",SphericalUtil.computeDistanceBetween(ATF_Geylang_Bahru,latLng));
         LatLng ATF_Balestier= new LatLng(1.322989, 103.852886);
         mMap.addMarker(new MarkerOptions().position(ATF_Balestier).title("Anytime Fitness Balestier").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
         InsertCheckDistance("Anytime Fitness Balestier",SphericalUtil.computeDistanceBetween(ATF_Balestier,latLng));
@@ -1187,7 +1187,7 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
         InsertCheckDistance("Fitness First Paya Lebar",SphericalUtil.computeDistanceBetween(FF_Paya_Lebar,latLng));
         LatLng FF_Tampines= new LatLng(1.353155, 103.943672);
         mMap.addMarker(new MarkerOptions().position(FF_Tampines).title("Fitness First - Tampines (CPF building)").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
-        InsertCheckDistance("Fitness First - Tampines (CPF building",SphericalUtil.computeDistanceBetween(FF_Tampines,latLng));
+        InsertCheckDistance("Fitness First - Tampines (CPF building)",SphericalUtil.computeDistanceBetween(FF_Tampines,latLng));
         LatLng FF_Dhoby_Ghaut= new LatLng(1.299424, 103.847637);
         mMap.addMarker(new MarkerOptions().position(FF_Dhoby_Ghaut).title("Fitness First - The Cathay Dhoby Ghaut").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_gym_marker_2)));
         InsertCheckDistance("Fitness First - The Cathay Dhoby Ghaut",SphericalUtil.computeDistanceBetween(FF_Dhoby_Ghaut,latLng));
