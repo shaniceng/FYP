@@ -45,7 +45,10 @@
     //timer activity
     <string name="avr_hr_text">Avr Heart Rate (BPM)</string>
     <string name="pause_text">Hold to Pause</string>
-    <string name="scroll_text"> Scroll down to see heart rate</string>
+    <string name="scroll_text">Scroll down to see heart rate</string>
+
+    //language activity
+    <string name="selected_language">Selected language: </string>
 
 
 

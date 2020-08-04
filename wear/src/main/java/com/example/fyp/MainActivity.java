@@ -55,7 +55,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     private ScrollView myView;
     private TextView mTextView, currentTime;
-    private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate, googleMap,language;
+    private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate, googleMap;
     private Calendar calendar;
     private Boolean check=false;
 
@@ -118,7 +118,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         trackActivity = findViewById(R.id.btnWTrackActivity);
         heartRate = findViewById(R.id.btnWHeartRate);
         stepsCount = findViewById(R.id.btnWStepsCount);
-        language=findViewById(R.id.btnLanguage);
         currentTime=findViewById(R.id.tvCurrentTime);
 
         offHeartRate=findViewById(R.id.btnOffHeartRate);
@@ -163,12 +162,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 startActivity(new Intent(MainActivity.this, StepsCountActivity.class));
             }
         });
-        language.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, LanguageActivity.class));
-            }
-        });
+
 
         googleMap.setOnClickListener(new View.OnClickListener() {
             @Override
