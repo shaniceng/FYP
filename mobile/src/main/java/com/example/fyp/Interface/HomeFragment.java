@@ -875,7 +875,7 @@ public class HomeFragment extends Fragment{
 
     private void insertLockInData() {
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        SharedPreferences prefs = getContext().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
         String language = prefs.getString("My_Lang","");
 
         Locale locale = new Locale("en");
