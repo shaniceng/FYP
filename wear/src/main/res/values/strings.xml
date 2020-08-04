@@ -23,5 +23,35 @@
     <string name="off_sensor">OFF SENSOR</string>
     <string name="on_sensor">ON SENSOR</string>
 
+    //steps count activity
+    <string name="steps_count_text">Steps Count: </string>
+
+    //heart rate activity
+    <string name="heart_rate_text">Heart Rate: </string>
+
+    //tracking activity
+    <string name="start_exercise_text">Start Exercise</string>
+    <string name="walking_text">Brisk Walking</string>
+    <string name="running_text">Running</string>
+    <string name="jogging_text">Jogging</string>
+    <string name="tai_chi_text">Tai Chi</string>
+    <string name="yoga_text">Yoga</string>
+    <string name="zumba_text">Zumba</string>
+    <string name="strength_training_text">Strength Training</string>
+    <string name="swimming_text">Swimming</string>
+    <string name="sports_text">Sports \n(Please Specify)</string>
+    <string name="others_text">Others \n(Please Specify)</string>
+
+    //timer activity
+    <string name="avr_hr_text">Avr Heart Rate (BPM)</string>
+    <string name="pause_text">Hold to Pause</string>
+    <string name="scroll_text"> Scroll down to see heart rate</string>
+
+
+
+
+
+
+
 
 </resources>

@@ -46,6 +46,7 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
     private Calendar currentTime;
     private SharedPreferences prefs;
 
+    private CircularProgressBar circularProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,14 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
         sensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         getStepCount();
+
+
+        circularProgressBar= findViewById(R.id.circularProgressBar);
+        circularProgressBar.setProgressMax(7500);
+        circularProgressBar.setProgressBarWidth(7f); // in DP
+        circularProgressBar.setBackgroundProgressBarWidth(3f); // in DP
+        circularProgressBar.setRoundBorder(true);
+        circularProgressBar.setProgressDirection(CircularProgressBar.ProgressDirection.TO_RIGHT);
 
 
     }
@@ -102,8 +111,9 @@ public class StepsCountActivity extends WearableActivity implements SensorEventL
 
 
             step = String.valueOf(prefs.getInt("dailyCurrentSteps", -1));
-            msg = step + " steps";
+            msg = step + "\nsteps";
             mTextViewSteps.setText(msg);
+            circularProgressBar.setProgressWithAnimation(prefs.getInt("dailyCurrentSteps", -1));
             Log.d(TAG, msg);
 
             //display starting steps count to phone app database

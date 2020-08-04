@@ -21,9 +21,33 @@
     <string name="heart_rate">心率</string>
     <string name="steps_count">步数</string>
     <string name="google_map">谷歌地图</string>
-    <string name="language">语言E</string>
-    <string name="off_sensor">关闭传感器</string>
-    <string name="on_sensor">在传感器上</string>
+    <string name="language">语言</string>
+    <string name="off_sensor">关传感器</string>
+    <string name="on_sensor">开传感器</string>
+
+    //steps count activity
+    <string name="steps_count_text">步数: </string>
+
+    //heart rate activity
+    <string name="heart_rate_text">心率: </string>
+
+    //tracking activity
+    <string name="start_exercise_text">开始运动</string>
+    <string name="walking_text">快走</string>
+    <string name="running_text">跑步</string>
+    <string name="jogging_text">慢跑</string>
+    <string name="tai_chi_text">太极</string>
+    <string name="yoga_text">瑜珈</string>
+    <string name="zumba_text">尊巴舞</string>
+    <string name="strength_training_text">力量训练</string>
+    <string name="swimming_text">游泳</string>
+    <string name="sports_text">运动 \n(请明确说明)</string>
+    <string name="others_text">其他 \n(请明确说明)</string>
+
+    //timer activity
+    <string name="avr_hr_text">平均心率 (BPM)</string>
+    <string name="pause_text">按住暂停</string>
+    <string name="scroll_text">向下滚动看心率</string>
 
 
 
