@@ -212,13 +212,13 @@ public class TimerActivity extends WearableActivity implements SensorEventListen
             break;
             case "a3": TrackText = "Running";
             break;
-            case "a4": TrackText = "Tai Chi";
+            case "a4": TrackText = "Swimming";
                 break;
-            case "a5": TrackText = "Yoga";
+            case "a5": TrackText = "Tai Chi";
                 break;
-            case "a6": TrackText = "Zumba";
+            case "a6": TrackText = "Yoga";
                 break;
-            case "a7": TrackText = "Swimming";
+            case "a7": TrackText = "Zumba";
                 break;
             case "a8": TrackText = "Strength training";
                 break;
