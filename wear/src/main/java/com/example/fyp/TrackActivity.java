@@ -1,6 +1,9 @@
 package com.example.fyp;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.wearable.activity.WearableActivity;
@@ -12,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class TrackActivity extends WearableActivity {
 
@@ -22,6 +26,7 @@ public class TrackActivity extends WearableActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        loadLocale();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
 
@@ -175,6 +180,23 @@ public class TrackActivity extends WearableActivity {
             }
         });
 
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale .setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
+        editor.putString("My_Lang",lang);
+        editor.apply();
+    }
+
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Lang","");
+        setLocale(language);
     }
     // Create an intent that can start the Speech Recognizer activity
     private void displaySpeechRecognizer() {

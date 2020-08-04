@@ -121,6 +121,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                     setLocale("en");
                 refresh();
+
                     //recreate();
 
             }
