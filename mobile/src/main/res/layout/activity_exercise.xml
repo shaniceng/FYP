@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Activity"
+                android:text="@string/activity"
                 android:textSize="30sp"
                 android:layout_marginLeft="150dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_icon_awesome_walking"
                     android:padding="10dp"
-                    android:text="Brisk Walking"
+                    android:text="@string/brisk_walking"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,7 +81,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_icon_awesome_jogging"
                     android:padding="10dp"
-                    android:text="Jogging"
+                    android:text="@string/jogging"
                     app:layout_constraintStart_toEndOf="@+id/btnWalking"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,7 +94,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_awesome_running"
                     android:padding="10dp"
-                    android:text="Running"
+                    android:text="@string/running"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnWalking" />
 
@@ -108,7 +108,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_awesome_taichi"
                     android:padding="10dp"
-                    android:text="Tai Chi"
+                    android:text="@string/tai_chi"
                     app:layout_constraintStart_toEndOf="@+id/btnRunning"
                     app:layout_constraintTop_toBottomOf="@+id/btnJogging" />
 
@@ -121,7 +121,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_awesome_yoga"
                     android:padding="10dp"
-                    android:text="Yoga"
+                    android:text="@string/yoga"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnRunning" />
 
@@ -135,7 +135,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_awesome_zumba"
                     android:padding="10dp"
-                    android:text="Zumba"
+                    android:text="@string/zumba"
                     app:layout_constraintStart_toEndOf="@+id/btnYoga"
                     app:layout_constraintTop_toBottomOf="@+id/btnTaiChi" />
 
@@ -148,7 +148,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_awesome_strengthtraining"
                     android:padding="10dp"
-                    android:text="Strength Training"
+                    android:text="@string/strength_training"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnYoga" />
 
@@ -162,7 +162,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_awesome_swimming"
                     android:padding="10dp"
-                    android:text="Swimming"
+                    android:text="@string/swimming"
                     app:layout_constraintBottom_toTopOf="@+id/btnOthers"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btnStrength"
@@ -177,7 +177,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_awesome_others"
                     android:padding="10dp"
-                    android:text="Sports"
+                    android:text="@string/sports"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/btnOthers"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -195,7 +195,7 @@
                     android:backgroundTint="#B7BFD5"
                     android:drawableTop="@drawable/ic_awesome_others"
                     android:padding="10dp"
-                    android:text="Others"
+                    android:text="@string/others"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btnSports"

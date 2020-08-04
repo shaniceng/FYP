@@ -36,7 +36,7 @@ public class TimerActivity extends AppCompatActivity {
     EditText actname;
     ImageView imageAct;
     Button back;
-    private TextView showString;
+    private TextView showString, showChiString;
 
 
 
@@ -50,6 +50,31 @@ public class TimerActivity extends AppCompatActivity {
         activity = getIntent().getStringExtra("NAME");
         imageAct =findViewById(R.id.ivActivity);
         showString=findViewById(R.id.tvGetActivity);
+        showChiString=findViewById(R.id.tvGetChineseActivity);
+
+
+        switch (activity){
+            case "Brisk Walking": showChiString.setText("快走");
+            break;
+            case "Jogging": showChiString.setText("慢跑");
+            break;
+            case "Running": showChiString.setText("跑步");
+                break;
+            case "Tai Chi": showChiString.setText("太极");
+                break;
+            case "Yoga": showChiString.setText("瑜珈");
+                break;
+            case "Zumba": showChiString.setText("尊巴舞");
+                break;
+            case "Strength Training": showChiString.setText("力量训练");
+                break;
+            case "Others": showChiString.setText("其他 (请明确说明)");
+                break;
+            case "Sports": showChiString.setText("运动 (请明确说明)");
+                break;
+            case "Swimming": showChiString.setText("游泳");
+                break;
+        }
 
         showString.setText(activity);
         int image = getIntent().getIntExtra("image",R.drawable.ic_icon_awesome_walking);

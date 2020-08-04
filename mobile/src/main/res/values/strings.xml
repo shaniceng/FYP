@@ -6,6 +6,7 @@
     <string name="title_settings">Settings</string>
 
     //used in fragment home
+    <string name="history">HISTORY</string>
     <string name="steps_count">STEPS COUNT</string>
     <string name="moderate_activity">MODERATE ACTIVITY</string>
     <string name="steps">steps</string>
@@ -17,6 +18,32 @@
     <string name="recent_activity">RECENT ACTIVITY</string>
     <string name="intensity_workout_details">1) Becareful not to over-exert yourself as you will be at risk of injuries.\n2) Please wear
     appropriate footwear and clothing for exercising.\n3) Hydrate regularly.</string>
+    <string name="your_steps_count_today">Your steps count today:</string>
+    <string name="goal_7500steps">Goal: 7500 steps</string>
+    <string name="your_minutes_this_week">You minutes this week:</string>
+    <string name="goal_150minutes">Goal: 150 minutes</string>
+    <string name="target_activity_HR">Target activity HR:</string>
+    <string name="safety_infomation">SAFETY INFORMATION</string>
+    <string name="what_is_moderate_activity">WHAT IS MODERATE ACTIVITY?</string>
+    <string name="moderate_activity_info">Being able to see an increase in breathing and heart rate. As a general rule of thumb, you should be able to talk but not sing.</string>
+    <string name="current_HR">Current HR:</string>
+    <string name="avr_HR">Avr HR:</string>
+    <string name="max_HR">Max HR:</string>
+    <string name="value_age">220-Age:</string>
+
+    //used in exercise fragment
+    <string name="activity">Activity</string>
+    <string name="brisk_walking">Brisk walking</string>
+    <string name="jogging">ogging</string>
+    <string name="running">running</string>
+    <string name="tai_chi">tai chi</string>
+    <string name="yoga">yoga</string>
+    <string name="zumba">zumba</string>
+    <string name="strength_training">strength training</string>
+    <string name="swimming">swimming</string>
+    <string name="sports">sports (please specify)</string>
+    <string name="others">others (please specify)</string>
+
 
     //used in fragment setting
     <string name="Hello">Hello, </string>
@@ -52,6 +79,12 @@
 
 
     <string name="action_settings">Settings</string>
+
+
+    //used in map fragment
+    <string name="park">Park</string>
+    <string name="gym">Gym</string>
+    <string name="stadium">Stadium</string>
 
 
     //MAP LOCATION NAMES (leave at bottom)
