@@ -57,6 +57,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private TextView mTextView, currentTime;
     private Button trackActivity, heartRate, stepsCount, offHeartRate, onHeartRate, googleMap,language;
     private Calendar calendar;
+    private Boolean check=false;
 
     private AlarmManager ambientUpdateAlarmManager;
     private PendingIntent ambientUpdatePendingIntent;
@@ -169,25 +170,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             }
         });
 
-        offHeartRate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
-                 mSensorManager.unregisterListener(MainActivity.this);
-                 unregisterReceiver(ambientUpdateBroadcastReceiver);
-                 ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
-
-            }
-        });
-        onHeartRate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    getStepsAndHeart();
-                    IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
-                    registerReceiver(ambientUpdateBroadcastReceiver, filter);
-                    refreshDisplayAndSetNextUpdate();
-            }
-        });
         googleMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,6 +184,32 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             @Override
             public void onReceive(Context context, Intent intent) { refreshDisplayAndSetNextUpdate(); }
         };
+
+        offHeartRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!check) {
+                    mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
+                    mSensorManager.unregisterListener(MainActivity.this);
+                    unregisterReceiver(ambientUpdateBroadcastReceiver);
+                    ambientUpdateAlarmManager.cancel(ambientUpdatePendingIntent);
+                    check=true;
+                }
+
+            }
+        });
+        onHeartRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(check) {
+                    getStepsAndHeart();
+                    IntentFilter filter = new IntentFilter(AMBIENT_UPDATE_ACTION);
+                    registerReceiver(ambientUpdateBroadcastReceiver, filter);
+                    refreshDisplayAndSetNextUpdate();
+                    check=false;
+                }
+            }
+        });
 
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = MainActivity.this.registerReceiver(null, ifilter);
@@ -512,7 +520,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             editor.putInt("ReminderToLockIn", 0);
             editor.commit();
         }
-        if((heartrate!=0)&&(heartrate>=120) && (prefs.getInt("ReminderToLockIn", 0)==0)) { //change to 120
+        if((heartrate!=0)&&(heartrate>=130) && (prefs.getInt("ReminderToLockIn", 0)==0)) { //change to 120
             Log.d("Reminder", "INSIDEEE");
             vibration();
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
