@@ -205,23 +205,23 @@ public class MapsActivity extends Fragment implements ParkAdapter.OnParkListener
 
         //Woodlands
         LatLng Admiralty_Park = new LatLng(1.4484, 103.7790);
-        mMap.addMarker(new MarkerOptions().position(Admiralty_Park).title("Admiralty Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("Admiralty Park",SphericalUtil.computeDistanceBetween(Admiralty_Park,latLng));
+        mMap.addMarker(new MarkerOptions().position(Admiralty_Park).title(String.valueOf(R.string.Admiralty_Park)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        InsertCheckDistance(String.valueOf(R.string.Admiralty_Park),SphericalUtil.computeDistanceBetween(Admiralty_Park,latLng));
         LatLng Woodlands_Waterfront_Park = new LatLng (1.4530, 103.7803);
-        mMap.addMarker(new MarkerOptions().position(Woodlands_Waterfront_Park).title("Woodlands Waterfront Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("Woodlands Waterfront Park",SphericalUtil.computeDistanceBetween(Woodlands_Waterfront_Park,latLng));
+        mMap.addMarker(new MarkerOptions().position(Woodlands_Waterfront_Park).title(String.valueOf(R.string.Woodlands_Waterfront_Park)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        InsertCheckDistance(String.valueOf(R.string.Woodlands_Waterfront_Park),SphericalUtil.computeDistanceBetween(Woodlands_Waterfront_Park,latLng));
         LatLng Marsiling_Park = new LatLng (1.4381, 103.7706);
-        mMap.addMarker(new MarkerOptions().position(Marsiling_Park).title("Marsiling Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("Marsiling Park",SphericalUtil.computeDistanceBetween(Marsiling_Park,latLng));
+        mMap.addMarker(new MarkerOptions().position(Marsiling_Park).title(String.valueOf(R.string.Marsiling_Park)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        InsertCheckDistance(String.valueOf(R.string.Marsiling_Park),SphericalUtil.computeDistanceBetween(Marsiling_Park,latLng));
         LatLng Woodlands_Town_Part_East = new LatLng (1.4366, 103.7792);
-        mMap.addMarker(new MarkerOptions().position(Woodlands_Town_Part_East).title("Woodlands Town Part East").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("Woodlands Town Part East",SphericalUtil.computeDistanceBetween(Woodlands_Town_Part_East,latLng));
+        mMap.addMarker(new MarkerOptions().position(Woodlands_Town_Part_East).title(String.valueOf(R.string.Woodlands_Town_Part_East)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        InsertCheckDistance(String.valueOf(R.string.Woodlands_Town_Part_East),SphericalUtil.computeDistanceBetween(Woodlands_Town_Part_East,latLng));
         LatLng Vista_Park = new LatLng(1.4297, 103.7961);
-        mMap.addMarker(new MarkerOptions().position(Vista_Park).title("Vista Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("Vista Park",SphericalUtil.computeDistanceBetween(Vista_Park,latLng));
+        mMap.addMarker(new MarkerOptions().position(Vista_Park).title(String.valueOf(R.string.Vista_Park)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        InsertCheckDistance(String.valueOf(R.string.Vista_Park),SphericalUtil.computeDistanceBetween(Vista_Park,latLng));
         LatLng Mandai_Tekong_Park = new LatLng(1.4349, 103.7941);
-        mMap.addMarker(new MarkerOptions().position(Mandai_Tekong_Park).title("Mandai Tekong Park").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
-        InsertCheckDistance("Mandai Tekong Park",SphericalUtil.computeDistanceBetween(Mandai_Tekong_Park,latLng));
+        mMap.addMarker(new MarkerOptions().position(Mandai_Tekong_Park).title(String.valueOf(R.string.Mandai_Tekong_Park)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park_marker)));
+        InsertCheckDistance(String.valueOf(R.string.Mandai_Tekong_Park),SphericalUtil.computeDistanceBetween(Mandai_Tekong_Park,latLng));
 
         //Toast.makeText(this,distance/1000+"km",Toast.LENGTH_SHORT).show();
         //Toast.makeText(this, Integer.valueOf(distance/1000)+"km",Toast.LENGTH_SHORT).show();
