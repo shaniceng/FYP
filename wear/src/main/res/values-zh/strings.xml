@@ -49,6 +49,10 @@
     <string name="pause_text">按住暂停</string>
     <string name="scroll_text">向下滚动看心率</string>
 
+    //language activity
+    <string name="selected_language">语言选择: </string>
+
+
 
 
 </resources>

@@ -103,23 +103,9 @@
                     android:paddingBottom="5dp"
                     android:drawableLeft="@drawable/map"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"/>
+                    android:paddingRight="10dp"
+                    android:layout_marginBottom="60dp"/>
 
-                <Button
-                    android:id="@+id/btnLanguage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="60dp"
-                    android:background="@color/grey"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="@string/language"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:drawableLeft="@drawable/directional"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"/>
 
                 <Button
                     android:id="@+id/btnOffHeartRate"

@@ -1082,8 +1082,6 @@ public class HomeFragment extends Fragment{
         public class MessageReceiver extends BroadcastReceiver {
             @Override
             public void onReceive(Context context, Intent intent) {
-
-
                 if (intent.getStringExtra("message") != null || intent.getStringExtra("timing") != null
                         || intent.getStringExtra("activityTrackerHeartRate")!=null)
                 {
