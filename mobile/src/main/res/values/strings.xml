@@ -77,8 +77,12 @@
     <string name="E_Birthday">Birthday: </string>
     <string name="Preferred_time_for_notification_prompt">Preferred time for notification prompt:</string>
 
+    <string name="target_hr">Target activity HR:</string>
 
     <string name="action_settings">Settings</string>
+
+
+    "Target activity HR: \n" + fifety + "BPM - " + seventyfive + "BPM"
 
 
     //used in map fragment

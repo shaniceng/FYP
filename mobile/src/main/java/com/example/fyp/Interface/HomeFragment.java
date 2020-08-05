@@ -495,7 +495,7 @@ public class HomeFragment extends Fragment{
                         editor.putFloat("GET_SEVENTYFIVE_HEART_RATE_FROM_AGE", seventyfive);
                         editor.commit();
                     }
-                    tvTargetHR.setText("Target activity HR: \n" + fifety + "BPM - " + seventyfive + "BPM");
+                    tvTargetHR.setText(getResources().getString(R.string.target_hr) + "\n" + fifety + "BPM - " + seventyfive + "BPM");
                 }
             }
             @Override

@@ -19,17 +19,17 @@
     <string name="recent_activity">近期活动</string>
     <string name="intensity_workout_details">1) 注意不要过度劳累自己，因为这样很容易受伤。 \n2) 请穿着适当的鞋类和衣物进行锻炼。
         \n3)定期补水。</string>
-    <string name="your_steps_count_today">今天您的脚步很重要:</string>
+    <string name="your_steps_count_today">您今天的脚步数:</string>
     <string name="goal_7500steps">目标：7500步</string>
-    <string name="your_minutes_this_week">您本周的会议记录:</string>
+    <string name="your_minutes_this_week">您本周的活动记录:</string>
     <string name="goal_150minutes">目标：150分钟</string>
     <string name="target_activity_HR">目标活动人力资源:</string>
     <string name="safety_infomation">安全信息</string>
     <string name="what_is_moderate_activity">什么是中等活动?</string>
-    <string name="moderate_activity_info">能够看到呼吸和心跳加快。作为一般的经验法则，您应该会说话但不会唱歌。</string>
-    <string name="current_HR">Current HR:</string>
-    <string name="avr_HR">Avr HR:</string>
-    <string name="max_HR">Max HR:</string>
+    <string name="moderate_activity_info">能够看到呼吸和心跳加快。作为一般的经验法则，您应该可以说话但不可以唱歌。</string>
+    <string name="current_HR">现在的心率:</string>
+    <string name="avr_HR">平均的心率:</string>
+    <string name="max_HR">最高的心率:</string>
     <string name="value_age">220-Age:</string>
 
     //used in exercise fragment
@@ -47,15 +47,15 @@
 
 
     //used in fragment setting
-    <string name="Hello">你好, </string>
+    <string name="Hello">您好, </string>
 
     //not used
-    <string name="b3_DAYS_streak_to_UNLOCK">3 DAYS streak to UNLOCK</string>
-    <string name="b1_WEEK_streak_to_UNLOCK">1 WEEK streak to UNLOCK</string>
-    <string name="b3_WEEK_streak_to_UNLOCK">3 WEEK streak to UNLOCK</string>
-    <string name="b1_MONTH_streak_to_UNLOCK">1 MONTHS streak to UNLOCK</string>
-    <string name="b3_MONTH_streak_to_UNLOCK">3 MONTHS streak to UNLOCK</string>
-    <string name="b6_MONTH_streak_to_UNLOCK">6 MONTHS streak to UNLOCK</string>
+    <string name="b3_DAYS_streak_to_UNLOCK">连续三天才开锁</string>
+    <string name="b1_WEEK_streak_to_UNLOCK">连续一周才开锁</string>
+    <string name="b3_WEEK_streak_to_UNLOCK">连续三周才开锁</string>
+    <string name="b1_MONTH_streak_to_UNLOCK">连续一个月才开锁</string>
+    <string name="b3_MONTH_streak_to_UNLOCK">连续三个月才开锁</string>
+    <string name="b6_MONTH_streak_to_UNLOCK">连续六个月才开锁</string>
     //
 
     <string name="My_Badges">徽章</string>
@@ -78,6 +78,7 @@
     <string name="E_Birthday">生日: </string>
     <string name="Preferred_time_for_notification_prompt">通知提示的首选时间:</string>
 
+    <string name="target_hr">活动的心率目标:</string>
 
     <string name="action_settings">Settings</string>
 
