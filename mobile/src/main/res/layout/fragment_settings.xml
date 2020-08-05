@@ -125,62 +125,166 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/iV3_days"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/badges_day3_grey"/>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
+                        <ImageView
+                            android:id="@+id/iV3_days"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/badges_day3_grey_2"/>
 
-                    <ImageView
-                        android:id="@+id/iV1_week"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/badges_week1_grey" />
+                        <TextView
+                            android:layout_width="140dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="55dp"
+                            android:background="#8F4E4F53"
+                            android:text="@string/b3_DAYS_streak_to_UNLOCK"
+                            android:textColor="@color/white"/>
 
+                </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/iV_3_weeks"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/badges_week3_grey" />
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
+                        <ImageView
+                            android:id="@+id/iV1_week"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/badges_week1_grey_2" />
+
+                        <TextView
+                            android:layout_width="140dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="55dp"
+                            android:background="#8F4E4F53"
+                            android:text="@string/b1_WEEK_streak_to_UNLOCK"
+                            android:textColor="@color/white"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/iV_3_weeks"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/badges_week3_grey_2" />
+
+                        <TextView
+                            android:layout_width="140dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="55dp"
+                            android:background="#8F4E4F53"
+                            android:text="@string/b3_WEEK_streak_to_UNLOCK"
+                            android:textColor="@color/white"/>
+
+                </RelativeLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
-
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <ImageView
                             android:id="@+id/iV_1_month"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_weight="1"
-                            android:src="@drawable/badges_month1_grey" />
+                            android:src="@drawable/badges_month1_grey_2" />
+
+                        <TextView
+                            android:layout_width="140dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="55dp"
+                            android:background="#8F4E4F53"
+                            android:text="@string/b1_MONTH_streak_to_UNLOCK"
+                            android:textColor="@color/white"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <ImageView
                             android:id="@+id/iV3_months"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_weight="1"
-                            android:src="@drawable/badges_month3_grey" />
+                            android:src="@drawable/badges_month3_grey_2" />
 
+                        <TextView
+                            android:layout_width="140dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="55dp"
+                            android:background="#8F4E4F53"
+                            android:text="@string/b3_MONTH_streak_to_UNLOCK"
+                            android:textColor="@color/white"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <ImageView
                             android:id="@+id/iV6_months"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_weight="1"
-                            android:src="@drawable/badges_month6_grey" />
+                            android:src="@drawable/badges_month6_grey_2" />
+
+                        <TextView
+                            android:layout_width="140dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="55dp"
+                            android:background="#8F4E4F53"
+                            android:text="@string/b6_MONTH_streak_to_UNLOCK"
+                            android:textColor="@color/white"/>
+
+                    </RelativeLayout>
 
                 </LinearLayout>
+
             </LinearLayout>
 
 
