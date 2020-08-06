@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FYP_Control_Group</string>
+    <string name="app_name">Intervention Group</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_home">Home</string>
     <string name="title_map">Map</string>
