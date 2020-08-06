@@ -49,6 +49,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class SettingsFragment extends Fragment {
     private Button editProfile, logout,engLang,chiLang;
     private TextView name, email, age, gender, height, weight, birthday, batt, radioButton;
+    private TextView tv3days, tv1week, tv3weeks, tv1month, tv3months, tv6months;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private String battery;
@@ -95,6 +96,13 @@ public class SettingsFragment extends Fragment {
         iv1month=v.findViewById(R.id.iV_1_month);
         iv3months=v.findViewById(R.id.iV3_months);
         iv6months=v.findViewById(R.id.iV6_months);
+        tv3days=v.findViewById(R.id.tv_3d);
+        tv1week=v.findViewById(R.id.tv_1w);
+        tv3weeks=v.findViewById(R.id.tv_3w);
+        tv1month=v.findViewById(R.id.tv_1m);
+        tv3months=v.findViewById(R.id.tv_3m);
+        tv6months=v.findViewById(R.id.tv_6m);
+
 
         logout=v.findViewById(R.id.btnLogout);
         firebaseAuth=FirebaseAuth.getInstance();
@@ -315,6 +323,7 @@ public class SettingsFragment extends Fragment {
             editor.putInt("3DAY STREAK", 1);
             editor.commit();
             iv3days.setImageResource(R.drawable.badges_day3_color);
+            tv3days.setVisibility(View.INVISIBLE);
         }
         if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 7 || prefs.getInt("1WEEK STREAK", 0) == 1) {
             //change greyscale to colour for 7days streak
@@ -322,6 +331,7 @@ public class SettingsFragment extends Fragment {
             editor.putInt("1WEEK STREAK", 1);
             editor.commit();
             iv1week.setImageResource(R.drawable.badges_week1_color);
+            tv1week.setVisibility(View.INVISIBLE);
         }
         if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 21 || prefs.getInt("3WEEK STREAK", 0) == 1) {
             //change greyscale to colour for 3 weeks streak
@@ -329,6 +339,7 @@ public class SettingsFragment extends Fragment {
             editor.putInt("3WEEK STREAK", 1);
             editor.commit();
             iv3weeks.setImageResource(R.drawable.badges_week3_color);
+            tv3weeks.setVisibility(View.INVISIBLE);
         }
         if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 30 || prefs.getInt("1MONTH STREAK", 0) == 1) {
             //change greyscale to colour for 1month streak
@@ -336,6 +347,7 @@ public class SettingsFragment extends Fragment {
             editor.putInt("1MONTH STREAK", 1);
             editor.commit();
             iv1month.setImageResource(R.drawable.badges_month1_color);
+            tv1month.setVisibility(View.INVISIBLE);
         }
         if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 90 || prefs.getInt("3MONTH STREAK", 0) == 1) {
             //change greyscale to colour for 3month streak
@@ -343,6 +355,7 @@ public class SettingsFragment extends Fragment {
             editor.putInt("3MONTH STREAK", 1);
             editor.commit();
             iv3months.setImageResource(R.drawable.badges_month3_color);
+            tv3months.setVisibility(View.INVISIBLE);
         }
         if (prefs.getInt("YOUR COUNTER PREF KEY", 0) >= 180 || prefs.getInt("6MONTH STREAK", 0) == 1) {
             //change greyscale to colour for 6month streak
@@ -350,6 +363,7 @@ public class SettingsFragment extends Fragment {
             editor.putInt("6MONTH STREAK", 1);
             editor.commit();
             iv6months.setImageResource(R.drawable.badges_month6_color);
+            tv6months.setVisibility(View.INVISIBLE);
         }
     }
 }

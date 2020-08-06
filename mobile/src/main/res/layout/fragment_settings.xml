@@ -138,6 +138,7 @@
                             android:src="@drawable/badges_day3_grey_2"/>
 
                         <TextView
+                            android:id="@+id/tv_3d"
                             android:layout_width="140dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
@@ -163,6 +164,7 @@
                             android:src="@drawable/badges_week1_grey_2" />
 
                         <TextView
+                            android:id="@+id/tv_1w"
                             android:layout_width="140dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
@@ -188,6 +190,7 @@
                             android:src="@drawable/badges_week3_grey_2" />
 
                         <TextView
+                            android:id="@+id/tv_3w"
                             android:layout_width="140dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
@@ -221,6 +224,7 @@
                             android:src="@drawable/badges_month1_grey_2" />
 
                         <TextView
+                            android:id="@+id/tv_1m"
                             android:layout_width="140dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
@@ -246,6 +250,7 @@
                             android:src="@drawable/badges_month3_grey_2" />
 
                         <TextView
+                            android:id="@+id/tv_3m"
                             android:layout_width="140dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
@@ -271,6 +276,7 @@
                             android:src="@drawable/badges_month6_grey_2" />
 
                         <TextView
+                            android:id="@+id/tv_6m"
                             android:layout_width="140dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
