@@ -519,7 +519,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             editor.putInt("ReminderToLockIn", 0);
             editor.commit();
         }
-        if((heartrate!=0)&&(heartrate>=130) && (prefs.getInt("ReminderToLockIn", 0)==0)) { //change to 120
+        if((heartrate!=0)&&(heartrate>=120) && (prefs.getInt("ReminderToLockIn", 0)==0)) { //change to 120
             Log.d("Reminder", "INSIDEEE");
             vibration();
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
