@@ -735,35 +735,35 @@ public class HomeFragment extends Fragment{
         retriveWeeklyData();
     }
 
-//    private void retrieveData() {
-//        databaseReference.child(date).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
-//                int index =0;
-//
-//                if(dataSnapshot.hasChildren()){
-//                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
-//                        PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
-//                        dataVals[index] = new DataPoint(pointValue.getxValue(),pointValue.getyValue());
-//                        index++;
-//
-//                        avrHeartRate.add(pointValue.getyValue());
-//                        double heartRate=calculateAverageStepsOfCompetitors(avrHeartRate);
-//                        ratedMaxHR.setText(String.format("%.1f", heartRate) + "BPM");
-//                    }
-//                    lineGraphSeries.resetData(dataVals);
-//
-//                }else{
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//    }
+    private void retrieveData() {
+        databaseReference.child(date).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataPoint[] dataVals = new DataPoint[(int) dataSnapshot.getChildrenCount()];
+                int index =0;
+
+                if(dataSnapshot.hasChildren()){
+                    for(DataSnapshot myDataSnapshot : dataSnapshot.getChildren()){
+                        PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
+                        dataVals[index] = new DataPoint(pointValue.getxValue(),pointValue.getyValue());
+                        index++;
+
+                        avrHeartRate.add(pointValue.getyValue());
+                        double heartRate=calculateAverageStepsOfCompetitors(avrHeartRate);
+                        ratedMaxHR.setText(String.format("%.1f", heartRate) + "BPM");
+                    }
+                    //lineGraphSeries.resetData(dataVals);
+
+                }else{
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 
     private void retriveWeeklyData() {
             Query chatQuery = databaseReference.orderByChild(currentuser).limitToLast(7);
@@ -1401,7 +1401,7 @@ public class HomeFragment extends Fragment{
                             retrieveMaxHR();
                             retrieveWeeklyModerateMins();
                             RetrieveLockInData();
-//                            retrieveData();
+                            retrieveData();
 //                            showGraph();
                             retriveWeeklyData();
                             showWeeklyGraph();
