@@ -34,7 +34,7 @@
     //used in exercise fragment
     <string name="activity">Activity</string>
     <string name="brisk_walking">Brisk walking</string>
-    <string name="jogging">ogging</string>
+    <string name="jogging">Jogging</string>
     <string name="running">running</string>
     <string name="tai_chi">tai chi</string>
     <string name="yoga">yoga</string>
