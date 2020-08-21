@@ -11,7 +11,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Control Group"
+        android:text="Intervention Group"
         android:textColor="#143981"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/textView"
