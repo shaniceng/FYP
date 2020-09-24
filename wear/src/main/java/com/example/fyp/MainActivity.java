@@ -95,7 +95,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         needsSENSORSPermission();
 
         myView= (ScrollView) findViewById(R.id.myview);

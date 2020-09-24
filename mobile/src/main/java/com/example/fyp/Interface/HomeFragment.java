@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment{
     private float mins, sec, activity_heartRate=0;
     private String activity_heart_ratey;
 
-    FloatingActionButton fab;
+   // FloatingActionButton fab;
     private boolean stopThread;
     private ArrayList<Integer> weeklyAvrHeartRate;
     private ArrayList<Double> calculateWeeklyAvrHeartRate;
@@ -252,14 +252,14 @@ public class HomeFragment extends Fragment{
 //        ExpandableTextView expTv1 = v.findViewById(R.id.expand_text_view).findViewById(R.id.expand_text_view);
         circularProgressBar.setRoundBorder(true);
         circularProgressBarHR.setRoundBorder(true);
-//        expTv1.setText(getString(R.string.intensity_workout_details));
-        fab = (FloatingActionButton) v.findViewById(R.id.btnAddActivity);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ExerciseFragment.class));
-            }
-        });
+//        expTv1.setText(getString(R.string.intensity_workout_details))
+//        fab = (FloatingActionButton) v.findViewById(R.id.btnAddActivity);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getActivity(), ExerciseFragment.class));
+//            }
+//        });
         stepbtn = v.findViewById(R.id.step_btn);
         stepbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -924,7 +924,8 @@ public class HomeFragment extends Fragment{
                         else {
                             activityHeartRate.add("Average heart rate: " +lockInValue.getAvrHeartRate());
                             activity_heart_ratey=lockInValue.getActivity();
-                            activity_heartRate=Float.parseFloat(lockInValue.getAvrHeartRate().replaceAll("[^0-9.]", ""));
+                                activity_heartRate = Float.parseFloat(lockInValue.getAvrHeartRate().replaceAll("[^0-9.]", ""));
+
                         }
 //                        InsertRecyclerView();
 
@@ -1083,6 +1084,8 @@ public class HomeFragment extends Fragment{
     }
 
         //setup a broadcast receiver to receive the messages from the wear device via the listenerService.
+        //
+        // //
         public class MessageReceiver extends BroadcastReceiver {
             @Override
             public void onReceive(Context context, Intent intent) {
